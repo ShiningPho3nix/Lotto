@@ -15,9 +15,9 @@ import java.util.logging.Level;
 public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 
 	/**
-	 * Der Konstruktor inizialisiert die beiden Arrays für die Menge an Zahlen zur
-	 * Tippgenerierung, sowie für die entfernten Zahlen. Anschließend wird die
-	 * Funktion laden() ausgeführt.
+	 * Der Konstruktor führt den super() Konstruktor aus und füllt das tippArray mit
+	 * den erforderlichen und erlaubten Zahlen.
+	 * 
 	 */
 	public SechsAusNeunundvierzig() {
 		super("6aus49");
@@ -33,7 +33,6 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 	@Override
 	public void generiereTipp() {
 		int shuffle = (int) (Math.random() * 200);
-		System.out.println(shuffle);
 		for (int i = 0; i < shuffle; i++)
 			Collections.shuffle(tippzahlenArray);
 		ArrayList<Integer> tipp = new ArrayList<Integer>();
@@ -43,19 +42,30 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 					tippzahlenArray.get(i).toString() + " wurde als Tippzahl ausgewählt und dem dem Tipp hinzugefügt.");
 		}
 		Collections.sort(tipp, Collections.reverseOrder().reversed());
-		tipp.forEach(System.out::println);
+		System.out.println(tipp);
+		System.out.println("");
 		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
+	}
+
+	/**
+	 * TODO Fertig schreiben Hat der Nutzer den Wunsch mehrere Tipps zu generieren,
+	 * so wird diese Methode verwendet, welche generiereTipp() die gewünschte anzahl
+	 * an malen ausführt und somit die gewünschte anzahl an Tipps generiert werden.
+	 */
+	public void generiereTipps(int quicktipp) {
+		for (int i = 1; i <= quicktipp; i++) {
+			System.out.println("Tipp#" + i + ":");
+			generiereTipp();
+		}
 	}
 
 	/**
 	 * Funktion zur Erstellung einer Liste mit zulässigen Zahlen für die Tipp
 	 * Generierung. Die ausgeschlossenen Zahlen werden hierbei nicht mit
-	 * aufgenommen. Die Zulässigen Zahlen werden dem sechsAusNeunundvierzig Array
-	 * hinzugefügt.
+	 * aufgenommen. Die Zulässigen Zahlen werden dem tippzahlenArray hinzugefügt.
 	 */
 	@Override
 	public void erstelleCollection() {
-
 		for (int i = 1; i < 50; i++) {
 			if (unglueckszahlenArray.contains((Integer) i)) {
 				logger.log(Level.INFO, Integer.toString(i)
@@ -68,54 +78,9 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 	}
 
 	/**
-	 * Methode zum entfernen von Zahlen aus der Menge an Zahlen für die
-	 * Tippgenerierung. Löschen einer Zahl ist nur möglich wenn noch nicht 6 Zhalen
-	 * entfernt wurden und die Zahl selbst noch nicht entfernt worden ist.
+	 * Gibt den Aktuellen Spielmodus als String zurück.
 	 */
-	@Override
-	public void entferneZahlen(int zahl) {
-		if (tippzahlenArray.size() > 43 && tippzahlenArray.contains(zahl)) {
-			tippzahlenArray.remove((Integer) zahl);
-			unglueckszahlenArray.add(zahl);
-			logger.log(Level.INFO, zahl + " wurde aus der Menge an möglichen Zahlen für " + modus() + " entfernt.");
-			ausgabe.erfolgreichEntfernt(zahl);
-			tippzahlenArray.forEach(System.out::println);
-			speichern();
-			logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
-
-		} else {
-			ausgabe.nichtLoeschbar(zahl);
-			logger.log(Level.INFO,
-					zahl + " wurde nicht aus der Menge an möglichen Zahlen für " + modus() + " entfernt.");
-		}
-		logger.log(Level.INFO, "entferneZahlen() durchgelaufen");
-	}
-
-	/**
-	 * Funktion um eine Zahl welche ausgeschlossen wurde wieder zuzulassen. Dafür
-	 * muss die Zahl eine Zahl sein, in dem Array: unglueckszahlenArray vorhanden
-	 * und in dem Array: sechsAusNeunundvierzig nicht vorhanden sein.
-	 */
-	public void entferneUnglueckszahl(int zahl) {
-		if (unglueckszahlenArray.contains(zahl) && !tippzahlenArray.contains(zahl)) {
-			unglueckszahlenArray.remove((Integer) zahl);
-			tippzahlenArray.add(zahl);
-			logger.log(Level.INFO,
-					zahl + " wurde der Menge an möglichen Zahlen für " + modus() + " wieder hinzugefügt.");
-			ausgabe.erfolgreichWiederHinzugefuegt(zahl);
-			speichern();
-		} else {
-			ausgabe.hinzufuegenNichtMoeglich(zahl);
-			logger.log(Level.INFO,
-					zahl + " wurde nicht der Menge an möglichen Zahlen für " + modus() + " wieder hinzugefügt.");
-		}
-		logger.log(Level.INFO, "entferneUnglueckszahl() durchgelaufen");
-	}
-
-	public void reset() {
-		for (Integer integer : unglueckszahlenArray) {
-			entferneUnglueckszahl(integer);
-		}
-		logger.log(Level.INFO, modus() + " wurde resetet");
+	public String modus() {
+		return "6aus49";
 	}
 }

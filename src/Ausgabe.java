@@ -56,8 +56,8 @@ public class Ausgabe {
 	 */
 	public void waehleSpiel() {
 		System.out.println("Bitte wählen Sie das gewünschte Lottospiel:");
-		System.out.println("1: 6aus49");
-		System.out.println("2: Eurojackpot");
+		System.out.println("6aus49");
+		System.out.println("Euro");
 		System.out.println("");
 		logger.log(Level.INFO, "Dem Nutzer wurde über die Konsole die Informationen zur Modusauswahl ausgegeben.");
 	}
@@ -67,7 +67,7 @@ public class Ausgabe {
 	 * wurde.
 	 */
 	public void ungueltigeEingabe() {
-		System.out.println("Ungültige Eingabe getätigt!");
+		System.out.println("Ungültige Eingabe getätigt");
 		System.out.println("");
 		logger.log(Level.INFO,
 				"Der Nutzer wurde über die Konsole darauf hingewiesen, dass eine ungültige Eingabe getätigt wurde, dem Nutzer wurde ein Hinweiß auf den Hilfebefehl gegeben.");
@@ -82,6 +82,7 @@ public class Ausgabe {
 	 * @param zahl
 	 */
 	public void nichtLoeschbar(int zahl) {
+		System.out.println("Löschen von " + zahl + " nicht möglich!");
 		if (zahl > 49 || zahl < 1) {
 			System.out.println(
 					"Die zu löschende Zahl muss beim Spielmodus 6aus49 im Bereich [1,49] liegen, beim Eurojackpot im Bereich [1,50]. Sie haben "
@@ -89,8 +90,8 @@ public class Ausgabe {
 			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
 
 		} else {
-			System.out.println("Löschen von " + zahl
-					+ " nicht möglich. Entwerder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt");
+			System.out.println(
+					"Entwerder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt");
 			System.out.println("");
 			logger.log(Level.INFO,
 					"Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl + " nicht möglich ist.");
@@ -102,7 +103,7 @@ public class Ausgabe {
 	 * 
 	 * @param modus
 	 */
-	public void erwarteBefehl(String modus) {
+	public void erwarteBefehl() {
 		System.out.println("Bitte einen Befehl eingeben:");
 		hilfeBefehl();
 		logger.log(Level.INFO, "Der Nutzer wurde zur Eingabe eines Befehls aufgefordert.");
@@ -112,20 +113,21 @@ public class Ausgabe {
 	 * Gibt die Aufforderung zur Eingabe einer Zahl aus.
 	 */
 	public void zahlEingeben() {
-		System.out.println("Bitte die zu löschende Zahl eingeben:");
+		System.out.println("Bitte die Zahlen mit leerzeichen getrennt eingeben:");
 	}
 
 	/**
-	 * Gibt die durch 'h' oder 'help' aufgerufene Hilfe aller Befehle aus.
+	 * Gibt die durch 'h' aufgerufene Hilfe aller Befehle aus.
 	 */
 	public void hilfeAusgeben() {
 		// TODO Befehle ergänzen
 		System.out.println("Die möglichen Befehle sind:");
 		System.out.println(
-				"'tippgen': Erzeugt einen Tipp im aktuellem Modus unter Berücksichtigung der entfernten Zahlen.");
-		System.out.println("'reset': Setzt alle gesperrten Zahlen wieder zurück.");
+				"'tippgen <6aus49/euro>': Erzeugt einen Tipp im angegebenen Modus unter Berücksichtigung der entfernten Zahlen.");
+		System.out.println("'reset': Sammlung mit ausgeschlossenen Zahlen wird zurückgesetzt.");
 		System.out.println(
-				"'delete': Ermöglicht das Entfernen einer einzigen Zahl aus der Menge an Zahlen zur Tippgenerierung.");
+				"'delete': Ermöglicht das Entfernen einer oder mehrerer Zahlen aus der Menge an Zahlen zur Tippgenerierung.");
+		System.out.println("'quit': Beendet das Programm ordnungsgemäß.");
 		logger.log(Level.INFO, "Befehl Hilfe ausgegeben.");
 	}
 
@@ -153,12 +155,10 @@ public class Ausgabe {
 	 * Gibt aus das eine Datei zum abspeichern der der entfernten Zahlen erzeugt
 	 * wurde.
 	 */
-	public void dateiErstellt(String modus) {
+	public void dateiErstellt() {
 		System.out.println(
-				"Es existierte noch keine Datei zum abspeichern der entfernten Zahlen. Diese Datei wurde mit dem Namen 'TippGenerator"
-						+ modus + ".txt' erstellt");
-		logger.log(Level.INFO,
-				"Über erfolgreiches erstellen einer neuen Datei für den Modus: " + modus + " benachrichtigt.");
+				"Es existierte noch keine Datei zum abspeichern der entfernten Zahlen. Diese Datei wurde mit dem Namen 'TippGenerator.txt' erstellt");
+		logger.log(Level.INFO, "Über erfolgreiches erstellen einer neuen Datei benachrichtigt.");
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class Ausgabe {
 	 * @param input
 	 */
 	public void istKeineZahl(String input) {
-		System.out.println(input + " ist keine Zahl. Bitte geben Sie eine Zahl im Bereich [1,49] ein.");
+		System.out.println(input + " ist keine Zahl und wird daher ignoriert.");
 		logger.log(Level.INFO, "Nachricht ausgegeben, dass " + input + " keine Zahl ist.");
 	}
 

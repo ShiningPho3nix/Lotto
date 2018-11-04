@@ -37,8 +37,12 @@ public class TippGenerator {
 	 * Führt die jeweilige Implementation von entferneZahlen() aus. Abhängig davon
 	 * welche Instanz gerade im Feld lottoart zugewiesen ist.
 	 */
-	public void entferneZahlen(int zahl) {
+	public void entferneZahlen(int[] zahl) {
 		lottoart.entferneZahlen(zahl);
+	}
+
+	public void entferneUnglueckszahl(int[] zahlen) {
+		lottoart.entferneUnglueckszahl(zahlen);
 	}
 
 	/**
@@ -48,6 +52,10 @@ public class TippGenerator {
 	public void generiereTipp() {
 		lottoart.generiereTipp();
 		logger.log(Level.INFO, lottoModus() + " Tipp wurde erstellt.");
+	}
+
+	public void generiereTipps(int quicktipp) {
+		lottoart.generiereTipps(quicktipp);
 	}
 
 	/**
@@ -67,6 +75,5 @@ public class TippGenerator {
 
 	public void reset() {
 		lottoart.reset();
-
 	}
 }

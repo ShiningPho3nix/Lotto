@@ -30,20 +30,21 @@ public class Speichern extends SFileOperation {
 	 * @param ungluecksZahlen
 	 * @param mode
 	 */
-	public void speichern(ArrayList<Integer> ungluecksZahlen, String mode) {
-		String filePath = currentDirectory().concat("\\TippGenerator" + mode + ".txt");
+	public void speichern(ArrayList<Integer> ungluecksZahlen) {
+		String filePath = currentDirectory().concat("\\TippGenerator.txt");
 		File file = new File(filePath);
 		if (!file.exists()) {
 			try {
-				createFile(mode);
+				createFile();
 				logger.log(Level.INFO, "Datei wurde erzeugt (" + filePath + ").");
-				ausgabe.dateiErstellt(mode);
+				ausgabe.dateiErstellt();
 			} catch (IOException e) {
 				logger.log(Level.WARNING, "Die Datei konnte nicht erstellt werden (" + filePath + ").", e);
 				e.printStackTrace();
 			}
 		}
 		try (PrintWriter out = new PrintWriter(file)) {
+			out.write(ungluecksZahlen.toString());
 			System.out.println(ungluecksZahlen);
 			logger.log(Level.INFO, ungluecksZahlen + " wurde in die Datei geschrieben.");
 			out.close();

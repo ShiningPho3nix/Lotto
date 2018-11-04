@@ -15,6 +15,9 @@ public class Eurojackpot extends SLotto implements ILotto {
 	private ArrayList<Integer> zweiAusZehntippzahlenArray;
 
 	/**
+	 * Der Konstruktor führt den super() Konstruktor aus, inizialisiert das extra
+	 * Array zweiAusZehnTippzahlenArray und füllt dieses anschließend mit den
+	 * erforderlichen und erlaubten Zahlen..
 	 * 
 	 */
 	public Eurojackpot() {
@@ -23,10 +26,11 @@ public class Eurojackpot extends SLotto implements ILotto {
 		erstelleCollection();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ILotto#generiereTipp()
+	/**
+	 * Funktion verwendet die liste sechsAusNeunundvierzig, shuffelt diese und nimmt
+	 * dann die ersten 5 Zahlen. Die Zahlen werden aufsteigend sortiert.
+	 * Anschließend werden 2 zahlen aus 10 gezogen und auch aufsteigend sortiert.
+	 * Danach werden die beiden Arrays ausgegeben als Eurojackpot Tipp
 	 */
 	@Override
 	public void generiereTipp() {
@@ -49,15 +53,30 @@ public class Eurojackpot extends SLotto implements ILotto {
 		}
 		Collections.sort(tipp, Collections.reverseOrder().reversed());
 		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed());
-		tipp.addAll(zweiAusZehnTipp);
-		tipp.forEach(System.out::println);
+		System.out.println("5aus50:");
+		System.out.println(tipp);
+		System.out.println("2aus10");
+		System.out.println(zweiAusZehnTipp);
 		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ILotto#erstelleCollection()
+	/**
+	 * TODO Fertig schreiben Hat der Nutzer den Wunsch mehrere Tipps zu generieren,
+	 * so wird diese Methode verwendet, welche generiereTipp() die gewünschte anzahl
+	 * an malen ausführt und somit die gewünschte anzahl an Tipps generiert werden.
+	 */
+	@Override
+	public void generiereTipps(int quicktipp) {
+		for (int i = 1; i <= quicktipp; i++) {
+			System.out.println("Tipp#" + i);
+			generiereTipp();
+		}
+	}
+
+	/**
+	 * Funktion zur Erstellung einer Liste mit zulässigen Zahlen für die Tipp
+	 * Generierung. Die ausgeschlossenen Zahlen werden hierbei nicht mit
+	 * aufgenommen. Die Zulässigen Zahlen werden dem tippzahlenArray hinzugefügt.
 	 */
 	@Override
 	public void erstelleCollection() {
@@ -84,62 +103,10 @@ public class Eurojackpot extends SLotto implements ILotto {
 		logger.log(Level.INFO, "erstelleCollection durchgelaufen.");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ILotto#entferneZahlen(int)
-	 */
-	@Override
-	public void entferneZahlen(int zahl) {
-		if (tippzahlenArray.size() > 44 && tippzahlenArray.contains(zahl)) {
-			tippzahlenArray.remove((Integer) zahl);
-			logger.log(Level.INFO, zahl + " wurde aus der Menge an möglichen Zahlen für " + modus() + " entfernt.");
-			if (zweiAusZehntippzahlenArray.size() > 4 && zweiAusZehntippzahlenArray.contains(zahl)) {
-				zweiAusZehntippzahlenArray.remove(zahl);
-				logger.log(Level.INFO, zahl + " wurde aus der Menge an möglichen Zahlen für " + modus() + " entfernt.");
-			}
-			unglueckszahlenArray.add(zahl);
-			ausgabe.erfolgreichEntfernt(zahl);
-			tippzahlenArray.forEach(System.out::println);
-			zweiAusZehntippzahlenArray.forEach(System.out::println);
-			speichern();
-			logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
-		} else {
-			ausgabe.nichtLoeschbar(zahl);
-			logger.log(Level.INFO,
-					zahl + " wurde nicht aus der Menge an möglichen Zahlen für " + modus() + " entfernt.");
-		}
-		logger.log(Level.INFO, "entferneZahlen() durchgelaufen");
-	}
-
 	/**
-	 * Funktion um eine Zahl welche ausgeschlossen wurde wieder zuzulassen. Dafür
-	 * muss die Zahl eine Zahl sein, in dem Array: unglueckszahlenArray vorhanden
-	 * und in dem Array: sechsAusNeunundvierzig nicht vorhanden sein.
+	 * Gibt den Aktuellen Spielmodus als String zurück.
 	 */
-	public void entferneUnglueckszahl(int zahl) {
-		if (unglueckszahlenArray.contains(zahl) && !tippzahlenArray.contains(zahl)) {
-			unglueckszahlenArray.remove((Integer) zahl);
-			tippzahlenArray.add(zahl);
-			if (!zweiAusZehntippzahlenArray.contains(zahl)) {
-				zweiAusZehntippzahlenArray.add(zahl);
-			}
-			logger.log(Level.INFO,
-					zahl + " wurde der Menge an möglichen Zahlen für " + modus() + " wieder hinzugefügt.");
-			ausgabe.erfolgreichWiederHinzugefuegt(zahl);
-			speichern();
-		} else {
-			ausgabe.hinzufuegenNichtMoeglich(zahl);
-			logger.log(Level.INFO,
-					zahl + " wurde nicht der Menge an möglichen Zahlen für " + modus() + " wieder hinzugefügt.");
-		}
-		logger.log(Level.INFO, "entferneUnglueckszahl() durchgelaufen");
-	}
-
-	public void reset() {
-		for (Integer integer : unglueckszahlenArray) {
-			entferneUnglueckszahl(integer);
-		}
-		speicher.speichern(unglueckszahlenArray, modus());
+	public String modus() {
+		return "Eurojackpot";
 	}
 }

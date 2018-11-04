@@ -14,13 +14,16 @@ public interface ILotto {
 
 	void generiereTipp();
 
+	void generiereTipps(int quicktipp);
+
 	void erstelleCollection();
 
-	void entferneZahlen(int zahl);
+	void entferneZahlen(int[] zahl);
 
-	void entferneUnglueckszahl(int zahl);
+	void entferneUnglueckszahl(int[] zahl);
 
 	String modus();
-	
+
 	void reset();
+
 }

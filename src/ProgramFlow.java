@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,10 +20,12 @@ public class ProgramFlow {
 
 	/**
 	 * Konstruktor erzeugt eine neue Benutzereingabe um Eingaben vom Nutzer über die
-	 * Methoden von Benutzereingabe zu erhalten.
+	 * Methoden von Benutzereingabe zu erhalten. Erzeugt auch Tippgenerator Objekt
+	 * um einige Funktionen immer gewährleisten zu können.
 	 */
 	public ProgramFlow() {
 		benutzereingabe = new Benutzereingabe();
+		tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
 		logger.log(Level.INFO, "ProgramFlow Konstruktor durchgelaufen");
 	}
 
@@ -31,34 +35,7 @@ public class ProgramFlow {
 	 */
 	public void start() {
 		ausgabe.begruessung();
-		setSpielModus(benutzereingabe.erfrageSpielModus());
-	}
-
-	/**
-	 * Bekommt einen String (1,2) übergeben und erzeugt je nach Eingabe für 1: new
-	 * TippGenerator(new SechsAusNeunundvierzig()), für 2: new TippGenerator(new
-	 * Eurojackpot()), oder aber
-	 * 
-	 * @param spielmodus
-	 */
-	public void setSpielModus(String spielmodus) {
-		switch (spielmodus) {
-		case "1":
-			tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
-			logger.log(Level.INFO, tippgenerator.lottoModus() + " wurde als Lottomodus gewählt");
-			break;
-		case "2":
-			tippgenerator = new TippGenerator(new Eurojackpot());
-			logger.log(Level.INFO, tippgenerator.lottoModus() + " wurde als Lottomodus gewählt");
-			break;
-		default:
-			logger.log(Level.INFO,
-					"Ungültige Eingabe wurde als Spielmodus übergeben. Spielmodus wird erneut angefragt.");
-			ausgabe.ungueltigeEingabe();
-			setSpielModus(benutzereingabe.erfrageSpielModus());
-			break;
-		}
-		befehlAusfuehren(benutzereingabe.erwarteBefehl(tippgenerator.lottoModus()));
+		befehlAusfuehren(benutzereingabe.erwarteBefehl());
 	}
 
 	/**
@@ -68,41 +45,77 @@ public class ProgramFlow {
 	 * @param befehl
 	 */
 	public void befehlAusfuehren(String befehl) {
-		befehl = befehl.toUpperCase();
-		switch (befehl) {
-		case "TIPPGEN":
-			logger.log(Level.INFO, "Tippgenerator wurde als Befehl gewählt.");
-			tippgenerator.generiereTipp();
-			break;
-		case "RESET":
-			logger.log(Level.INFO, "Für den aktuellen Modus wurde reset gewählt.");
-			tippgenerator.reset();
-			break;
-		case "DELETE":
-			int zahl = benutzereingabe.erfrageLottoZahl();
-			logger.log(Level.INFO, zahl + " als zu löschende Zahl eingegeben.");
-			tippgenerator.entferneZahlen(zahl);
-			break;
-		case "CHANGE":
-			System.out.println("Change gewählt.");
-			break;
-		case "H":
-			ausgabe.hilfeAusgeben();
-			break;
-		case "QUIT":
-			quit();
-			return;
-		default:
-			logger.log(Level.INFO,
-					"Ungültige Eingabe wurde als Befehl übergeben. Befehlsausführung wird abgebrochen, neuer Befehl wird angefragt.");
-			ausgabe.ungueltigeEingabe();
-			break;
+		if (befehl.contains("TIPPGEN")) {
+			befehlAusführenTippgen(befehl);
+		} else {
+			switch (befehl) {
+			case "RESET":
+				logger.log(Level.INFO, "Sammlung mit ausgeschlossenen Zahlen wird zurückgesetzt.");
+				tippgenerator.reset();
+				break;
+			case "DELETE":
+				int[] deleteZahlen = benutzereingabe.erfrageLottoZahlen();
+				logger.log(Level.INFO, deleteZahlen + " als auszuschließende Zahlen übergeben.");
+				tippgenerator.entferneZahlen(deleteZahlen);
+				break;
+			case "ADD":
+				int[] addZahlen = benutzereingabe.erfrageLottoZahlen();
+				logger.log(Level.INFO, addZahlen + " als Zahlen welche wieder hinzugefügt werden sollen übergeben.");
+				tippgenerator.entferneUnglueckszahl(addZahlen);
+				break;
+			case "H":
+				ausgabe.hilfeAusgeben();
+				break;
+			case "QUIT":
+				quit();
+				return;
+			default:
+				logger.log(Level.INFO,
+						"Ungültige Eingabe wurde als Befehl übergeben. Befehlsausführung wird abgebrochen, neuer Befehl wird angefragt.");
+				ausgabe.ungueltigeEingabe();
+				break;
+			}
 		}
-		befehlAusfuehren(benutzereingabe.erwarteBefehl(tippgenerator.lottoModus()));
+		befehlAusfuehren(benutzereingabe.erwarteBefehl());
+	}
+
+	private void befehlAusführenTippgen(String befehl) {
+		ArrayList<String> tippgen = new ArrayList<String>(Arrays.asList(befehl.split(" ")));
+		if (tippgen.contains("6AUS49")) {
+			tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
+			logger.log(Level.INFO, "6AUS49 wurde als Lottomodus gewählt.");
+			if (isNumeric(tippgen.get(2))) {
+				tippgenerator.generiereTipps(Integer.parseInt(tippgen.get(2)));
+			}
+			tippgenerator.generiereTipp();
+		} else if (tippgen.contains("EURO")) {
+			tippgenerator = new TippGenerator(new Eurojackpot());
+			logger.log(Level.INFO, "EURO wurde als Lottomodus gewählt.");
+			if (isNumeric(tippgen.get(2))) {
+				tippgenerator.generiereTipps(Integer.parseInt(tippgen.get(2)));
+			}
+
+			tippgenerator.generiereTipp();
+		} else {
+			tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
+			logger.log(Level.INFO, "Tippgenerator wurde als Befehl gewählt.");
+			if (isNumeric(tippgen.get(1))) {
+				tippgenerator.generiereTipps(Integer.parseInt(tippgen.get(2)));
+			}
+			tippgenerator.generiereTipp();
+		}
 	}
 
 	private void quit() {
 		benutzereingabe.quit();
 		Logging.quit();
+	}
+
+	public static boolean isNumeric(String str) {
+		for (char c : str.toCharArray()) {
+			if (!Character.isDigit(c))
+				return false;
+		}
+		return true;
 	}
 }

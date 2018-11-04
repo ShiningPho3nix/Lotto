@@ -4,7 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-
 public class SFileOperation {
 
 	protected Ausgabe ausgabe;
@@ -32,8 +31,8 @@ public class SFileOperation {
 	 * @param mode
 	 * @throws IOException
 	 */
-	public void createFile(String mode) throws IOException {
-		File f = new File(currentDirectory().concat("\\TippGenerator" + mode + ".txt"));
+	public void createFile() throws IOException {
+		File f = new File(currentDirectory().concat("\\TippGenerator.txt"));
 		f.createNewFile();
 	}
 

@@ -31,18 +31,18 @@ public class Laden extends SFileOperation {
 	 * @param mode
 	 * @return
 	 */
-	public ArrayList<Integer> laden(String mode) {
+	public ArrayList<Integer> laden() {
 
-		String filePath = currentDirectory().concat("\\TippGenerator" + mode + ".txt");
+		String filePath = currentDirectory().concat("\\TippGenerator.txt");
 		File file = new File(filePath);
 		String ladeString = "";
 		ArrayList<Integer> ladeArray = new ArrayList<Integer>();
 
 		if (!file.exists()) {
 			try {
-				createFile(mode);
-				logger.log(Level.INFO, "Es wurde eine Datei für den Modus: " + mode + " erzeugt.");
-				ausgabe.dateiErstellt(mode);
+				createFile();
+				logger.log(Level.INFO, "Es wurde eine Datei für zum Speichern der unglückszahlen erzeugt.");
+				ausgabe.dateiErstellt();
 			} catch (IOException e) {
 				logger.log(Level.WARNING, "Die Datei konnte nicht erstellt werden (" + filePath + ")", e);
 				e.printStackTrace();
@@ -66,7 +66,13 @@ public class Laden extends SFileOperation {
 		}
 		String[] partArray = ladeString.split(",");
 		for (String string : partArray) {
-			ladeArray.add(Integer.parseInt(string));
+			try	{
+				ladeArray.add(Integer.parseInt(string));
+			}
+			catch (NumberFormatException e) {
+				logger.log(Level.WARNING, string + " ist keine Zahl und wird daher ignotiert", e);
+				continue;
+			}
 		}
 		logger.log(Level.INFO,
 				"Ausgeschlossene Zahlen wurden erfolgreich aus der Datei gelesen und werden nun als Array übergeben.");

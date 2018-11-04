@@ -27,39 +27,22 @@ public class Benutzereingabe {
 	}
 
 	/**
-	 * Funktion um den Spieler nach dem gewünschten Spielmodus zu Fragen. Gibt einen
-	 * String zurück. Derzeitig sind 1 und 2 gültige Eingaben.
-	 * 
-	 */
-	public String erfrageSpielModus() {
-		String spielmodus;
-		ausgabe.waehleSpiel();
-		try {
-			spielmodus = in.readLine();
-			return spielmodus;
-		} catch (IOException e) {
-			logger.log(Level.WARNING, "Spielmodus konnte nicht eingelesen werden! 6aus49 wurde als Spielmodus gesetzt.",
-					e);
-			return spielmodus = "1";
-		}
-	}
-
-	/**
 	 * Funktion erwartet die Eingabe eines Befehls und gibt den Befehl mitsammt des
 	 * Modus weiter an die Funktion BefehlAusfuehren()
 	 * 
 	 * @param modus
 	 */
-	public String erwarteBefehl(String modus) {
+	public String erwarteBefehl() {
 		String befehl = "";
-		ausgabe.erwarteBefehl(modus);
+		ausgabe.erwarteBefehl();
 		try {
 			befehl = in.readLine();
 			logger.log(Level.INFO, befehl + " als Befehl eingegeben!");
+			return befehl = befehl.toUpperCase();
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "Eingegebener Befehl konnte nicht eingelesen werden.", e);
+			return "";
 		}
-		return befehl;
 	}
 
 	/**
@@ -70,25 +53,30 @@ public class Benutzereingabe {
 	 * 
 	 * @return Eine zahl
 	 */
-	public int erfrageLottoZahl() {
+	public int[] erfrageLottoZahlen() {
 		ausgabe.zahlEingeben();
 		String input = "";
 		try {
 			input = in.readLine();
 		} catch (IOException e1) {
-			logger.log(Level.WARNING, "Zahl konnte nicht eingelesen werden!", e1);
+			logger.log(Level.WARNING, "Zahlen konnte nicht eingelesen werden!", e1);
 			e1.printStackTrace();
 		}
-		try {
-			int zahl = Integer.parseInt(input);
-			return zahl;
-		} catch (NumberFormatException e) {
-			ausgabe.istKeineZahl(input);
-			logger.log(Level.WARNING, "Input (" + input + ") ist keine Zahl!", e);
-			e.printStackTrace();
-			erfrageLottoZahl();
+		String[] parts = input.split(" ");
+		int[] zahlen = new int[parts.length];
+		String currentString = "";
+		for (int i = 0; i < parts.length; i++) {
+			try {
+				zahlen[i] = Integer.parseInt(parts[i]);
+				currentString = parts[i];
+			} catch (NumberFormatException e) {
+				ausgabe.istKeineZahl(currentString);
+				logger.log(Level.WARNING, "Input (" + currentString + ") ist keine Zahl!", e);
+				e.printStackTrace();
+				continue;
+			}
 		}
-		return 0;
+		return zahlen;
 	}
 
 	public void quit() {
