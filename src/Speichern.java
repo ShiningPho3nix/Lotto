@@ -44,6 +44,7 @@ public class Speichern extends SFileOperation {
 			}
 		}
 		try (PrintWriter out = new PrintWriter(file)) {
+			ungluecksZahlen = checkArray(ungluecksZahlen);
 			out.write(ungluecksZahlen.toString());
 			System.out.println(ungluecksZahlen);
 			logger.log(Level.INFO, ungluecksZahlen + " wurde in die Datei geschrieben.");

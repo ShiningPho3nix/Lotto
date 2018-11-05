@@ -26,7 +26,6 @@ public class SLotto {
 		lader = new Laden();
 		logger.log(Level.INFO, "Arrays wurden inizialisiert");
 		laden();
-		checkArray();
 		logger.log(Level.INFO, "Super Konstruktor für " + currentmode + " durchgelaufen.");
 	}
 
@@ -87,30 +86,21 @@ public class SLotto {
 	}
 
 	/**
-	 * Funktion zum Speichern der ausgeschlossenen Zahlen.
+	 * Funktion zum Speichern der ausgeschlossenen Zahlen. Ruft die Methode
+	 * speichern() der Klasse Seichern auf.
 	 */
 	public void speichern() {
 		speicher.speichern(unglueckszahlenArray);
 		logger.log(Level.INFO, "Gespeichert, SLotto speichern durchgelaufen.");
 	}
 
+	/**
+	 * Funktion überschreibt das bestehende unglückszahlenArray mit einem neuen
+	 * leeren Array und speichert dieses ab. Somit werden alles gesperrten Zahlen
+	 * auf einmal gelöscht.
+	 */
 	public void reset() {
 		unglueckszahlenArray = new ArrayList<Integer>();
-		speichern();
-	}
-
-	public void checkArray() {
-		for (Integer integer : unglueckszahlenArray) {
-			int count = 0;
-			for (Integer integer2 : unglueckszahlenArray) {
-				if (integer.equals(integer2)) {
-					count++;
-				}
-				if (count > 1) {
-					unglueckszahlenArray.remove((Integer) integer);
-				}
-			}
-		}
 		speichern();
 	}
 }

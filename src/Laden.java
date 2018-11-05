@@ -66,16 +66,15 @@ public class Laden extends SFileOperation {
 		}
 		String[] partArray = ladeString.split(",");
 		for (String string : partArray) {
-			try	{
+			try {
 				ladeArray.add(Integer.parseInt(string));
-			}
-			catch (NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				logger.log(Level.WARNING, string + " ist keine Zahl und wird daher ignotiert", e);
 				continue;
 			}
 		}
 		logger.log(Level.INFO,
 				"Ausgeschlossene Zahlen wurden erfolgreich aus der Datei gelesen und werden nun als Array übergeben.");
-		return ladeArray;
+		return checkArray(ladeArray);
 	}
 }
