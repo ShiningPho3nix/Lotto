@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
- * Klasse enthält Methoden zum laden der ausgeschlossenen Zahlen aus der
- * jeweiligen Datei.
+ * Klasse enthält Methoden zum laden der ausgeschlossenen Zahlen aus der Datei.
  * 
  * @author Steffen Dworsky
  *
@@ -15,7 +14,7 @@ import java.util.logging.Level;
 public class Laden extends SFileOperation {
 
 	/**
-	 * Im Konstruktor werden die nötigen Objekte erzeugt.
+	 * Im Konstruktor wird der super() Konstruktor ausgeführt.
 	 */
 	public Laden() {
 		super();
@@ -23,12 +22,12 @@ public class Laden extends SFileOperation {
 	}
 
 	/**
-	 * Die Funktion laden bekommt den aktuellen modus übergeben und lädt
-	 * anschließend die ausgeschlossenen Zahlen aus der entsprechenden Datei. Die
+	 * Die Funktion laden lädt die ausgeschlossenen Zahlen aus der Datei. Die
 	 * einzelnen Zahlen werden dann in ein lokales Array gelegt und anschließend
-	 * übergeben. Sollte keine Datei existieren wird das Array leer übergeben.
+	 * übergeben. Sollte keine Datei existieren wird eine neue Datei erzeugt und das
+	 * Array leer übergeben. Befor das Array übergeben wird, wird es noch auf
+	 * korrektheit geprüft mit checkArray
 	 * 
-	 * @param mode
 	 * @return
 	 */
 	public ArrayList<Integer> laden() {
@@ -41,7 +40,7 @@ public class Laden extends SFileOperation {
 		if (!file.exists()) {
 			try {
 				createFile();
-				logger.log(Level.INFO, "Es wurde eine Datei für zum Speichern der unglückszahlen erzeugt.");
+				logger.log(Level.INFO, "Es wurde eine Datei für zum Speichern der Unglückszahlen erzeugt.");
 				ausgabe.dateiErstellt();
 			} catch (IOException e) {
 				logger.log(Level.WARNING, "Die Datei konnte nicht erstellt werden (" + filePath + ")", e);
@@ -69,7 +68,7 @@ public class Laden extends SFileOperation {
 			try {
 				ladeArray.add(Integer.parseInt(string));
 			} catch (NumberFormatException e) {
-				logger.log(Level.WARNING, string + " ist keine Zahl und wird daher ignotiert", e);
+				logger.log(Level.WARNING, string + " ist keine Zahl und wird daher ignoriert", e);
 				continue;
 			}
 		}

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ public class Ausgabe {
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public Ausgabe() {
+		logger.setUseParentHandlers(false);
 		logger.log(Level.INFO, "Ausgabe Konstruktor durchgelaufen.");
 	}
 
@@ -66,8 +68,10 @@ public class Ausgabe {
 	 * Gibt eine kurze Benachrichtigung aus, das eine ungültige Eingabe getätigt
 	 * wurde.
 	 */
-	public void ungueltigeEingabe() {
-		System.out.println("Ungültige Eingabe getätigt");
+	public void ungueltigeEingabe(String eingabe) {
+		System.out.println("Ungültige Eingabe getätigt: " + eingabe);
+		System.out.println("");
+		hilfeAusgeben();
 		System.out.println("");
 		logger.log(Level.INFO,
 				"Der Nutzer wurde über die Konsole darauf hingewiesen, dass eine ungültige Eingabe getätigt wurde, dem Nutzer wurde ein Hinweiß auf den Hilfebefehl gegeben.");
@@ -83,15 +87,13 @@ public class Ausgabe {
 	 */
 	public void nichtLoeschbar(int zahl) {
 		System.out.println("Löschen von " + zahl + " nicht möglich!");
-		if (zahl > 49 || zahl < 1) {
-			System.out.println(
-					"Die zu löschende Zahl muss beim Spielmodus 6aus49 im Bereich [1,49] liegen, beim Eurojackpot im Bereich [1,50]. Sie haben "
-							+ zahl + " eingegeben");
+		if (zahl > 50 || zahl < 1) {
+			System.out.println("Die zu löschende Zahl muss im Bereich [1,50] liegen.");
 			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
 
 		} else {
 			System.out.println(
-					"Entwerder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt");
+					"Entweder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt");
 			System.out.println("");
 			logger.log(Level.INFO,
 					"Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl + " nicht möglich ist.");
@@ -100,8 +102,6 @@ public class Ausgabe {
 
 	/**
 	 * Gibt die Aufforderung zur Eingabe eines Befehls aus.
-	 * 
-	 * @param modus
 	 */
 	public void erwarteBefehl() {
 		System.out.println("Bitte einen Befehl eingeben:");
@@ -120,23 +120,28 @@ public class Ausgabe {
 	 * Gibt die durch 'h' aufgerufene Hilfe aller Befehle aus.
 	 */
 	public void hilfeAusgeben() {
-		// TODO Befehle ergänzen
 		System.out.println("Die möglichen Befehle sind:");
 		System.out.println(
-				"'tippgen <6aus49/euro>': Erzeugt einen Tipp im angegebenen Modus unter Berücksichtigung der entfernten Zahlen.");
+				"'tippgen <6aus49/euro> <Tippanzahl>': Erzeugt einen Tipp im angegebenen Modus, die angegebene Anzahl an Mal."
+						+ " Die Eingaben werden durch ein leerzeichen getrennt.");
 		System.out.println("'reset': Sammlung mit ausgeschlossenen Zahlen wird zurückgesetzt.");
 		System.out.println(
-				"'delete': Ermöglicht das Entfernen einer oder mehrerer Zahlen aus der Menge an Zahlen zur Tippgenerierung.");
+				"'delete <Zahlen>': Ermöglicht das Entfernen einer oder mehrerer Zahlen aus der Menge an Zahlen zur Tippgenerierung. Die Zahlen werden durch ein leerzeichen getrennt.");
+		System.out.println(
+				"'readd <Zahlen>': Ermöglicht das Entfernen einer oder mehrerer Zahlen aus der Menge an ausgeschlossenen Zahlen. Die Zahlen werden durch ein leerzeichen getrennt.");
+		System.out.println("'list': Gibt eine Liste mit allen aktuell ausgeschlossenen Zahlen aus.");
 		System.out.println("'quit': Beendet das Programm ordnungsgemäß.");
-		logger.log(Level.INFO, "Befehl Hilfe ausgegeben.");
+		System.out.println("");
+		logger.log(Level.INFO, "List mit Befehlen ausgegeben..");
 	}
 
 	/**
 	 * Gibt aus das die übergebene Zahl erfolgreich entfernt wurde.
 	 * 
 	 * @param zahl
+	 * @param string
 	 */
-	public void erfolgreichEntfernt(int zahl) {
+	public void erfolgreichEntfernt(int zahl, String string) {
 		System.out.println(zahl + " erfolgreich entfernt");
 		logger.log(Level.INFO, "Über erfolgreiches entfernen der Zahl: " + zahl + " benachrichtigt.");
 	}
@@ -172,8 +177,57 @@ public class Ausgabe {
 		logger.log(Level.INFO, "Nachricht ausgegeben, dass " + input + " keine Zahl ist.");
 	}
 
+	/**
+	 * Gibt dem Nutzer die Information das eine der Übergebenen Zahlen nicht wieder
+	 * hinzugefügt werden konnte.
+	 * 
+	 * @param zahl
+	 */
 	public void hinzufuegenNichtMoeglich(int zahl) {
 		System.out.println(zahl + " konnte nicht wieder hinzugefügt werden.");
+		if (zahl > 50 || zahl < 1) {
+			System.out.println("Die eingegebene Zahl muss im Bereich [1,50] liegen.");
+			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
+
+		} else {
+			System.out.println("Die Zahl ist aktuell nicht unter den ausgeschlossenen Zahlen.");
+			System.out.println("");
+			logger.log(Level.INFO,
+					"Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl + " nicht möglich ist.");
+		}
 		logger.log(Level.INFO, "Über Fehlschlag beim wieder hinzufügen der Zahl: " + zahl + " benachrichtigt.");
 	}
+
+	/**
+	 * Gibt eine Mittteilung aus, das die folgenden Zahlen ausgeschlossene Zahlen
+	 * sind.
+	 */
+	public void list() {
+		System.out.println("Die derzeitig ausgeschlossenen Zahlen sind:");
+		logger.log(Level.INFO,
+				"Dem Nutzer wurde über die Konsole mitgeteilt das die folgenden Zahleh ansgeschlossene Zahlen sind.");
+	}
+
+	/**
+	 * Gibt eine kurze Benachrichtigung aus, das ein ungültiger Modus eingegeben
+	 * wurde.
+	 * 
+	 * @return
+	 */
+	public void ungueltigeModusEingabe(ArrayList<String> tippgen) {
+		for (String string : tippgen) {
+			if (ProgramFlow.istNumerisch(string)) {
+				continue;
+			} else {
+				System.out.println("Unbekannten Modus eingegeben: " + string);
+				System.out.println("");
+			}
+		}
+		hilfeAusgeben();
+		System.out.println("");
+		logger.log(Level.INFO,
+				"Der Nutzer wurde über die Konsole darauf hingewiesen, dass eine ungültige Eingabe getätigt wurde."
+						+ " Dem Nutzer wurde ein Hinweiß auf den Hilfebefehl gegeben.");
+	}
+
 }

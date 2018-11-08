@@ -14,7 +14,7 @@ import java.util.logging.Level;
 public class Speichern extends SFileOperation {
 
 	/**
-	 * Im Konstruktor werden die benötigten Objekte erzeugt.
+	 * Im Konstruktor wird der super() konstruktor ausgeführt.
 	 */
 	public Speichern() {
 		super();
@@ -22,10 +22,10 @@ public class Speichern extends SFileOperation {
 	}
 
 	/**
-	 * Die Funktion speichern bekommt die ArrayList mit den ausgeschlossenen Zahlen,
-	 * sowie dem Modus übergeben und speichert das Array anschließend in einer Datei
-	 * ab. Die Datei wird in dem aktuellen Verzeichniss gegebenenfalls erzeugt. Für
-	 * jeden Mosud wird eine eigene Textdatei erzeugt.
+	 * Die Funktion speichern bekommt die ArrayList mit den ausgeschlossenen Zahlen
+	 * übergeben und speichert das Array anschließend in einer Datei ab. Vor dem
+	 * Abspeichern wird checkArray ausgeführt. Die Datei wird in dem aktuellen
+	 * Verzeichniss gegebenenfalls erzeugt.
 	 * 
 	 * @param ungluecksZahlen
 	 * @param mode
@@ -46,7 +46,6 @@ public class Speichern extends SFileOperation {
 		try (PrintWriter out = new PrintWriter(file)) {
 			ungluecksZahlen = checkArray(ungluecksZahlen);
 			out.write(ungluecksZahlen.toString());
-			System.out.println(ungluecksZahlen);
 			logger.log(Level.INFO, ungluecksZahlen + " wurde in die Datei geschrieben.");
 			out.close();
 		} catch (FileNotFoundException e) {

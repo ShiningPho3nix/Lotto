@@ -12,7 +12,7 @@ import java.util.logging.Level;
  */
 public class Eurojackpot extends SLotto implements ILotto {
 
-	private ArrayList<Integer> zweiAusZehntippzahlenArray;
+	public ArrayList<Integer> zweiAusZehntippzahlenArray;
 
 	/**
 	 * Der Konstruktor führt den super() Konstruktor aus, inizialisiert das extra
@@ -35,12 +35,11 @@ public class Eurojackpot extends SLotto implements ILotto {
 	@Override
 	public void generiereTipp() {
 		int shuffle = (int) (Math.random() * 200);
-		System.out.println(shuffle);
 		for (int i = 0; i < shuffle; i++)
 			Collections.shuffle(tippzahlenArray);
 		Collections.shuffle(zweiAusZehntippzahlenArray);
 		ArrayList<Integer> tipp = new ArrayList<Integer>();
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			tipp.add(tippzahlenArray.get(i));
 			logger.log(Level.INFO, tippzahlenArray.get(i).toString()
 					+ " wurde als 5aus50 Tippzahl ausgewählt und dem dem Tipp hinzugefügt.");
@@ -57,13 +56,55 @@ public class Eurojackpot extends SLotto implements ILotto {
 		System.out.println(tipp);
 		System.out.println("2aus10");
 		System.out.println(zweiAusZehnTipp);
+		System.out.println("");
 		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
 	}
 
 	/**
-	 * TODO Fertig schreiben Hat der Nutzer den Wunsch mehrere Tipps zu generieren,
-	 * so wird diese Methode verwendet, welche generiereTipp() die gewünschte anzahl
-	 * an malen ausführt und somit die gewünschte anzahl an Tipps generiert werden.
+	 * Methode zum entfernen von Zahlen aus der Menge an Zahlen für die
+	 * Tippgenerierung. Löschen einer Zahl ist nur möglich wenn noch nicht 6 Zahlen
+	 * entfernt wurden und die Zahl selbst noch nicht entfernt worden ist.
+	 * Anschlißend wird entferneAusTippzahlen ausgeführt.
+	 */
+	public void entferneZahlen(Integer[] zahlen) {
+		for (int zahl : zahlen) {
+			if (unglueckszahlenArray.size() < 6 && !unglueckszahlenArray.contains(zahl) && 0 < zahl && zahl < 51) {
+				tippzahlenArray.remove((Integer) zahl);
+				unglueckszahlenArray.add(zahl);
+				logger.log(Level.INFO, zahl + " wurde aus der Menge an möglichen Zahlen für die " + modus()
+						+ " Tippgenerierung entfernt.");
+				ausgabe.erfolgreichEntfernt(zahl, modus());
+				entferneAusTippzahlen(unglueckszahlenArray);
+				logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
+			} else {
+				ausgabe.nichtLoeschbar(zahl);
+				logger.log(Level.INFO, zahl + " wurde nicht aus der Menge an möglichen Zahlen für die " + modus()
+						+ " Tippgenerierung entfernt.");
+			}
+		}
+		speichern();
+		logger.log(Level.INFO, "entferneZahlen() durchgelaufen");
+	}
+
+	/**
+	 * Methode um die unglücksZahlen aus den tippzahlenArrays zu entfernen.
+	 */
+	@Override
+	public void entferneAusTippzahlen(ArrayList<Integer> unglueckszahlenArray) {
+		for (Integer zahl : unglueckszahlenArray) {
+			if (zweiAusZehntippzahlenArray.contains(zahl)) {
+				zweiAusZehntippzahlenArray.remove((Integer) zahl);
+			}
+			if (tippzahlenArray.contains(zahl)) {
+				tippzahlenArray.remove((Integer) zahl);
+			}
+		}
+	}
+
+	/**
+	 * Hat der Nutzer den Wunsch mehrere Tipps zu generieren, so wird diese Methode
+	 * verwendet, welche generiereTipp() die gewünschte anzahl an mal ausführt und
+	 * somit die gewünschte anzahl an Tipps generiert werden.
 	 */
 	@Override
 	public void generiereTipps(int quicktipp) {
@@ -84,7 +125,6 @@ public class Eurojackpot extends SLotto implements ILotto {
 			if (unglueckszahlenArray.contains((Integer) i)) {
 				logger.log(Level.INFO, Integer.toString(i)
 						+ " als Zahl aus der Menge an möglichen Zahlen zur Tippgenerierung ausgeschlossen.");
-				continue;
 			} else {
 				tippzahlenArray.add(i);
 			}
@@ -101,12 +141,5 @@ public class Eurojackpot extends SLotto implements ILotto {
 		}
 		logger.log(Level.INFO, "zweiAusZehntippzahlenArray gefüllt.");
 		logger.log(Level.INFO, "erstelleCollection durchgelaufen.");
-	}
-
-	/**
-	 * Gibt den Aktuellen Spielmodus als String zurück.
-	 */
-	public String modus() {
-		return "Eurojackpot";
 	}
 }

@@ -7,10 +7,8 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
+ * Klasse um das Logging für das komplette Programm zu verwalten.
  * 
- */
-
-/**
  * @author Steffen Dworsky
  *
  */
@@ -22,7 +20,9 @@ public class Logging {
 	private String pattern = "\\LottoTippGeneratorLog%g.log";
 
 	/**
-	 * 
+	 * Im Konstrukrot wird zunächst deleteLocks ausgeführt , danach wir versucht die
+	 * Logdatei zu öffnen. es wird ein SimpleFormatter erzeugt und als formatter für
+	 * den Filehandler gesetzt.
 	 */
 	public Logging() {
 		deleteLocks();
@@ -41,6 +41,10 @@ public class Logging {
 
 	}
 
+	/**
+	 * Funktion sucht im aktuellem Verzeichniss nach .lck dateien und verscuht diese
+	 * zu löschen.
+	 */
 	private void deleteLocks() {
 		File dir = new File(Paths.get("").toAbsolutePath().toString());
 		File[] allFiles = dir.listFiles();
@@ -50,11 +54,14 @@ public class Logging {
 			if (lockFile.contains(".lck")) {
 				file.delete();
 				System.out.println(
-						"Das Programm wurde beim letzten mal nicht korrekt beendet. Dies kann zu Fehlern führen. Sollte das Programm nicht korrekt starten, so muss die Datei 'LottoTippGeneratorLog0.lck' manuell gelöscht werden.");
+						"Das Programm wurde beim letzten mal nicht korrekt beendet. Sollte das Programm nicht korrekt starten, so müssen 'LottoTippGeneratorLog.lck' Datei(en) manuell gelöscht werden.");
 			}
 		}
 	}
 
+	/**
+	 * Funktion schlißt den FileHandler
+	 */
 	public static void quit() {
 		logger.log(Level.INFO, "Logging wird jetzt Beendet.");
 		fileHandler.close();

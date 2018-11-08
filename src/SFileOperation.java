@@ -29,7 +29,6 @@ public class SFileOperation {
 	 * erzeugt werden. Die Methode passt den Dateinamen dabei dem aktuellen Modus
 	 * an.
 	 * 
-	 * @param mode
 	 * @throws IOException
 	 */
 	public void createFile() throws IOException {
@@ -46,9 +45,9 @@ public class SFileOperation {
 	 * @return
 	 */
 	public ArrayList<Integer> checkArray(ArrayList<Integer> ungluecksZahlenArray) {
-		ArrayList<Integer> returnArray = new ArrayList<Integer>();
-		returnArray = mehrAlsSechsWerte(doppelteZahlen(ungueltigeWerte(ungluecksZahlenArray)));
-		return returnArray;
+		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
+		ergebnisArray = mehrAlsSechsWerte(doppelteZahlen(ungueltigeWerte(ungluecksZahlenArray)));
+		return ergebnisArray;
 	}
 
 	/**
@@ -58,18 +57,14 @@ public class SFileOperation {
 	 * @return
 	 */
 	public ArrayList<Integer> doppelteZahlen(ArrayList<Integer> ungluecksZahlenArray) {
+		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
-			int count = 1;
-			for (Integer integer2 : ungluecksZahlenArray) {
-				if (integer.equals(integer2)) {
-					count++;
-				}
-				if (count > 1) {
-					ungluecksZahlenArray.remove((Integer) integer);
-				}
-			}
+			if (!ergebnisArray.contains((Integer) integer)) {
+				ergebnisArray.add(integer);
+			} else
+				continue;
 		}
-		return ungluecksZahlenArray;
+		return ergebnisArray;
 	}
 
 	/**
@@ -80,12 +75,13 @@ public class SFileOperation {
 	 * @return
 	 */
 	public ArrayList<Integer> ungueltigeWerte(ArrayList<Integer> ungluecksZahlenArray) {
+		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
-			if (integer < 1 || integer > 50) {
-				ungluecksZahlenArray.remove((Integer) integer);
+			if (integer > 0 && integer < 51) {
+				ergebnisArray.add(integer);
 			}
 		}
-		return ungluecksZahlenArray;
+		return ergebnisArray;
 	}
 
 	/**
@@ -97,13 +93,13 @@ public class SFileOperation {
 	 * @return
 	 */
 	public ArrayList<Integer> mehrAlsSechsWerte(ArrayList<Integer> ungluecksZahlenArray) {
-		ArrayList<Integer> returnArray = new ArrayList<Integer>();
+		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
-			if (returnArray.size() > 6) {
-				return returnArray;
+			if (ergebnisArray.size() == 6) {
+				return ergebnisArray;
 			} else
-				returnArray.add(integer);
+				ergebnisArray.add(integer);
 		}
-		return returnArray;
+		return ergebnisArray;
 	}
 }

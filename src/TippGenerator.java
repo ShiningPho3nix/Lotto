@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,12 +38,18 @@ public class TippGenerator {
 	 * Führt die jeweilige Implementation von entferneZahlen() aus. Abhängig davon
 	 * welche Instanz gerade im Feld lottoart zugewiesen ist.
 	 */
-	public void entferneZahlen(int[] zahl) {
-		lottoart.entferneZahlen(zahl);
+	public void entferneZahlen(Integer[] deleteZahlen) {
+		lottoart.entferneZahlen(deleteZahlen);
 	}
 
-	public void entferneUnglueckszahl(int[] zahlen) {
-		lottoart.entferneUnglueckszahl(zahlen);
+	/**
+	 * Führt die jeweilige Implementation von entferneUnglueckszahl() aus. Abhängig
+	 * davon welche Instanz gerade im Feld lottoart zugewiesen ist.
+	 * 
+	 * @param addZahlen
+	 */
+	public void entferneUnglueckszahl(Integer[] addZahlen) {
+		lottoart.entferneUnglueckszahl(addZahlen);
 	}
 
 	/**
@@ -54,6 +61,12 @@ public class TippGenerator {
 		logger.log(Level.INFO, lottoModus() + " Tipp wurde erstellt.");
 	}
 
+	/**
+	 * Führt die jeweilige Implementation von generiereTipps() aus. Abhängig davon
+	 * welche Instanz gerade im Feld lottoart zugewiesen ist.
+	 * 
+	 * @param addZahlen
+	 */
 	public void generiereTipps(int quicktipp) {
 		lottoart.generiereTipps(quicktipp);
 	}
@@ -73,7 +86,19 @@ public class TippGenerator {
 		return lottoart.modus();
 	}
 
+	/**
+	 * Führt die jeweilige Implementation von reset() aus. Abhängig davon welche
+	 * Instanz gerade im Feld lottoart zugewiesen ist.
+	 */
 	public void reset() {
 		lottoart.reset();
+	}
+
+	/**
+	 * Führt die jeweilige Implementation von liste() aus. Abhängig davon welche
+	 * Instanz gerade im Feld lottoart zugewiesen ist.
+	 */
+	public ArrayList<Integer> liste() {
+		return lottoart.liste();
 	}
 }

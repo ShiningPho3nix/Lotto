@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,49 +14,57 @@ import java.util.logging.Logger;
  */
 public class Benutzereingabe {
 
-	private Ausgabe ausgabe = LottoTippGenerator.ausgabe;
+	private Ausgabe ausgabe;
 	private BufferedReader in;
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	public ProgramFlow programFlow = LottoTippGenerator.programFlow;
 
 	/**
-	 * Im Konstructor werden die benötigten Objekte initialisiert
+	 * Im Konstructor wird ein Ausgabe Objekt erzeugt.
 	 */
 	public Benutzereingabe() {
-		in = new BufferedReader(new InputStreamReader(System.in));
+		ausgabe = new Ausgabe();
+		logger.setUseParentHandlers(false);
 		logger.log(Level.INFO, "Benutzereingabe Konstruktor durchgelaufen");
 	}
 
 	/**
 	 * Funktion erwartet die Eingabe eines Befehls und gibt den Befehl mitsammt des
-	 * Modus weiter an die Funktion BefehlAusfuehren()
+	 * Modus weiter an die Funktion BefehlAusfuehren(). Kann auch einen Befehl in
+	 * form eines Reader übergeben bekommen.
 	 * 
-	 * @param modus
+	 * @param reader
 	 */
-	public String erwarteBefehl() {
+	public String erwarteBefehl(Reader reader) {
 		String befehl = "";
 		ausgabe.erwarteBefehl();
-		try {
-			befehl = in.readLine();
-			logger.log(Level.INFO, befehl + " als Befehl eingegeben!");
-			return befehl = befehl.toUpperCase();
-		} catch (IOException e) {
-			logger.log(Level.WARNING, "Eingegebener Befehl konnte nicht eingelesen werden.", e);
-			return "";
+		if (reader == null) {
+			return befehl;
+		} else {
+			in = new BufferedReader(reader);
+			try {
+				befehl = in.readLine();
+				logger.log(Level.INFO, befehl + " als Befehl eingegeben!");
+				return befehl = befehl.toUpperCase();
+			} catch (IOException e) {
+				logger.log(Level.WARNING, "Eingegebener Befehl konnte nicht eingelesen werden.", e);
+				return befehl;
+			}
 		}
 	}
 
 	/**
-	 * Funktion um eine Zahl zu erfragen. Wandelt den eingegebenen String in ein int
-	 * um und gibt dieses zurück. Wird keine Zahl übergeben, so wird die Funktion
-	 * erneut aufgerufen bis eine Zahl übergeben wurde. Diese wird dann
-	 * zurückgegeben.
+	 * Funktion um eine Zahl oder mehrere Zahlen zu erfragen. Die Zahlen können auch
+	 * als Reader übergeben werden. Wandelt den eingegebenen String in ein Integer[]
+	 * um und gibt dieses zurück. Enthält der String Zeichen, welche keine Zahlen
+	 * sind, so werden diese Ignoriert. zum abschluss wird nullEntfernen ausgeführt
+	 * und das ergebniss als integer[] zurückgegeben.
 	 * 
-	 * @return Eine zahl
+	 * @return Integer[]
 	 */
-	public int[] erfrageLottoZahlen() {
-		ausgabe.zahlEingeben();
+	public Integer[] erfrageLottoZahlen(Reader reader) {
 		String input = "";
+		in = new BufferedReader(reader);
 		try {
 			input = in.readLine();
 		} catch (IOException e1) {
@@ -63,22 +72,40 @@ public class Benutzereingabe {
 			e1.printStackTrace();
 		}
 		String[] parts = input.split(" ");
-		int[] zahlen = new int[parts.length];
+		Integer[] zahlen = new Integer[parts.length];
 		String currentString = "";
 		for (int i = 0; i < parts.length; i++) {
+			currentString = parts[i];
 			try {
 				zahlen[i] = Integer.parseInt(parts[i]);
-				currentString = parts[i];
 			} catch (NumberFormatException e) {
 				ausgabe.istKeineZahl(currentString);
 				logger.log(Level.WARNING, "Input (" + currentString + ") ist keine Zahl!", e);
-				e.printStackTrace();
 				continue;
 			}
 		}
-		return zahlen;
+		quit();
+		return nullEntfernen(zahlen);
 	}
 
+	/**
+	 * Funktion entfernt aus einem übergebenen Integer[] alle null Werte und gibt
+	 * das Ergebnis als Integer[] zurück.
+	 * 
+	 * @param Integer[]
+	 * @return Integer[]
+	 */
+	public static Integer[] nullEntfernen(Integer[] a) {
+		ArrayList<Integer> nullEntfernt = new ArrayList<Integer>();
+		for (Integer integer : a)
+			if (integer != null)
+				nullEntfernt.add(integer);
+		return nullEntfernt.toArray(new Integer[0]);
+	}
+
+	/**
+	 * Schlißt den BufferedReader.
+	 */
 	public void quit() {
 		try {
 			in.close();

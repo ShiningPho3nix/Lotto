@@ -21,7 +21,7 @@ public class SLotto {
 		this.currentmode = mode;
 		tippzahlenArray = new ArrayList<Integer>();
 		unglueckszahlenArray = new ArrayList<Integer>();
-		ausgabe = LottoTippGenerator.ausgabe;
+		ausgabe = new Ausgabe();
 		speicher = new Speichern();
 		lader = new Laden();
 		logger.log(Level.INFO, "Arrays wurden inizialisiert");
@@ -30,35 +30,11 @@ public class SLotto {
 	}
 
 	/**
-	 * Methode zum entfernen von Zahlen aus der Menge an Zahlen für die
-	 * Tippgenerierung. Löschen einer Zahl ist nur möglich wenn noch nicht 6 Zhalen
-	 * entfernt wurden und die Zahl selbst noch nicht entfernt worden ist.
-	 */
-	public void entferneZahlen(int[] zahlen) {
-		for (int zahl : zahlen) {
-			if (unglueckszahlenArray.size() <= 6 && !unglueckszahlenArray.contains(zahl) && zahl < 51) {
-				tippzahlenArray.remove((Integer) zahl);
-				unglueckszahlenArray.add(zahl);
-				logger.log(Level.INFO,
-						zahl + " wurde aus der Menge an möglichen Zahlen für die Tippgenerierung entfernt.");
-				ausgabe.erfolgreichEntfernt(zahl);
-				logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
-			} else {
-				ausgabe.nichtLoeschbar(zahl);
-				logger.log(Level.INFO,
-						zahl + " wurde nicht aus der Menge an möglichen Zahlen für die Tippgenerierung entfernt.");
-			}
-		}
-		speichern();
-		logger.log(Level.INFO, "entferneZahlen() durchgelaufen");
-	}
-
-	/**
 	 * Funktion um eine Zahl welche ausgeschlossen wurde wieder zuzulassen. Dafür
 	 * muss die Zahl eine Zahl sein, in dem Array: unglueckszahlenArray vorhanden
 	 * und in dem Array: sechsAusNeunundvierzig nicht vorhanden sein.
 	 */
-	public void entferneUnglueckszahl(int[] zahlen) {
+	public void entferneUnglueckszahl(Integer[] zahlen) {
 		for (int zahl : zahlen) {
 			if (unglueckszahlenArray.contains(zahl)) {
 				unglueckszahlenArray.remove((Integer) zahl);
@@ -95,6 +71,15 @@ public class SLotto {
 	}
 
 	/**
+	 * Gibt das unglueckszahlenArray als ArrayList zurück.
+	 * 
+	 * @return
+	 */
+	public ArrayList<Integer> liste() {
+		return unglueckszahlenArray;
+	}
+
+	/**
 	 * Funktion überschreibt das bestehende unglückszahlenArray mit einem neuen
 	 * leeren Array und speichert dieses ab. Somit werden alles gesperrten Zahlen
 	 * auf einmal gelöscht.
@@ -102,5 +87,12 @@ public class SLotto {
 	public void reset() {
 		unglueckszahlenArray = new ArrayList<Integer>();
 		speichern();
+	}
+
+	/**
+	 * Gibt den Aktuellen Spielmodus als String zurück.
+	 */
+	public String modus() {
+		return currentmode;
 	}
 }

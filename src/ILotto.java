@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Interface Klasse für Lotto-Objekte. Da es mehrere Arten von Lotto gibt, ist
  * deren Implementation unterschiedlich, da jedoch die selben Methoden nötig
@@ -18,12 +20,16 @@ public interface ILotto {
 
 	void erstelleCollection();
 
-	void entferneZahlen(int[] zahl);
+	void entferneZahlen(Integer[] deleteZahlen);
 
-	void entferneUnglueckszahl(int[] zahl);
+	void entferneAusTippzahlen(ArrayList<Integer> unglueckszahlenArray);
+
+	void entferneUnglueckszahl(Integer[] addZahlen);
 
 	String modus();
 
 	void reset();
+
+	ArrayList<Integer> liste();
 
 }
