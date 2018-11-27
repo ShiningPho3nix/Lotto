@@ -17,7 +17,7 @@ public class Eurojackpot extends SLotto implements ILotto {
 	/**
 	 * Der Konstruktor führt den super() Konstruktor aus, inizialisiert das extra
 	 * Array zweiAusZehnTippzahlenArray und füllt dieses anschließend mit den
-	 * erforderlichen und erlaubten Zahlen..
+	 * erforderlichen und erlaubten Zahlen.
 	 * 
 	 */
 	public Eurojackpot() {
@@ -34,24 +34,27 @@ public class Eurojackpot extends SLotto implements ILotto {
 	 */
 	@Override
 	public void generiereTipp() {
-		int shuffle = (int) (Math.random() * 200);
-		for (int i = 0; i < shuffle; i++)
-			Collections.shuffle(tippzahlenArray);
-		Collections.shuffle(zweiAusZehntippzahlenArray);
-		ArrayList<Integer> tipp = new ArrayList<Integer>();
+		Collections.shuffle(tippzahlenArray); // Mischt die Liste tippzahlenArray...
+		Collections.shuffle(zweiAusZehntippzahlenArray); // ... und zweiAusZehntippzahlenArray.
+		ArrayList<Integer> tipp = new ArrayList<Integer>(); // ArrayList wird deklariert und inizialisiert um den Tipp
+															// zwischen zu speichern.
 		for (int i = 0; i < 5; i++) {
-			tipp.add(tippzahlenArray.get(i));
+			tipp.add(tippzahlenArray.get(i)); // Die ersten 6 Zahlen aus dem tippzahlenArray werden tipp
+												// hinzugefügt.
 			logger.log(Level.INFO, tippzahlenArray.get(i).toString()
 					+ " wurde als 5aus50 Tippzahl ausgewählt und dem dem Tipp hinzugefügt.");
 		}
-		ArrayList<Integer> zweiAusZehnTipp = new ArrayList<Integer>();
+		ArrayList<Integer> zweiAusZehnTipp = new ArrayList<Integer>(); // Für die 2aus10 Ziehung wird ebenfalls eine
+																		// ArrayList deklariert und inizialisiert.
 		for (int i = 0; i < 2; i++) {
-			zweiAusZehnTipp.add(zweiAusZehntippzahlenArray.get(i));
+			zweiAusZehnTipp.add(zweiAusZehntippzahlenArray.get(i)); // Die ersten 2 Zahlen werden als 2aus10 tipp
+																	// gezogen
 			logger.log(Level.INFO, tippzahlenArray.get(i).toString()
 					+ " wurde als 2aus10 Tippzahl ausgewählt und dem dem Tipp hinzugefügt.");
 		}
-		Collections.sort(tipp, Collections.reverseOrder().reversed());
-		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed());
+		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert den tipp in aufsteigender Reihenfolge
+		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed()); // Die 2aus10 tipp ArrayList wird
+																					// ebenfalls aufsteigend sortiert.
 		System.out.println("5aus50:");
 		System.out.println(tipp);
 		System.out.println("2aus10");
@@ -69,15 +72,17 @@ public class Eurojackpot extends SLotto implements ILotto {
 	public void entferneZahlen(Integer[] zahlen) {
 		for (int zahl : zahlen) {
 			if (unglueckszahlenArray.size() < 6 && !unglueckszahlenArray.contains(zahl) && 0 < zahl && zahl < 51) {
-				tippzahlenArray.remove((Integer) zahl);
-				unglueckszahlenArray.add(zahl);
+				// Prüft ob noch nicht 6 unglückszahlen gewählt sind, ob die aktuelle Zahl noch
+				// keine unlückszahl ist und ob die Zahl im gültigen Bereich liegt.
+				unglueckszahlenArray.add(zahl); // Fügt die Zahl der unglückszahlen ArrayList hinzu.
 				logger.log(Level.INFO, zahl + " wurde aus der Menge an möglichen Zahlen für die " + modus()
 						+ " Tippgenerierung entfernt.");
-				ausgabe.erfolgreichEntfernt(zahl, modus());
 				entferneAusTippzahlen(unglueckszahlenArray);
 				logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
 			} else {
-				ausgabe.nichtLoeschbar(zahl);
+				ausgabe.nichtLoeschbar(zahl); // Sind die Bedingungen an eine der Zahlen nicht erfüllt, so wird auf der
+												// Konsole ausgegeben das diese Zahl nicht gelöscht werden kann. Es wird
+												// mit der nächsten Zahl weiter gemacht.
 				logger.log(Level.INFO, zahl + " wurde nicht aus der Menge an möglichen Zahlen für die " + modus()
 						+ " Tippgenerierung entfernt.");
 			}
@@ -93,11 +98,19 @@ public class Eurojackpot extends SLotto implements ILotto {
 	public void entferneAusTippzahlen(ArrayList<Integer> unglueckszahlenArray) {
 		for (Integer zahl : unglueckszahlenArray) {
 			if (zweiAusZehntippzahlenArray.contains(zahl)) {
-				zweiAusZehntippzahlenArray.remove((Integer) zahl);
+				zweiAusZehntippzahlenArray.remove((Integer) zahl); // entfernt die Aktuelle Zahl aus der 2aus10
+																	// ArrayList.
 			}
 			if (tippzahlenArray.contains(zahl)) {
-				tippzahlenArray.remove((Integer) zahl);
+				tippzahlenArray.remove((Integer) zahl); // entfernt die Aktuelle Zahl aus der 5aus50 ArrayList
+			} else {
+				ausgabe.nichtLoeschbar(zahl); // Ist eine Zahl in keiner der Listen Vorhanden, so wird dem Nutzer
+												// mitgeteilt das ein Löschen nicht möglich ist
+				logger.log(Level.INFO, zahl + " wurde nicht aus der Menge an möglichen Zahlen für die " + modus()
+						+ " Tippgenerierung entfernt.");
+				continue; // Ist die Zahl nicht löschbar, so wird mit der nächsten Zahl weiter gemacht.
 			}
+			ausgabe.erfolgreichEntfernt(zahl, modus());
 		}
 	}
 
@@ -109,8 +122,9 @@ public class Eurojackpot extends SLotto implements ILotto {
 	@Override
 	public void generiereTipps(int quicktipp) {
 		for (int i = 1; i <= quicktipp; i++) {
-			System.out.println("Tipp#" + i);
-			generiereTipp();
+			System.out.println("Tipp#" + i); // Für die Übergeben Anzahl an mal wird Tipp mit fortlaufender Zahl
+												// ausgegeben...
+			generiereTipp(); // ...und anschließend ein Tipp generiert.
 		}
 	}
 
@@ -121,22 +135,27 @@ public class Eurojackpot extends SLotto implements ILotto {
 	 */
 	@Override
 	public void erstelleCollection() {
-		for (int i = 1; i < 51; i++) {
+		for (int i = 1; i < 51; i++) { // Für die Zahlen 1-50
 			if (unglueckszahlenArray.contains((Integer) i)) {
 				logger.log(Level.INFO, Integer.toString(i)
 						+ " als Zahl aus der Menge an möglichen Zahlen zur Tippgenerierung ausgeschlossen.");
+				continue; // Wenn die aktuelle Zahl unter den ausgeschlossenen Zahlen ist, wird mit der
+							// nächsten Zahl weiter gemacht.
 			} else {
-				tippzahlenArray.add(i);
+				tippzahlenArray.add(i); // Ist die Zahl nicht im unglücksArray so wird die Zahl dem TIppArray
+										// hinzugefügt.
 			}
 		}
 		logger.log(Level.INFO, "tippzahlenArray gefüllt.");
-		for (int i = 1; i < 11; i++) {
+		for (int i = 1; i < 11; i++) { // Für die Zahlen 1-10
 			if (unglueckszahlenArray.contains((Integer) i)) {
 				logger.log(Level.INFO, Integer.toString(i)
 						+ " als Zahl aus der Menge an möglichen Zahlen zur Tippgenerierung ausgeschlossen.");
-				continue;
+				continue; // Wenn die aktuelle Zahl unter den ausgeschlossenen Zahlen ist, wird mit der
+							// nächsten Zahl weiter gemacht.
 			} else {
-				zweiAusZehntippzahlenArray.add(i);
+				zweiAusZehntippzahlenArray.add(i); // Ist die Zahl nicht im unglücksArray so wird die Zahl dem
+													// zweiAusZehntippzahlenArray hinzugefügt.
 			}
 		}
 		logger.log(Level.INFO, "zweiAusZehntippzahlenArray gefüllt.");

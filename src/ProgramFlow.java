@@ -26,7 +26,11 @@ public class ProgramFlow {
 	 */
 	public ProgramFlow() {
 		benutzereingabe = new Benutzereingabe();
-		tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
+		tippgenerator = new TippGenerator(new SechsAusNeunundvierzig()); // tippgenerator wird mit
+																			// SechsAusNeunundvierzig inizialisiert.
+																			// Wenn keine genauen Angaben zum
+																			// gewünschten Speilmodus gemacht werden, so
+																			// wird 6aus49 verwendet.
 		logger.log(Level.INFO, "ProgramFlow Konstruktor durchgelaufen");
 	}
 
@@ -48,7 +52,8 @@ public class ProgramFlow {
 	 * @param befehl
 	 */
 	public void befehlAusfuehren(String befehl) {
-		if (befehl.contains("TIPPGEN")) {
+		if (befehl.contains("TIPPGEN")) { // Nimmte eine erste Aufteilung des eingegebenen Befehls vor und fürht geg.
+											// eine entsprechende Methode aus.
 			befehlAusfuehrenTippgen(befehl);
 		} else if (befehl.contains("DELETE")) {
 			befehlAusfuehrenDelete(befehl);
@@ -57,7 +62,8 @@ public class ProgramFlow {
 		} else if (befehl.equals("")) {
 			befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in)));
 		} else {
-			switch (befehl) {
+			switch (befehl) { // Ist der eingegebene Befehl nicht einer der weiter oben bereits verarbeiteten,
+								// so wird der Befehl in dieser Methode bearbeitet.
 			case "RESET":
 				logger.log(Level.INFO, "Sammlung mit ausgeschlossenen Zahlen wird zurückgesetzt.");
 				tippgenerator.reset();
@@ -90,7 +96,9 @@ public class ProgramFlow {
 				break;
 			}
 		}
-		befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in)));
+		befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in))); // Wenn ein befehl ausgeführt
+																							// wurde wird hier der
+																							// nächste Befehl angefragt.
 	}
 
 	/**
@@ -103,12 +111,16 @@ public class ProgramFlow {
 	 * @param befehl
 	 */
 	private void befehlAusfuehrenReadd(String befehl) {
-		String readd = befehl.replace("READD ", "");
-		Integer[] addZahlen = benutzereingabe.erfrageLottoZahlen(new StringReader(readd));
-		logger.log(Level.INFO, addZahlen + " als Zahlen welche wieder hinzugefügt werden sollen übergeben.");
-		tippgenerator.entferneUnglueckszahl(addZahlen);
+		String readd = befehl.replace("READD ", ""); // Entsorgt den substring READD, sodass bei korrekter Eingabe des
+														// Befehls nur noch zahlen übrig bleiben.
+		Integer[] readdZahlen = benutzereingabe.erfrageLottoZahlen(new StringReader(readd));
+		// Die Zahlen werden als StringReader an die Methode erfrageLottozahlen
+		// übergeben, da diese Methode bereits alles nötige hat um einen Zahlen String
+		// in ein Integer Array umzuwandeln.
+		logger.log(Level.INFO, readdZahlen + " als Zahlen welche wieder hinzugefügt werden sollen übergeben.");
+		tippgenerator.entferneUnglueckszahl(readdZahlen);
 		logger.log(Level.INFO, "Befehl 'readd' ausgeführt");
-		befehlAusfuehren("LIST");
+		befehlAusfuehren("LIST"); // Gibt eine Liste mit den Entfernten Zahlen aus.
 
 	}
 
@@ -122,12 +134,16 @@ public class ProgramFlow {
 	 * @param befehl
 	 */
 	private void befehlAusfuehrenDelete(String befehl) {
-		String delete = befehl.replace("DELETE ", "");
+		String delete = befehl.replace("DELETE ", ""); // Entsorgt den substring DELETE, sodass bei korrekter Eingabe
+														// des Befehls nur noch zahlen übrig bleiben.
 		Integer[] deleteZahlen = benutzereingabe.erfrageLottoZahlen(new StringReader(delete));
+		// Die Zahlen werden als StringReader an die Methode erfrageLottozahlen
+		// übergeben, da diese Methode bereits alles nötige hat um einen Zahlen String
+		// in ein Integer Array umzuwandeln.
 		logger.log(Level.INFO, deleteZahlen + " als auszuschließende Zahlen übergeben.");
 		tippgenerator.entferneZahlen(deleteZahlen);
 		logger.log(Level.INFO, "Befehl 'delete' ausgeführt");
-		befehlAusfuehren("LIST");
+		befehlAusfuehren("LIST"); // Gibt eine Liste mit den Entfernten Zahlen aus.
 
 	}
 
@@ -142,24 +158,48 @@ public class ProgramFlow {
 	 */
 	private void befehlAusfuehrenTippgen(String befehl) {
 		ArrayList<String> tippgen = new ArrayList<String>(Arrays.asList(befehl.split(" ")));
-		tippgen.remove("TIPPGEN");
+		tippgen.remove("TIPPGEN"); // Entsorgt den substring TIPPGEN, sodass bei korrekter Eingabe
+									// des Befehls nur noch zahlen übrig bleiben.
+									// Prüft ob mit dem Befehl Tippgen auch ein modus übergeben wurde. Erzeugt
+									// dementsprechend Objekte
 		if (tippgen.contains("6AUS49")) {
 			tippgen.remove("6AUS49");
-			tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
-			logger.log(Level.INFO, "6AUS49 wurde als Lottomodus gewählt.");
+			if (!tippgenerator.lottoModus().equals("6aus49")) {
+				tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
+				logger.log(Level.INFO,
+						"6AUS49 wurde als Lottomodus gewählt. Da tippgenerator kein 6aus49 Objekt enthielt, wurde ein neues erzeugt.");
+			} else {
+				logger.log(Level.INFO,
+						"6AUS49 wurde als Lottomodus gewählt. Da tippgenerator ein 6aus49 Objekt enthielt, wurde kein neues erzeugt.");
+			}
 		} else if (tippgen.contains("EURO")) {
 			tippgen.remove("EURO");
-			tippgenerator = new TippGenerator(new Eurojackpot());
-			logger.log(Level.INFO, "EURO wurde als Lottomodus gewählt.");
-		} else if (tippgen.isEmpty()) {
-			tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
-			logger.log(Level.INFO, "Tippgenerator wurde als Befehl gewählt.");
+			if (!tippgenerator.lottoModus().equals("Euro")) {
+				tippgenerator = new TippGenerator(new Eurojackpot());
+				logger.log(Level.INFO,
+						"EURO wurde als Lottomodus gewählt. Da tippgenerator kein Euro Objekt enthielt, wurde ein neues erzeugt.");
+			} else {
+				logger.log(Level.INFO,
+						"EURO wurde als Lottomodus gewählt. Da tippgenerator ein Euro Objekt enthielt, wurde kein neues erzeugt.");
+			}
+
+		} else if (tippgen.isEmpty()) { // Wird kein Modus übergeben, so wird 6aus49 verwendet.
+			if (!tippgenerator.lottoModus().equals("6aus49")) {
+				tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
+			}
+			logger.log(Level.INFO,
+					"Tippgenerator wurde als Befehl gewählt. Es wurde kein Modus übergeben, daher wird 6aus49 verwendet.");
+		} else if (!tippgen.isEmpty() && !istNumerisch(tippgen.get(0))) {
+			ausgabe.ignorierterBefehl(tippgen);
 		} else {
-			ausgabe.ungueltigeModusEingabe(tippgen);
-			befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in)));
+			ausgabe.ungueltigeModusEingabe(tippgen); // Sollte eine ungültige Eingabe im Befehl enthalten sein, so wird
+														// dies dem Nutzer Mitgeteilt ...
+			befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in))); // ... und erneut ein
+																								// Befehl erfragt.
 			return;
 		}
-		starteTippgenerierung(tippgen);
+
+		starteTippgenerierung(tippgen); // Erzeugt einen Tipp mit dem aktuellen tippgenerator-Objekt.
 	}
 
 	/**
@@ -175,7 +215,9 @@ public class ProgramFlow {
 		if (tippgen.isEmpty()) {
 			tippgenerator.generiereTipp();
 		} else {
-			for (String string : tippgen) {
+			for (String string : tippgen) { // Sollte der String Tippgen nicht leer sein, so wird geprüft ob darunter
+											// auch eine Zahl ist. Diese wird anschließend für die Anzahl an Tipps zur
+											// tippgenerierung verwendet.
 				if (istNumerisch(string)) {
 					int quicktipp = Integer.parseInt(string);
 					tippgenerator.generiereTipps(quicktipp);
@@ -192,10 +234,10 @@ public class ProgramFlow {
 	 */
 	public static boolean istNumerisch(String str) {
 		for (char c : str.toCharArray()) {
-			if (Character.isWhitespace(c)) {
+			if (Character.isWhitespace(c)) { // Leerzeichen werden ignoriert
 				continue;
 			}
-			if (!Character.isDigit(c))
+			if (!Character.isDigit(c)) // Sobald ein Char im String keine Zahl ist wird false zurückgegeben.
 				return false;
 		}
 		return true;

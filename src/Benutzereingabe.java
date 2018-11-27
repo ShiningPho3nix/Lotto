@@ -17,14 +17,17 @@ public class Benutzereingabe {
 	private Ausgabe ausgabe;
 	private BufferedReader in;
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	public ProgramFlow programFlow = LottoTippGenerator.programFlow;
 
 	/**
 	 * Im Konstructor wird ein Ausgabe Objekt erzeugt.
 	 */
 	public Benutzereingabe() {
-		ausgabe = new Ausgabe();
-		logger.setUseParentHandlers(false);
+		ausgabe = new Ausgabe(); // Ein neues Ausgabe Objekt wird erzeugt, anstatt wie bei vielen anderen Klassen
+									// das Ausgabe Objekt der Klasse ProgrammFlow zu verwenden. Dies ist vorallem
+									// für die Testklassen wichtig.
+		logger.setUseParentHandlers(false); // Da es in den Testklassen auch log Ausgaben aus den Funktionen dieser
+											// Klasse gibt, wird ParentHandlers auf False gesetzt um die Konsole sauber
+											// zu halten.
 		logger.log(Level.INFO, "Benutzereingabe Konstruktor durchgelaufen");
 	}
 
@@ -38,18 +41,17 @@ public class Benutzereingabe {
 	public String erwarteBefehl(Reader reader) {
 		String befehl = "";
 		ausgabe.erwarteBefehl();
-		if (reader == null) {
-			return befehl;
-		} else {
-			in = new BufferedReader(reader);
-			try {
-				befehl = in.readLine();
-				logger.log(Level.INFO, befehl + " als Befehl eingegeben!");
-				return befehl = befehl.toUpperCase();
-			} catch (IOException e) {
-				logger.log(Level.WARNING, "Eingegebener Befehl konnte nicht eingelesen werden.", e);
-				return befehl;
-			}
+		in = new BufferedReader(reader); // ein neuer BufferedReader wird erzeugt mit dem übergebenen reader.
+											// Meist InputStreamReader(System.in), für Testzwecke kann auch ein
+											// beliebiger String mittels StringReader übergeben werden.
+		try {
+			befehl = in.readLine(); // Der eingegebene Befehl wird eingelesen...
+			logger.log(Level.INFO, befehl + " als Befehl eingegeben!");
+			return befehl = befehl.toUpperCase(); // ... und als toUpperCase returned
+		} catch (IOException e) {
+			logger.log(Level.WARNING, "Eingegebener Befehl konnte nicht eingelesen werden.", e);
+			return befehl; // sollte aus beliebigen Gründen der eingegebene Befehl nicht eingelesen werden
+							// können, so wird ein leerer String (so wie String befehl inizialisiert wurde) zurückgegeben.
 		}
 	}
 
@@ -64,28 +66,38 @@ public class Benutzereingabe {
 	 */
 	public Integer[] erfrageLottoZahlen(Reader reader) {
 		String input = "";
-		in = new BufferedReader(reader);
+		in = new BufferedReader(reader); // ein neuer BufferedReader wird erzeugt mit dem übergebenen reader.
+											// Meist InputStreamReader(System.in), für Testzwecke kann auch ein
+											// beliebiger String mittels StringReader übergeben werden.
 		try {
-			input = in.readLine();
+			input = in.readLine(); // Die eingegebenen Zahlen werden eingelesen.
 		} catch (IOException e1) {
 			logger.log(Level.WARNING, "Zahlen konnte nicht eingelesen werden!", e1);
-			e1.printStackTrace();
+			e1.printStackTrace(); // sollte aus beliebigen Gründen die eingegebenen Zahlen nicht eingelesen werden
+									// können, so wird eine IOException geworfen und die Ausführung abgebrochen..
 		}
-		String[] parts = input.split(" ");
-		Integer[] zahlen = new Integer[parts.length];
+		String[] parts = input.split(" "); // Die eingegebenen Zahlen werden an den Leerzeichen getrennt und in ein
+											// String Array geschrieben.
+		Integer[] zahlen = new Integer[parts.length]; // Ein Integer Array wird erzeugt, mit größe = Anzahl an Einträgen
+														// im parts Array.
 		String currentString = "";
 		for (int i = 0; i < parts.length; i++) {
 			currentString = parts[i];
 			try {
-				zahlen[i] = Integer.parseInt(parts[i]);
+				zahlen[i] = Integer.parseInt(parts[i]); // Jeder String im parts Array wird gecasted und ins zahlen
+														// Array geschrieben.
 			} catch (NumberFormatException e) {
-				ausgabe.istKeineZahl(currentString);
+				ausgabe.istKeineZahl(currentString); // Ist eine der übergebenen Zahlen keine Zahl (kann also nicht zu
+														// Integer gecasted werden) so erfolgt eine Ausgabe auf der
+														// Console...
 				logger.log(Level.WARNING, "Input (" + currentString + ") ist keine Zahl!", e);
-				continue;
+				continue; // ... und es wird mit dem nächstem Eintrag fortgefahren. Somit werden alle
+							// Eingaben, welche keine Zahlen sind ignoriert.
 			}
 		}
-		quit();
-		return nullEntfernen(zahlen);
+		quit(); // Der Buffered Reader wird beendet.
+		return nullEntfernen(zahlen); // Zurückgegeben wird das Array, nachdem alle nulls entfernt worden sind, welche
+										// durch ungültige Eingaben im Array gelandet sein könnten.
 	}
 
 	/**
@@ -96,11 +108,16 @@ public class Benutzereingabe {
 	 * @return Integer[]
 	 */
 	public static Integer[] nullEntfernen(Integer[] a) {
-		ArrayList<Integer> nullEntfernt = new ArrayList<Integer>();
+		ArrayList<Integer> nullEntfernt = new ArrayList<Integer>(); // Eine neue Array List wird erzeugt um die Einträge
+																	// im Integer Array welche nicht null sind zwischen
+																	// zu speichern.
 		for (Integer integer : a)
 			if (integer != null)
-				nullEntfernt.add(integer);
-		return nullEntfernt.toArray(new Integer[0]);
+				nullEntfernt.add(integer); // Für jeden Integer im übergebenen Array wird geschaut ob es sich hierbei um
+											// null handelt. Falls der Eintrag nicht null ist wird der Eintrag dem null
+											// entfernt Array hinzugefügt.
+		return nullEntfernt.toArray(new Integer[0]); // Um ein Array zurückzugeben wird die ArrayList in ein Integer
+														// Array übertragen.
 	}
 
 	/**
@@ -108,11 +125,12 @@ public class Benutzereingabe {
 	 */
 	public void quit() {
 		try {
-			in.close();
+			in.close(); // Es wird versucht den BufferedReader zu schließen.
 			logger.log(Level.INFO, "BufferedReader in Benutzereingabe geschlossen.");
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "BufferedReader konnte in Benutzereingabe nicht geschlossen werden!", e);
-			e.printStackTrace();
+			e.printStackTrace(); // sollte dies Fehlschlagen, so wird die Ausführung dieser Methode abgebrochen
+									// und eine IOException geworfen.
 		}
 	}
 }

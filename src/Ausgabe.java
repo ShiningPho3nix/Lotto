@@ -31,7 +31,7 @@ public class Ausgabe {
 
 	/**
 	 * Bekommt einen Modus übergeben und gibt eine kurze Nachricht aus, das dieser
-	 * Mosud gewählt wurde.
+	 * Modus gewählt wurde.
 	 * 
 	 * @param modus
 	 */
@@ -228,6 +228,18 @@ public class Ausgabe {
 		logger.log(Level.INFO,
 				"Der Nutzer wurde über die Konsole darauf hingewiesen, dass eine ungültige Eingabe getätigt wurde."
 						+ " Dem Nutzer wurde ein Hinweiß auf den Hilfebefehl gegeben.");
+	}
+
+	/**
+	 * Methode zur Ausgabe einer Benachrichtigung an der Nutzer über die Konsole.
+	 * Dem Nutzer wird mitgeteilt das ein übergebener Befehl ungültige Strings
+	 * enthielt und das diese ignoriert wurden
+	 * 
+	 * @param tippgen
+	 */
+	public void ignorierterBefehl(ArrayList<String> tippgen) {
+		System.out.println("Der Eingegebene Befehl enthielt ungültige Teile, welche ignoriert werden.");
+		tippgen.forEach(System.out::print);
 	}
 
 }

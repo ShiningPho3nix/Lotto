@@ -24,16 +24,21 @@ public class LottoTippGenerator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new Logging();
+		new Logging(); // Startet das Logging
 		logger.log(Level.INFO, "Programm gestartet.");
 
 		ausgabe = new Ausgabe();
 		programFlow = new ProgramFlow();
 
 		String befehl = "";
-		befehl = Arrays.stream(args).collect(Collectors.joining(" "));
+		befehl = Arrays.stream(args).collect(Collectors.joining(" ")); // Erzeugt aus dem String Array args einen
+																		// String, die einzelnen Einträge des Arrays
+																		// werden durch ein Leerzeichen getrennt
 		if (befehl != null && befehl.length() > 0 && befehl.charAt(befehl.length() - 1) == ' ') {
-			befehl = befehl.substring(0, befehl.length() - 1);
+			befehl = befehl.substring(0, befehl.length() - 1); // Da die Einträge des Array gejoind werden mit einem
+																// Leerzeichen, hat der resultierende String am Ende
+																// immer ein Leerzeichen. Dies wird duchr diese Zeile
+																// entfernt.
 		}
 
 		befehl = befehl.toUpperCase();
