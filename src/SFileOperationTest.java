@@ -27,7 +27,7 @@ public class SFileOperationTest {
 	}
 
 	/**
-	 * For jedem Test werden die Arrays und Testvalues auf einen Standardwert
+	 * Vor jedem Test werden die Arrays und Testvalues auf einen Standardwert
 	 * gesetzt.
 	 */
 	@BeforeEach
