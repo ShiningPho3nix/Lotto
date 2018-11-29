@@ -260,4 +260,28 @@ public class Ausgabe {
 		System.out.println(tippgenerator.liste().toString());
 	}
 
+	/**
+	 * Methode um einen 6aus49 Tipp auf der Konsole auszugeben.
+	 * 
+	 * @param tipp
+	 */
+	public void sechsAusNeunundvierzigTipp(ArrayList<Integer> tipp) {
+		System.out.println("6aus49:");
+		System.out.println(tipp);
+		System.out.println("");
+	}
+
+	/**
+	 * Methode um einen EUrojackpot Tipp auf der Konsole auszugeben.
+	 * 
+	 * @param tipp
+	 * @param zweiAusZehnTipp
+	 */
+	public void EurojackpotTipp(ArrayList<Integer> tipp, ArrayList<Integer> zweiAusZehnTipp) {
+		System.out.println("5aus50:");
+		System.out.println(tipp);
+		System.out.println("2aus10");
+		System.out.println(zweiAusZehnTipp);
+		System.out.println("");
+	}
 }

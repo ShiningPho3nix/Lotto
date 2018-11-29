@@ -47,6 +47,10 @@ public class SFileOperation {
 	public ArrayList<Integer> checkArray(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		ergebnisArray = mehrAlsSechsWerte(doppelteZahlen(ungueltigeWerte(ungluecksZahlenArray)));
+		// Überprüft mithilfe von 3 Methoden Bedingungen auf korrektheit. Zunächst
+		// werden alle Werte außerhalb des gültigen Zahlenbereiches entfernt. Dannach
+		// wird geprüft ob Zahlen doppelt enthalten sind. Sollten es danach mehr als 6
+		// sein, werden nur die ersten 6 verwendet.
 		return ergebnisArray;
 	}
 
@@ -59,10 +63,11 @@ public class SFileOperation {
 	public ArrayList<Integer> doppelteZahlen(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
-			if (!ergebnisArray.contains((Integer) integer)) {
+			if (!ergebnisArray.contains((Integer) integer)) { // Ist die aktuelle Zahl noch nicht im ergebnisArray, so
+																// wird die zahl hinzugefügt. Kommt die selbe zahl
+																// nochmals vor, so wird die ignoriert.
 				ergebnisArray.add(integer);
-			} else
-				continue;
+			}
 		}
 		return ergebnisArray;
 	}
@@ -77,7 +82,9 @@ public class SFileOperation {
 	public ArrayList<Integer> ungueltigeWerte(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
-			if (integer > 0 && integer < 51) {
+			if (integer > 0 && integer < 51) { // Bei 6aus49 dürfen Zahlen im Bereich 1-49 liegen, bei Eurojackpot 1-50.
+												// Unglückszahlen sollen für beide gelten, somit in der gesamtbereich
+												// 1-50.
 				ergebnisArray.add(integer);
 			}
 		}
@@ -95,7 +102,9 @@ public class SFileOperation {
 	public ArrayList<Integer> mehrAlsSechsWerte(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
-			if (ergebnisArray.size() == 6) {
+			if (ergebnisArray.size() == 6) { // Es sollen max. 6 Unglückszahlen zulässig sein, daher werden, sollten
+												// sich mehr als 6 darin befinden, nur die ersten 6 Zahlen welche sich
+												// im unglückszahlenArray befinden verwendet.
 				return ergebnisArray;
 			} else
 				ergebnisArray.add(integer);
