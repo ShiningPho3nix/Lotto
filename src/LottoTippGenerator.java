@@ -37,11 +37,13 @@ public class LottoTippGenerator {
 		if (befehl != null && befehl.length() > 0 && befehl.charAt(befehl.length() - 1) == ' ') {
 			befehl = befehl.substring(0, befehl.length() - 1); // Da die Eintr‰ge des Array gejoind werden mit einem
 																// Leerzeichen, hat der resultierende String am Ende
-																// immer ein Leerzeichen. Dies wird duchr diese Zeile
+																// immer ein Leerzeichen. Dies wird durch diese Zeile
 																// entfernt.
 		}
 
-		befehl = befehl.toUpperCase();
+		befehl = befehl.toUpperCase(); // Nahezu alle eingaben werden zu Uppercase umgewandelt, um
+										// groﬂ-/kleinschreibung
+										// duch den nutzer zu ignorieren.
 		programFlow.start(befehl);
 	}
 }

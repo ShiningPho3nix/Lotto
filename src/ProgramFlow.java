@@ -52,7 +52,7 @@ public class ProgramFlow {
 	 * @param befehl
 	 */
 	public void befehlAusfuehren(String befehl) {
-		if (befehl.contains("TIPPGEN")) { // Nimmte eine erste Aufteilung des eingegebenen Befehls vor und fürht geg.
+		if (befehl.contains("TIPPGEN")) { // Nimmte eine erste Aufteilung des eingegebenen Befehls vor und führt geg.
 											// eine entsprechende Methode aus.
 			befehlAusfuehrenTippgen(befehl);
 		} else if (befehl.contains("DELETE")) {
@@ -64,28 +64,29 @@ public class ProgramFlow {
 		} else {
 			switch (befehl) { // Ist der eingegebene Befehl nicht einer der weiter oben bereits verarbeiteten,
 								// so wird der Befehl in dieser Methode bearbeitet.
-			case "RESET":
+			case "RESET": // Sorgt dafür das es keine gesperrten Zahlen mehr gibt
 				logger.log(Level.INFO, "Sammlung mit ausgeschlossenen Zahlen wird zurückgesetzt.");
 				tippgenerator.reset();
 				logger.log(Level.INFO, "Befehl 'reset' ausgeführt");
 				break;
-			case "LIST":
+			case "LIST": // Sorgt für die Ausgabe einer Liste der gesperrten/ausgeschlossenen zahlen
+							// oder, falls es keine gibt, für die Ausgabe einer Nachricht.
 				ausgabe.list();
 				if (tippgenerator.liste().isEmpty()) {
-					System.out.println("Derzeit sind keine Zahlen von der Tippgenerierung ausgeschlossen.");
+					ausgabe.keineZahlenAusgeschlossen();
 				} else {
-					System.out.println(tippgenerator.liste().toString());
+					ausgabe.ausgeschlosseneZahlenListe(tippgenerator);
 				}
 				System.out.println("");
 				logger.log(Level.INFO,
 						tippgenerator.liste().toString() + " als ausgeschlossene Zahlen dem Nutzer ausgegeben.");
 				logger.log(Level.INFO, "Befehl 'list' ausgeführt");
 				break;
-			case "H":
+			case "H": // Sorgt dafür das eine Liste mit Befehlen ausgegeben wird
 				ausgabe.hilfeAusgeben();
 				logger.log(Level.INFO, "Befehl 'h' ausgeführt");
 				break;
-			case "QUIT":
+			case "QUIT": // Sorgt für ein korrektes beendes des Programms
 				logger.log(Level.INFO, "Befehl 'quit' ausgeführt");
 				quit();
 				System.exit(0);
@@ -162,17 +163,18 @@ public class ProgramFlow {
 									// des Befehls nur noch zahlen übrig bleiben.
 									// Prüft ob mit dem Befehl Tippgen auch ein modus übergeben wurde. Erzeugt
 									// dementsprechend Objekte
-		if (tippgen.contains("6AUS49")) {
+		if (tippgen.contains("6AUS49")) { // Wenn 6aus49 als gewünschter Modus übergeben wird...
 			tippgen.remove("6AUS49");
-			if (!tippgenerator.lottoModus().equals("6aus49")) {
-				tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
+			if (!tippgenerator.lottoModus().equals("6aus49")) { // ... und das Tippgenerator Objekt nicht 6aus49 ist ...
+				tippgenerator = new TippGenerator(new SechsAusNeunundvierzig()); // ... wird ein neues 6aus49 Objekt
+																					// erzeugt.
 				logger.log(Level.INFO,
 						"6AUS49 wurde als Lottomodus gewählt. Da tippgenerator kein 6aus49 Objekt enthielt, wurde ein neues erzeugt.");
-			} else {
+			} else { // Ist das Objekt 6aus49 muss nichts weiter unternommen werden.
 				logger.log(Level.INFO,
 						"6AUS49 wurde als Lottomodus gewählt. Da tippgenerator ein 6aus49 Objekt enthielt, wurde kein neues erzeugt.");
 			}
-		} else if (tippgen.contains("EURO")) {
+		} else if (tippgen.contains("EURO")) { // Genau wie bei 6aus49, nur mit Euro.
 			tippgen.remove("EURO");
 			if (!tippgenerator.lottoModus().equals("Euro")) {
 				tippgenerator = new TippGenerator(new Eurojackpot());
@@ -189,7 +191,11 @@ public class ProgramFlow {
 			}
 			logger.log(Level.INFO,
 					"Tippgenerator wurde als Befehl gewählt. Es wurde kein Modus übergeben, daher wird 6aus49 verwendet.");
-		} else if (!tippgen.isEmpty() && !istNumerisch(tippgen.get(0))) {
+		} else if (!tippgen.isEmpty() && !istNumerisch(tippgen.get(0))) { // Sollte kein Modus übergeben werden, der
+																			// String aber noch nicht leer sein und der
+																			// String keine Zahl sein (um mehrfach tipps
+																			// zu generieren), so wird der Befehl
+																			// ignoriert.
 			ausgabe.ignorierterBefehl(tippgen);
 		} else {
 			ausgabe.ungueltigeModusEingabe(tippgen); // Sollte eine ungültige Eingabe im Befehl enthalten sein, so wird
@@ -203,9 +209,9 @@ public class ProgramFlow {
 	}
 
 	/**
-	 * bekommt einen String übergeben und prüft ob dieser leer ist. fals dieser leer
-	 * ist wird generiereTipp am aktuellem tippgenerator objekt ausgeführt. ist der
-	 * String nicht leer so wird geprüft ob dieser eine Zahl enthält. Enthält er
+	 * bekommt einen String übergeben und prüft ob dieser leer ist. falls dieser
+	 * leer ist wird generiereTipp am aktuellem tippgenerator objekt ausgeführt. ist
+	 * der String nicht leer so wird geprüft ob dieser eine Zahl enthält. Enthält er
 	 * eine Zahl so wird generiereTipps auseführt und bekommt die Zahl als int
 	 * übergeben.
 	 * 
@@ -218,10 +224,19 @@ public class ProgramFlow {
 			for (String string : tippgen) { // Sollte der String Tippgen nicht leer sein, so wird geprüft ob darunter
 											// auch eine Zahl ist. Diese wird anschließend für die Anzahl an Tipps zur
 											// tippgenerierung verwendet.
-				if (istNumerisch(string)) {
-					int quicktipp = Integer.parseInt(string);
-					tippgenerator.generiereTipps(quicktipp);
+				if (istNumerisch(string)) { // Der String wird hier geprüft und entweder wird generiereTIpps mit der
+											// eingegebenen Zahl ausgeführt oder generiereTipp.
+					try {
+						int quicktipp = Integer.parseInt(string);
+						tippgenerator.generiereTipps(quicktipp);
+					} catch (NumberFormatException e) {
+						logger.log(Level.WARNING,
+								"Übergebene Zahl für die Anzahl an Tipps welche generiert werden sollen, ist scheinbar keine Zahl. Es wird ein einziger Tipp generiert. Übergeben wurde: "
+										+ string,
+								e);
+					}
 				}
+				tippgenerator.generiereTipp();
 			}
 		}
 	}

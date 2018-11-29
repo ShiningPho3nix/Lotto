@@ -242,4 +242,22 @@ public class Ausgabe {
 		tippgen.forEach(System.out::print);
 	}
 
+	/**
+	 * Gibt die Information aus, dass derzeit keine Zahlen von der Tippgenerierung
+	 * ausgeschlossen sind.
+	 */
+	public void keineZahlenAusgeschlossen() {
+		System.out.println("Derzeit sind keine Zahlen von der Tippgenerierung ausgeschlossen.");
+
+	}
+
+	/**
+	 * Methode zum ausgeben der aktuellen Liste an ausgeschlossenen Zahlen.
+	 * 
+	 * @param tippgenerator
+	 */
+	public void ausgeschlosseneZahlenListe(TippGenerator tippgenerator) {
+		System.out.println(tippgenerator.liste().toString());
+	}
+
 }
