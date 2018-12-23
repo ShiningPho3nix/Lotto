@@ -52,7 +52,7 @@ public class ProgramFlow {
 	 * @param befehl
 	 */
 	public void befehlAusfuehren(String befehl) {
-		if (befehl.contains("TIPPGEN")) { // Nimmte eine erste Aufteilung des eingegebenen Befehls vor und führt geg.
+		if (befehl.contains("TIPPGEN")) { // Nimmt eine erste Aufteilung des eingegebenen Befehls vor und führt geg.
 											// eine entsprechende Methode aus.
 			befehlAusfuehrenTippgen(befehl);
 		} else if (befehl.contains("DELETE")) {

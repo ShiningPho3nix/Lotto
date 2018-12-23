@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
+ * Enthält diverse Tests zu Prüfen der Methoden der SLotto Klasse.
+ * 
  * @author Steffen Dworsky
  *
  */
@@ -26,6 +28,10 @@ public class SLottoTest {
 		init();
 	}
 
+	/**
+	 * Vor jedem Test werden die jeweiligen Objekte neu erzeugt, die Arrays und
+	 * Listen neu Inizialisiert, sodas jeder Test die gleichen Startbedingungen hat.
+	 */
 	@BeforeEach
 	public void init() {
 		sechsAusNeunundvierzig = new SechsAusNeunundvierzig();
@@ -50,14 +56,19 @@ public class SLottoTest {
 		assertAll("Array Größen", () -> assertEquals(49, copySechsAusNeunundvierzigArray.size()),
 				() -> assertEquals(50, copyFuenfAusFuenfzigArray.size()),
 				() -> assertEquals(10, copyZweiAusZehnArray.size()));
+		// Prüft ob alle kopierten Listen die korrekte Größe haben.
 	}
 
+	/**
+	 * Test um die Methode erstelleCollection auf korrektheit zu prüfen.
+	 */
 	@Test
 	public void testErstelleCollection() {
 
 		ArrayList<Integer> ergebnisUnglueckszahlenArray = new ArrayList<>(Arrays.asList(1, 2, 3, 49, 50, 4));
+		// Das zu erwartene Ergebniss.
 
-		for (Integer integer : ergebnisUnglueckszahlenArray) {
+		for (Integer integer : ergebnisUnglueckszahlenArray) { // Entfernt die unglückszahlen für die Ergebniss Listen.
 			if (copySechsAusNeunundvierzigArray.contains(integer)) {
 				copySechsAusNeunundvierzigArray.remove((Integer) integer);
 			}
@@ -69,24 +80,28 @@ public class SLottoTest {
 			}
 		}
 
-		eurojackpot.unglueckszahlenArray.addAll(ergebnisUnglueckszahlenArray);
+		eurojackpot.unglueckszahlenArray.addAll(ergebnisUnglueckszahlenArray); // Füllt die jeweiligen unglückszahlen
+																				// Arrays mit den unglückszahlen
 		sechsAusNeunundvierzig.unglueckszahlenArray.addAll(ergebnisUnglueckszahlenArray);
 
-		sechsAusNeunundvierzig.tippzahlenArray = new ArrayList<>();
+		sechsAusNeunundvierzig.tippzahlenArray = new ArrayList<>(); // Leert alle Listen, welche durch init eventuell
+																	// bereits Werte enthalten.
 		eurojackpot.tippzahlenArray = new ArrayList<>();
 		eurojackpot.zweiAusZehntippzahlenArray = new ArrayList<>();
 
-		eurojackpot.erstelleCollection();
+		eurojackpot.erstelleCollection(); // Führt die zu testenden Methoden aus
 		sechsAusNeunundvierzig.erstelleCollection();
 
-		assertAll("Arrays vergleichen",
+		assertAll("Listen vergleichen", // Vergleicht die Listen nach ausführen der Methoden mit den erwarteten
+										// Ergebnissen.
 				() -> assertEquals(sechsAusNeunundvierzig.tippzahlenArray, copySechsAusNeunundvierzigArray),
 				() -> assertEquals(eurojackpot.tippzahlenArray, copyFuenfAusFuenfzigArray),
 				() -> assertEquals(eurojackpot.zweiAusZehntippzahlenArray, copyZweiAusZehnArray));
-		assertAll("Größe der jeweiligen unglückszahlenArrays ist 6",
+		assertAll("Größe der jeweiligen unglückszahlenArrays ist 6", // Prüft ob unglückszahlenArray die korrekte größe
+																		// besitzt.
 				() -> assertTrue(sechsAusNeunundvierzig.unglueckszahlenArray.size() == 6),
 				() -> assertTrue(eurojackpot.unglueckszahlenArray.size() == 6));
-		assertAll("UnglückszahlenArray ist wie erwartet",
+		assertAll("UnglückszahlenArray ist wie erwartet", // Prüft ob unglückszahlenArray wie zu erwarten sind.
 				() -> assertEquals(ergebnisUnglueckszahlenArray, sechsAusNeunundvierzig.unglueckszahlenArray),
 				() -> assertEquals(ergebnisUnglueckszahlenArray, eurojackpot.unglueckszahlenArray));
 	}

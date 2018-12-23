@@ -87,11 +87,11 @@ public class Ausgabe {
 	 */
 	public void nichtLoeschbar(int zahl) {
 		System.out.println("Löschen von " + zahl + " nicht möglich!");
-		if (zahl > 50 || zahl < 1) {
+		if (zahl > 50 || zahl < 1) { // Für den Fall das die Zahl außerhalb des gültigen Bereichs liegt.
 			System.out.println("Die zu löschende Zahl muss im Bereich [1,50] liegen.");
 			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
 
-		} else {
+		} else { // Für alle anderen Fälle
 			System.out.println(
 					"Entweder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt");
 			System.out.println("");

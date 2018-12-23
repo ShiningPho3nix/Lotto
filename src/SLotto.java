@@ -24,7 +24,7 @@ public class SLotto {
 		ausgabe = new Ausgabe();
 		speicher = new Speichern();
 		lader = new Laden();
-		logger.log(Level.INFO, "Arrays wurden inizialisiert");
+		logger.log(Level.INFO, "tippzahlenArray & unglueckszahlenArray wurden inizialisiert");
 		laden();
 		logger.log(Level.INFO, "Super Konstruktor für " + currentmode + " durchgelaufen.");
 	}
@@ -35,20 +35,20 @@ public class SLotto {
 	 * und in dem Array: sechsAusNeunundvierzig nicht vorhanden sein.
 	 */
 	public void entferneUnglueckszahl(Integer[] zahlen) {
-		for (int zahl : zahlen) {
-			if (unglueckszahlenArray.contains(zahl)) {
-				unglueckszahlenArray.remove((Integer) zahl);
-				tippzahlenArray.add(zahl);
+		for (int zahl : zahlen) { // durchläuft das Array an zu löschenden Zahlen
+			if (unglueckszahlenArray.contains(zahl)) { // Ist die Aktuelle Zahl im unglücksArray, ...
+				unglueckszahlenArray.remove((Integer) zahl); // ... so wird diese entfernt ...
+				tippzahlenArray.add(zahl); // und dem tippzahlenAray hinzugefügt.
 				logger.log(Level.INFO,
 						zahl + " wurde der Menge an möglichen Zahlen zur Tippgenerierung wieder hinzugefügt.");
 				ausgabe.erfolgreichWiederHinzugefuegt(zahl);
-			} else {
+			} else { // Ist die aktuelle Zahl nicht unter den entfernen, so wird diese ignoriert.
 				ausgabe.hinzufuegenNichtMoeglich(zahl);
 				logger.log(Level.INFO,
 						zahl + " wurde nicht der Menge an möglichen Zahlen zur Tippgenerierung wieder hinzugefügt.");
 			}
 		}
-		speichern();
+		speichern(); // das aktualisierte Array der unglückszahlen wird abgespeichert.
 		logger.log(Level.INFO, "entferneUnglueckszahl() durchgelaufen");
 	}
 
@@ -57,7 +57,8 @@ public class SLotto {
 	 * generierten Tipps vorkommen sollen.
 	 */
 	public void laden() {
-		unglueckszahlenArray = lader.laden();
+		unglueckszahlenArray = lader.laden(); // Fügt die laden Funktion der Klasse LAden aus und speichert das
+												// zurückgegebene Array ind ungklückszahlenArray ab.
 		logger.log(Level.INFO, "Array mit ausgeschlossenen Zahlen wurde erfolgreich übergeben.");
 	}
 
@@ -66,7 +67,7 @@ public class SLotto {
 	 * speichern() der Klasse Seichern auf.
 	 */
 	public void speichern() {
-		speicher.speichern(unglueckszahlenArray);
+		speicher.speichern(unglueckszahlenArray); // speichert das aktuelle unglückszahlenArray ab.
 		logger.log(Level.INFO, "Gespeichert, SLotto speichern durchgelaufen.");
 	}
 
@@ -85,7 +86,7 @@ public class SLotto {
 	 * auf einmal gelöscht.
 	 */
 	public void reset() {
-		unglueckszahlenArray = new ArrayList<Integer>();
+		unglueckszahlenArray = new ArrayList<Integer>(); // erzeugt eine Neue ArrayList und speichert diese in unglückszahlenArray ab.
 		speichern();
 	}
 

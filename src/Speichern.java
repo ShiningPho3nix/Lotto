@@ -33,7 +33,8 @@ public class Speichern extends SFileOperation {
 	public void speichern(ArrayList<Integer> ungluecksZahlen) {
 		String filePath = currentDirectory().concat("\\TippGenerator.txt");
 		File file = new File(filePath);
-		if (!file.exists()) {
+		if (!file.exists()) { // sollte es noch keine Datei zum abspeichern der unglückszahlen geben, so wird
+								// eine erzeugt.
 			try {
 				createFile();
 				logger.log(Level.INFO, "Datei wurde erzeugt (" + filePath + ").");
@@ -44,7 +45,7 @@ public class Speichern extends SFileOperation {
 			}
 		}
 		try (PrintWriter out = new PrintWriter(file)) {
-			ungluecksZahlen = checkArray(ungluecksZahlen);
+			ungluecksZahlen = checkArray(ungluecksZahlen); // ArrayList wird vor dem Abspeichern nochmals geprüft.
 			out.write(ungluecksZahlen.toString());
 			logger.log(Level.INFO, ungluecksZahlen + " wurde in die Datei geschrieben.");
 			out.close();

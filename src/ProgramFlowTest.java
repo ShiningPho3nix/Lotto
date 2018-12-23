@@ -18,8 +18,9 @@ public class ProgramFlowTest {
 	 */
 	@Test
 	public void testIstNumerisch() {
-		String trueString = "12345 2 34 5 67";
-		String falseString = "12345 2 34 5 67 a 98b";
+		String trueString = "12345 2 34 5 67"; // String welcher nur Zahlen enthält, Funktion sollte true zurückgeben.
+		String falseString = "12345 2 34 5 67 a 98b"; // String welcher nicht nur Zahlen enthält, Funktion sollte false
+														// zurückgeben.
 
 		assertTrue(ProgramFlow.istNumerisch(trueString));
 		assertFalse(ProgramFlow.istNumerisch(falseString));
