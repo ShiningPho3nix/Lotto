@@ -80,6 +80,9 @@ public class Laden extends SFileOperation {
 		String[] partArray = ladeString.split(","); // Die Kommas bleiben und werden hier zum trennen der Zahlen
 													// verwendet.
 		for (String string : partArray) {
+			if (string.equals("")) {
+				continue;
+			}
 			try {
 				ladeArrayList.add(Integer.parseInt(string)); // Sollte die Datei Manipuliert worden sein oder auf
 																// irgendeinem anderen wege nicht-Zahlen in die

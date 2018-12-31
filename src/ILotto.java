@@ -16,7 +16,11 @@ public interface ILotto {
 
 	void generiereTipp();
 
+	String generiereTippTest();
+
 	void generiereTipps(int quicktipp);
+
+	String generiereTippsTest(int anzahlTipps);
 
 	void erstelleCollection();
 

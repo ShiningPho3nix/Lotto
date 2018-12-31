@@ -31,6 +31,8 @@ public class Eurojackpot extends SLotto implements ILotto {
 	 * dann die ersten 5 Zahlen. Die Zahlen werden aufsteigend sortiert.
 	 * Anschließend werden 2 zahlen aus 10 gezogen und auch aufsteigend sortiert.
 	 * Danach werden die beiden Arrays ausgegeben als Eurojackpot Tipp
+	 * 
+	 * @return
 	 */
 	@Override
 	public void generiereTipp() {
@@ -54,9 +56,50 @@ public class Eurojackpot extends SLotto implements ILotto {
 		}
 		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert den tipp in aufsteigender Reihenfolge
 		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed()); // Die 2aus10 tipp ArrayList wird
-																					// ebenfalls aufsteigend sortiert.
+
 		ausgabe.EurojackpotTipp(tipp, zweiAusZehnTipp); // Gibt den Tipp auf der Konsole aus.
 		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
+	}
+
+	/**
+	 * Test Methode um die Ausgabe/Rückgabe eines generierten Tipps zu
+	 * verallgemeinern. Es wird ein formatierter String mit dem aktuellem Tipp
+	 * zurückgegeben.
+	 * 
+	 * @return
+	 */
+	@Override
+	public String generiereTippTest() {
+		StringBuilder sb = new StringBuilder();
+		Collections.shuffle(tippzahlenArray); // Mischt die Liste tippzahlenArray...
+		Collections.shuffle(zweiAusZehntippzahlenArray); // ... und zweiAusZehntippzahlenArray.
+		ArrayList<Integer> tipp = new ArrayList<Integer>(); // ArrayList wird deklariert und inizialisiert um den Tipp
+															// zwischen zu speichern.
+		for (int i = 0; i < 5; i++) {
+			tipp.add(tippzahlenArray.get(i)); // Die ersten 6 Zahlen aus dem tippzahlenArray werden tipp
+												// hinzugefügt.
+			logger.log(Level.INFO, tippzahlenArray.get(i).toString()
+					+ " wurde als 5aus50 Tippzahl ausgewählt und dem dem Tipp hinzugefügt.");
+		}
+		ArrayList<Integer> zweiAusZehnTipp = new ArrayList<Integer>(); // Für die 2aus10 Ziehung wird ebenfalls eine
+																		// ArrayList deklariert und inizialisiert.
+		for (int i = 0; i < 2; i++) {
+			zweiAusZehnTipp.add(zweiAusZehntippzahlenArray.get(i)); // Die ersten 2 Zahlen werden als 2aus10 tipp
+																	// gezogen
+			logger.log(Level.INFO, tippzahlenArray.get(i).toString()
+					+ " wurde als 2aus10 Tippzahl ausgewählt und dem dem Tipp hinzugefügt.");
+		}
+		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert den tipp in aufsteigender Reihenfolge
+		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed()); // Die 2aus10 tipp ArrayList wird
+																					// ebenfalls aufsteigend sortiert.
+		sb.append("5aus50: \n");
+		sb.append(tipp + "\n");
+		sb.append("2aus10: \n");
+		sb.append(zweiAusZehnTipp + "\n");
+		sb.append("\n");
+		ausgabe.EurojackpotTipp(tipp, zweiAusZehnTipp); // Gibt den Tipp auf der Konsole aus.
+		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
+		return sb.toString();
 	}
 
 	/**
@@ -117,11 +160,28 @@ public class Eurojackpot extends SLotto implements ILotto {
 	 */
 	@Override
 	public void generiereTipps(int quicktipp) {
+		if (quicktipp < 1) {
+			quicktipp = 1;
+		}
 		for (int i = 1; i <= quicktipp; i++) {
 			System.out.println("Tipp#" + i); // Für die Übergeben Anzahl an mal wird Tipp mit fortlaufender Zahl
 												// ausgegeben...
 			generiereTipp(); // ...und anschließend ein Tipp generiert.
 		}
+	}
+
+	@Override
+	public String generiereTippsTest(int quicktipp) {
+		StringBuilder sb = new StringBuilder();
+		if (quicktipp < 1) {
+			quicktipp = 1;
+		}
+		for (int i = 1; i <= quicktipp; i++) {
+			System.out.println("Tipp#" + i); // Für die Übergeben Anzahl an mal wird Tipp mit fortlaufender Zahl
+												// ausgegeben...
+			sb.append(generiereTippTest()); // ...und anschließend ein Tipp generiert.
+		}
+		return sb.toString();
 	}
 
 	/**

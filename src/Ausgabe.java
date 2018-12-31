@@ -9,6 +9,9 @@ import java.util.logging.Logger;
  * @author Steffen Dworsky
  *
  */
+
+// TODO Alles auf StringBuilder umbauen, damit die Vorgefertigten ausgaben
+// sowohl von der Konsolen version, als auch der GUI verwendet werden können
 public class Ausgabe {
 
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -19,14 +22,40 @@ public class Ausgabe {
 	}
 
 	/**
+	 * Um die Ausgabe auf der Konsole auch hier abzuhandeln. Andere Ausgabe Methoden
+	 * dieser Klasse geben (eventuell erst in Zukunft) einen StringBuilder.toString
+	 * zurück. Diese können dann an diese Methode übergeben werden um sie auf der
+	 * Konsole auszugeben.
+	 * 
+	 * @param string
+	 */
+	public static void println(String string) {
+		System.out.println(string);
+	}
+
+	/**
 	 * Gibt zum Start des Programms eine Wilkommensbotschaft aus.
 	 */
-	public void begruessung() {
+	public static void begruessung() {
 		System.out.println("**************************************");
 		System.out.println("*Willkommen beim Lotto Tipp Generator*");
 		System.out.println("**************************************");
 		System.out.println("");
 		logger.log(Level.INFO, "Dem Nutzer wurde die Begrüßungsnachricht über die Konsole ausgegeben.");
+	}
+
+	/**
+	 * Da die Ausgabe auf der GUI scheinbar ein etwas anderes vormat hat, musste die
+	 * Begrüßung etwas angepasst werden.
+	 * 
+	 * @return
+	 */
+	public static String begruessungGUI() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("********************************************* \n");
+		sb.append("*Willkommen beim Lotto Tipp Generator* \n");
+		sb.append("********************************************* \n");
+		return sb.toString();
 	}
 
 	/**

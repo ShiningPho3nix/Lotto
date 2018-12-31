@@ -72,6 +72,10 @@ public class TippGenerator {
 		lottoart.generiereTipps(quicktipp);
 	}
 
+	public String generiereTippsTest(int anzahlTipps) {
+		return lottoart.generiereTippsTest(anzahlTipps);
+	}
+
 	/**
 	 * Ermöglich es dem feld lottoart eine neue Instanz zuzuweisen.
 	 */
@@ -102,4 +106,5 @@ public class TippGenerator {
 	public ArrayList<Integer> liste() {
 		return lottoart.liste();
 	}
+
 }

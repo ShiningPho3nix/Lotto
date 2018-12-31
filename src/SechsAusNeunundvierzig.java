@@ -93,6 +93,9 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 	 * somit die gewünschte anzahl an Tipps generiert werden.
 	 */
 	public void generiereTipps(int quicktipp) {
+		if (quicktipp < 1) {
+			quicktipp = 1;
+		}
 		for (int i = 1; i <= quicktipp; i++) {
 			System.out.println("Tipp#" + i + ":");
 			generiereTipp();
@@ -117,5 +120,17 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 			}
 		}
 		logger.log(Level.INFO, "tippzahlenArray gefüllt, erstelleCollection durchgelaufen.");
+	}
+
+	@Override
+	public String generiereTippTest() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String generiereTippsTest(int anzahlTipps) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
