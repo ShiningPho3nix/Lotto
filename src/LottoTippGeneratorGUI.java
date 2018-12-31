@@ -91,6 +91,7 @@ public class LottoTippGeneratorGUI {
 	 */
 	private void initialize(String stringZahlen) {
 		frmLottoTippgenerator = new JFrame();
+		frmLottoTippgenerator.setSize(633, 390);
 		frmLottoTippgenerator.setTitle("Lotto Tipp-Generator");
 		frmLottoTippgenerator.getContentPane().setBackground(Color.GRAY);
 		frmLottoTippgenerator.getContentPane().setLayout(null);
@@ -119,7 +120,7 @@ public class LottoTippGeneratorGUI {
 		txtrAktuellAusgeschlosseneZahlen.setBackground(new Color(255, 255, 255));
 		txtrAktuellAusgeschlosseneZahlen.setEditable(false);
 		txtrAktuellAusgeschlosseneZahlen.setBounds(0, 0, 526, 25);
-		txtrAktuellAusgeschlosseneZahlen.setText("Aktuell ausgeschlossene Zahlen/Unglückszahlen: " + stringZahlen);
+		txtrAktuellAusgeschlosseneZahlen.setText(" Aktuell ausgeschlossene Zahlen/Ungl\u00FCckszahlen: <dynamic>");
 		frmLottoTippgenerator.getContentPane().add(txtrAktuellAusgeschlosseneZahlen);
 
 		/**
@@ -144,7 +145,7 @@ public class LottoTippGeneratorGUI {
 				}
 			}
 		});
-		btnResetButton.setBounds(526, 0, 90, 25);
+		btnResetButton.setBounds(525, 0, 92, 25);
 		frmLottoTippgenerator.getContentPane().add(btnResetButton);
 
 		/**
@@ -328,6 +329,11 @@ public class LottoTippGeneratorGUI {
 
 	}
 
+	/**
+	 * Methode um Text der TextArea hinzuzufügen.
+	 * 
+	 * @param text
+	 */
 	private void appendToTextArea(String text) {
 		textArea.append(text + newline);
 	}

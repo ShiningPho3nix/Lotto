@@ -177,8 +177,8 @@ public class Eurojackpot extends SLotto implements ILotto {
 			quicktipp = 1;
 		}
 		for (int i = 1; i <= quicktipp; i++) {
-			System.out.println("Tipp#" + i); // Für die Übergeben Anzahl an mal wird Tipp mit fortlaufender Zahl
-												// ausgegeben...
+			sb.append("Tipp#" + i + " \n"); // Für die Übergeben Anzahl an mal wird Tipp mit fortlaufender Zahl
+											// ausgegeben...
 			sb.append(generiereTippTest()); // ...und anschließend ein Tipp generiert.
 		}
 		return sb.toString();
