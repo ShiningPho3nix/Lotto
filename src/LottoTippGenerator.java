@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class LottoTippGenerator {
 
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	public static Ausgabe ausgabe;
+	public static StringSammlung ausgabe;
 	public static ProgramFlow programFlow;
 	public static Benutzereingabe benutzereingabe;
 
@@ -27,7 +27,7 @@ public class LottoTippGenerator {
 		new Logging(); // Startet das Logging
 		logger.log(Level.INFO, "Programm gestartet.");
 
-		ausgabe = new Ausgabe();
+		ausgabe = new StringSammlung();
 		programFlow = new ProgramFlow();
 
 		String befehl = "";

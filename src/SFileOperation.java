@@ -7,11 +7,10 @@ import java.util.logging.Logger;
 
 public class SFileOperation {
 
-	protected Ausgabe ausgabe;
 	protected static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public SFileOperation() {
-		ausgabe = LottoTippGenerator.ausgabe;
+
 	}
 
 	/**
@@ -19,7 +18,7 @@ public class SFileOperation {
 	 * 
 	 * @return
 	 */
-	public String currentDirectory() {
+	public static String currentDirectory() {
 		Path currentRelativePath = Paths.get("");
 		return currentRelativePath.toAbsolutePath().toString();
 	}
@@ -31,7 +30,7 @@ public class SFileOperation {
 	 * 
 	 * @throws IOException
 	 */
-	public void createFile() throws IOException {
+	public static void createFile() throws IOException {
 		File f = new File(currentDirectory().concat("\\TippGenerator.txt"));
 		f.createNewFile();
 	}
@@ -44,7 +43,7 @@ public class SFileOperation {
 	 * @param ungluecksZahlenArray
 	 * @return
 	 */
-	public ArrayList<Integer> checkArray(ArrayList<Integer> ungluecksZahlenArray) {
+	public static ArrayList<Integer> checkArray(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		ergebnisArray = mehrAlsSechsWerte(doppelteZahlen(ungueltigeWerte(ungluecksZahlenArray)));
 		// Überprüft mithilfe von 3 Methoden Bedingungen auf korrektheit. Zunächst
@@ -60,7 +59,7 @@ public class SFileOperation {
 	 * 
 	 * @return
 	 */
-	public ArrayList<Integer> doppelteZahlen(ArrayList<Integer> ungluecksZahlenArray) {
+	public static ArrayList<Integer> doppelteZahlen(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
 			if (!ergebnisArray.contains((Integer) integer)) { // Ist die aktuelle Zahl noch nicht im ergebnisArray, so
@@ -79,7 +78,7 @@ public class SFileOperation {
 	 * @param ungluecksZahlenArray
 	 * @return
 	 */
-	public ArrayList<Integer> ungueltigeWerte(ArrayList<Integer> ungluecksZahlenArray) {
+	public static ArrayList<Integer> ungueltigeWerte(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
 			if (integer > 0 && integer < 51) { // Bei 6aus49 dürfen Zahlen im Bereich 1-49 liegen, bei Eurojackpot 1-50.
@@ -99,7 +98,7 @@ public class SFileOperation {
 	 * @param unglueckszahlenArray
 	 * @return
 	 */
-	public ArrayList<Integer> mehrAlsSechsWerte(ArrayList<Integer> ungluecksZahlenArray) {
+	public static ArrayList<Integer> mehrAlsSechsWerte(ArrayList<Integer> ungluecksZahlenArray) {
 		ArrayList<Integer> ergebnisArray = new ArrayList<Integer>();
 		for (Integer integer : ungluecksZahlenArray) {
 			if (ergebnisArray.size() == 6) { // Es sollen max. 6 Unglückszahlen zulässig sein, daher werden, sollten

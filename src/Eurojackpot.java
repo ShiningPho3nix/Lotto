@@ -57,7 +57,7 @@ public class Eurojackpot extends SLotto implements ILotto {
 		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert den tipp in aufsteigender Reihenfolge
 		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed()); // Die 2aus10 tipp ArrayList wird
 
-		ausgabe.EurojackpotTipp(tipp, zweiAusZehnTipp); // Gibt den Tipp auf der Konsole aus.
+		System.out.println(StringSammlung.eurojackpotTipp(tipp, zweiAusZehnTipp)); // Gibt den Tipp auf der Konsole aus.
 		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
 	}
 
@@ -97,7 +97,7 @@ public class Eurojackpot extends SLotto implements ILotto {
 		sb.append("2aus10: \n");
 		sb.append(zweiAusZehnTipp + "\n");
 		sb.append("\n");
-		ausgabe.EurojackpotTipp(tipp, zweiAusZehnTipp); // Gibt den Tipp auf der Konsole aus.
+		System.out.println(StringSammlung.eurojackpotTipp(tipp, zweiAusZehnTipp)); // Gibt den Tipp auf der Konsole aus.
 		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
 		return sb.toString();
 	}
@@ -119,9 +119,10 @@ public class Eurojackpot extends SLotto implements ILotto {
 				entferneAusTippzahlen(unglueckszahlenArray);
 				logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
 			} else {
-				ausgabe.nichtLoeschbar(zahl); // Sind die Bedingungen an eine der Zahlen nicht erfüllt, so wird auf der
-												// Konsole ausgegeben das diese Zahl nicht gelöscht werden kann. Es wird
-												// mit der nächsten Zahl weiter gemacht.
+				System.out.println(StringSammlung.nichtLoeschbar(zahl)); // Sind die Bedingungen an eine der Zahlen nicht erfüllt, so wird
+														// auf der
+				// Konsole ausgegeben das diese Zahl nicht gelöscht werden kann. Es wird
+				// mit der nächsten Zahl weiter gemacht.
 				logger.log(Level.INFO, zahl + " wurde nicht aus der Menge an möglichen Zahlen für die " + modus()
 						+ " Tippgenerierung entfernt.");
 			}
@@ -143,13 +144,13 @@ public class Eurojackpot extends SLotto implements ILotto {
 			if (tippzahlenArray.contains(zahl)) {
 				tippzahlenArray.remove((Integer) zahl); // entfernt die Aktuelle Zahl aus der 5aus50 ArrayList
 			} else {
-				ausgabe.nichtLoeschbar(zahl); // Ist eine Zahl in keiner der Listen Vorhanden, so wird dem Nutzer
-												// mitgeteilt das ein Löschen nicht möglich ist
+				System.out.println(StringSammlung.nichtLoeschbar(zahl)); // Ist eine Zahl in keiner der Listen Vorhanden, so wird dem Nutzer
+				// mitgeteilt das ein Löschen nicht möglich ist
 				logger.log(Level.INFO, zahl + " wurde nicht aus der Menge an möglichen Zahlen für die " + modus()
 						+ " Tippgenerierung entfernt.");
 				continue; // Ist die Zahl nicht löschbar, so wird mit der nächsten Zahl weiter gemacht.
 			}
-			ausgabe.erfolgreichEntfernt(zahl, modus());
+			System.out.println(StringSammlung.erfolgreichEntfernt(zahl));
 		}
 	}
 

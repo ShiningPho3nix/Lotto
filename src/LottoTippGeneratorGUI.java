@@ -30,10 +30,8 @@ import java.awt.TextArea;
 public class LottoTippGeneratorGUI {
 
 	private JFrame frmLottoTippgenerator;
-	LottoTippGenerator lottoTippGenerator = new LottoTippGenerator();
 	public TippGenerator tippGenerator;
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Laden laden = new Laden();
 	private int anzahlTipps = 1;
 	private final TextArea textArea = new TextArea();
 	private final static String newline = "\n";
@@ -63,10 +61,10 @@ public class LottoTippGeneratorGUI {
 	 * wird mit SechsAusNeunundvierzig inizialisiert und initialize wird ausgeführt.
 	 */
 	public LottoTippGeneratorGUI() {
-		String stringZahlen = makeStringFromArrList(laden.laden());
+		String stringZahlen = makeStringFromArrList(Laden.laden());
 		tippGenerator = new TippGenerator(new SechsAusNeunundvierzig());
 		initialize(stringZahlen);
-		appendToTextArea(Ausgabe.begruessungGUI());
+		appendToTextArea(StringSammlung.begruessungGUI());
 
 	}
 
@@ -136,7 +134,7 @@ public class LottoTippGeneratorGUI {
 
 				if (n == JOptionPane.YES_OPTION) {
 					tippGenerator.reset();
-					String stringZahlen = makeStringFromArrList(laden.laden());
+					String stringZahlen = makeStringFromArrList(Laden.laden());
 					txtrAktuellAusgeschlosseneZahlen.setText("Aktuell ausgeschlossene Zahlen: " + stringZahlen);
 				} else if (n == JOptionPane.NO_OPTION) {
 					System.out.println("No");

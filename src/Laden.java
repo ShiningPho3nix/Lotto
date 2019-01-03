@@ -30,7 +30,7 @@ public class Laden extends SFileOperation {
 	 * 
 	 * @return
 	 */
-	public ArrayList<Integer> laden() {
+	public static ArrayList<Integer> laden() {
 
 		String filePath = currentDirectory().concat("\\TippGenerator.txt"); // Durch currentDirectory mit angehängtem
 																			// Namen der Datei wird hier der Absolute
@@ -48,7 +48,7 @@ public class Laden extends SFileOperation {
 			try {
 				createFile();
 				logger.log(Level.INFO, "Es wurde eine Datei für zum Speichern der Unglückszahlen erzeugt.");
-				ausgabe.dateiErstellt();
+				System.out.println(StringSammlung.dateiErstellt());
 			} catch (IOException e) {
 				logger.log(Level.WARNING, "Die Datei konnte nicht erstellt werden (" + filePath + ")", e);
 				e.printStackTrace();

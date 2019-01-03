@@ -6,9 +6,6 @@ public class SLotto {
 
 	protected ArrayList<Integer> tippzahlenArray;
 	protected ArrayList<Integer> unglueckszahlenArray;
-	protected Ausgabe ausgabe;
-	protected Speichern speicher;
-	protected Laden lader;
 	protected static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String currentmode;
 
@@ -21,9 +18,6 @@ public class SLotto {
 		this.currentmode = mode;
 		tippzahlenArray = new ArrayList<Integer>();
 		unglueckszahlenArray = new ArrayList<Integer>();
-		ausgabe = new Ausgabe();
-		speicher = new Speichern();
-		lader = new Laden();
 		logger.log(Level.INFO, "tippzahlenArray & unglueckszahlenArray wurden inizialisiert");
 		laden();
 		logger.log(Level.INFO, "Super Konstruktor für " + currentmode + " durchgelaufen.");
@@ -34,6 +28,9 @@ public class SLotto {
 	 * muss die Zahl eine Zahl sein, in dem Array: unglueckszahlenArray vorhanden
 	 * und in dem Array: sechsAusNeunundvierzig nicht vorhanden sein.
 	 */
+	// TODO StringBuilder verwenden um die rückgaben von hinzufügen/nicht möglich
+	// zusammen zu führen und diese dann zurückzugeben. Somit kann sowohl auf der
+	// konsole, als auch in der GUI dies Methode verwendet werden.
 	public void entferneUnglueckszahl(Integer[] zahlen) {
 		for (int zahl : zahlen) { // durchläuft das Array an zu löschenden Zahlen
 			if (unglueckszahlenArray.contains(zahl)) { // Ist die Aktuelle Zahl im unglücksArray, ...
@@ -41,9 +38,9 @@ public class SLotto {
 				tippzahlenArray.add(zahl); // und dem tippzahlenAray hinzugefügt.
 				logger.log(Level.INFO,
 						zahl + " wurde der Menge an möglichen Zahlen zur Tippgenerierung wieder hinzugefügt.");
-				ausgabe.erfolgreichWiederHinzugefuegt(zahl);
+				System.out.println(StringSammlung.erfolgreichWiederHinzugefuegt(zahl));
 			} else { // Ist die aktuelle Zahl nicht unter den entfernen, so wird diese ignoriert.
-				ausgabe.hinzufuegenNichtMoeglich(zahl);
+				System.out.println(StringSammlung.hinzufuegenNichtMoeglich(zahl));
 				logger.log(Level.INFO,
 						zahl + " wurde nicht der Menge an möglichen Zahlen zur Tippgenerierung wieder hinzugefügt.");
 			}
@@ -57,7 +54,7 @@ public class SLotto {
 	 * generierten Tipps vorkommen sollen.
 	 */
 	public void laden() {
-		unglueckszahlenArray = lader.laden(); // Fügt die laden Funktion der Klasse LAden aus und speichert das
+		unglueckszahlenArray = Laden.laden(); // Fügt die laden Funktion der Klasse LAden aus und speichert das
 												// zurückgegebene Array ind ungklückszahlenArray ab.
 		logger.log(Level.INFO, "Array mit ausgeschlossenen Zahlen wurde erfolgreich übergeben.");
 	}
@@ -67,7 +64,7 @@ public class SLotto {
 	 * speichern() der Klasse Seichern auf.
 	 */
 	public void speichern() {
-		speicher.speichern(unglueckszahlenArray); // speichert das aktuelle unglückszahlenArray ab.
+		Speichern.speichern(unglueckszahlenArray); // speichert das aktuelle unglückszahlenArray ab.
 		logger.log(Level.INFO, "Gespeichert, SLotto speichern durchgelaufen.");
 	}
 
@@ -86,7 +83,8 @@ public class SLotto {
 	 * auf einmal gelöscht.
 	 */
 	public void reset() {
-		unglueckszahlenArray = new ArrayList<Integer>(); // erzeugt eine Neue ArrayList und speichert diese in unglückszahlenArray ab.
+		unglueckszahlenArray = new ArrayList<Integer>(); // erzeugt eine Neue ArrayList und speichert diese in
+															// unglückszahlenArray ab.
 		speichern();
 	}
 

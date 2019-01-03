@@ -42,7 +42,7 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 		}
 		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert die Tipp Liste in aufsteigender
 																		// Reihenfolge.
-		ausgabe.sechsAusNeunundvierzigTipp(tipp); // Gibt den Tipp auf der Konsole aus.
+		System.out.println(StringSammlung.sechsAusNeunundvierzigTipp(tipp)); // Gibt den Tipp auf der Konsole aus.
 		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
 	}
 
@@ -60,11 +60,11 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 				unglueckszahlenArray.add(zahl);
 				logger.log(Level.INFO, zahl + " wurde aus der Menge an möglichen Zahlen für die " + modus()
 						+ "  Tippgenerierung entfernt.");
-				ausgabe.erfolgreichEntfernt(zahl, modus());
+				System.out.println(StringSammlung.erfolgreichEntfernt(zahl));
 				entferneAusTippzahlen(unglueckszahlenArray);
 				logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
 			} else {
-				ausgabe.nichtLoeschbar(zahl);
+				System.out.println(StringSammlung.nichtLoeschbar(zahl));
 				logger.log(Level.INFO, zahl + " wurde nicht aus der Menge an möglichen Zahlen für die " + modus()
 						+ " Tippgenerierung entfernt.");
 			}

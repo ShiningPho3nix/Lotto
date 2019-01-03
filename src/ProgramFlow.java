@@ -14,7 +14,6 @@ import java.util.logging.Logger;
  */
 public class ProgramFlow {
 
-	private Ausgabe ausgabe = LottoTippGenerator.ausgabe;
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Benutzereingabe benutzereingabe;
 	public TippGenerator tippgenerator = null;
@@ -26,11 +25,10 @@ public class ProgramFlow {
 	 */
 	public ProgramFlow() {
 		benutzereingabe = new Benutzereingabe();
-		tippgenerator = new TippGenerator(new SechsAusNeunundvierzig()); // tippgenerator wird mit
-																			// SechsAusNeunundvierzig inizialisiert.
-																			// Wenn keine genauen Angaben zum
-																			// gewünschten Speilmodus gemacht werden, so
-																			// wird 6aus49 verwendet.
+		tippgenerator = new TippGenerator(new SechsAusNeunundvierzig());
+		// tippgenerator wird mit SechsAusNeunundvierzig inizialisiert. Wenn keine
+		// genauen Angaben zum gewünschten Speilmodus gemacht werden, so wird 6aus49
+		// verwendet.
 		logger.log(Level.INFO, "ProgramFlow Konstruktor durchgelaufen");
 	}
 
@@ -40,7 +38,7 @@ public class ProgramFlow {
 	 * 
 	 */
 	public void start(String args) {
-		ausgabe.begruessung();
+		System.out.println(StringSammlung.begruessungConsole());
 		befehlAusfuehren(args);
 	}
 
@@ -71,11 +69,11 @@ public class ProgramFlow {
 				break;
 			case "LIST": // Sorgt für die Ausgabe einer Liste der gesperrten/ausgeschlossenen zahlen
 							// oder, falls es keine gibt, für die Ausgabe einer Nachricht.
-				ausgabe.list();
+				System.out.println(StringSammlung.list());
 				if (tippgenerator.liste().isEmpty()) {
-					ausgabe.keineZahlenAusgeschlossen();
+					System.out.println(StringSammlung.keineZahlenAusgeschlossen());
 				} else {
-					ausgabe.ausgeschlosseneZahlenListe(tippgenerator);
+					System.out.println(StringSammlung.ausgeschlosseneZahlenListe(tippgenerator));
 				}
 				System.out.println("");
 				logger.log(Level.INFO,
@@ -83,7 +81,7 @@ public class ProgramFlow {
 				logger.log(Level.INFO, "Befehl 'list' ausgeführt");
 				break;
 			case "H": // Sorgt dafür das eine Liste mit Befehlen ausgegeben wird
-				ausgabe.hilfeAusgeben();
+				System.out.println(StringSammlung.hilfeAusgeben());
 				logger.log(Level.INFO, "Befehl 'h' ausgeführt");
 				break;
 			case "QUIT": // Sorgt für ein korrektes beendes des Programms
@@ -93,7 +91,7 @@ public class ProgramFlow {
 				break;
 			default:
 				logger.log(Level.INFO, "Ungültige Eingabe wurde als Befehl übergeben. Neuer Befehl wird angefragt.");
-				ausgabe.ungueltigeEingabe(befehl);
+				System.out.println(StringSammlung.ungueltigeEingabe(befehl));
 				break;
 			}
 		}
@@ -196,10 +194,11 @@ public class ProgramFlow {
 																			// String keine Zahl sein (um mehrfach tipps
 																			// zu generieren), so wird der Befehl
 																			// ignoriert.
-			ausgabe.ignorierterBefehl(tippgen);
+			System.out.println(StringSammlung.ignorierterBefehl(tippgen));
 		} else {
-			ausgabe.ungueltigeModusEingabe(tippgen); // Sollte eine ungültige Eingabe im Befehl enthalten sein, so wird
-														// dies dem Nutzer Mitgeteilt ...
+			System.out.println(StringSammlung.ungueltigeEingabe(tippgen)); // Sollte eine ungültige Eingabe im Befehl enthalten sein,
+															// so wird
+			// dies dem Nutzer Mitgeteilt ...
 			befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in))); // ... und erneut ein
 																								// Befehl erfragt.
 			return;

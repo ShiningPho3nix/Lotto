@@ -14,7 +14,6 @@ import java.util.logging.Logger;
  */
 public class Benutzereingabe {
 
-	private Ausgabe ausgabe;
 	private BufferedReader in;
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -22,9 +21,6 @@ public class Benutzereingabe {
 	 * Im Konstructor wird ein Ausgabe Objekt erzeugt.
 	 */
 	public Benutzereingabe() {
-		ausgabe = new Ausgabe(); // Ein neues Ausgabe Objekt wird erzeugt, anstatt wie bei vielen anderen Klassen
-									// das Ausgabe Objekt der Klasse ProgrammFlow zu verwenden. Dies ist vorallem
-									// für die Testklassen wichtig.
 		logger.setUseParentHandlers(false); // Da es in den Testklassen auch log Ausgaben aus den Funktionen dieser
 											// Klasse gibt, wird ParentHandlers auf False gesetzt um die Konsole sauber
 											// zu halten.
@@ -40,7 +36,7 @@ public class Benutzereingabe {
 	 */
 	public String erwarteBefehl(Reader reader) {
 		String befehl = "";
-		ausgabe.erwarteBefehl();
+		StringSammlung.erwarteBefehl();
 		in = new BufferedReader(reader); // ein neuer BufferedReader wird erzeugt mit dem übergebenen reader.
 											// Meist InputStreamReader(System.in), für Testzwecke kann auch ein
 											// beliebiger String mittels StringReader übergeben werden.
@@ -51,7 +47,8 @@ public class Benutzereingabe {
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "Eingegebener Befehl konnte nicht eingelesen werden.", e);
 			return befehl; // sollte aus beliebigen Gründen der eingegebene Befehl nicht eingelesen werden
-							// können, so wird ein leerer String (so wie String befehl inizialisiert wurde) zurückgegeben.
+							// können, so wird ein leerer String (so wie String befehl inizialisiert wurde)
+							// zurückgegeben.
 		}
 	}
 
@@ -87,9 +84,10 @@ public class Benutzereingabe {
 				zahlen[i] = Integer.parseInt(parts[i]); // Jeder String im parts Array wird gecasted und ins zahlen
 														// Array geschrieben.
 			} catch (NumberFormatException e) {
-				ausgabe.istKeineZahl(currentString); // Ist eine der übergebenen Zahlen keine Zahl (kann also nicht zu
-														// Integer gecasted werden) so erfolgt eine Ausgabe auf der
-														// Console...
+				StringSammlung.istKeineZahl(currentString); // Ist eine der übergebenen Zahlen keine Zahl (kann also
+															// nicht zu
+				// Integer gecasted werden) so erfolgt eine Ausgabe auf der
+				// Console...
 				logger.log(Level.WARNING, "Input (" + currentString + ") ist keine Zahl!", e);
 				continue; // ... und es wird mit dem nächstem Eintrag fortgefahren. Somit werden alle
 							// Eingaben, welche keine Zahlen sind ignoriert.
