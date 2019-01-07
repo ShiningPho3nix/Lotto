@@ -39,6 +39,7 @@ public class ProgramFlow {
 	 */
 	public void start(String args) {
 		System.out.println(StringSammlung.begruessungConsole());
+		System.out.println(StringSammlung.hilfeBefehl());
 		befehlAusfuehren(args);
 	}
 
@@ -54,9 +55,9 @@ public class ProgramFlow {
 											// eine entsprechende Methode aus.
 			befehlAusfuehrenTippgen(befehl);
 		} else if (befehl.contains("DELETE")) {
-			befehlAusfuehrenDelete(befehl);
+			System.out.println(befehlAusfuehrenDelete(befehl));
 		} else if (befehl.contains("READD")) {
-			befehlAusfuehrenReadd(befehl);
+			System.out.println(befehlAusfuehrenReadd(befehl));
 		} else if (befehl.equals("")) {
 			befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in)));
 		} else {
@@ -65,6 +66,7 @@ public class ProgramFlow {
 			case "RESET": // Sorgt dafür das es keine gesperrten Zahlen mehr gibt
 				logger.log(Level.INFO, "Sammlung mit ausgeschlossenen Zahlen wird zurückgesetzt.");
 				tippgenerator.reset();
+				befehlAusfuehren("LIST"); // Gibt eine Liste mit den Entfernten Zahlen aus.
 				logger.log(Level.INFO, "Befehl 'reset' ausgeführt");
 				break;
 			case "LIST": // Sorgt für die Ausgabe einer Liste der gesperrten/ausgeschlossenen zahlen
@@ -86,7 +88,7 @@ public class ProgramFlow {
 				break;
 			case "QUIT": // Sorgt für ein korrektes beendes des Programms
 				logger.log(Level.INFO, "Befehl 'quit' ausgeführt");
-				quit();
+				Logging.quit();
 				System.exit(0);
 				break;
 			default:
@@ -109,18 +111,17 @@ public class ProgramFlow {
 	 * 
 	 * @param befehl
 	 */
-	private void befehlAusfuehrenReadd(String befehl) {
+	private String befehlAusfuehrenReadd(String befehl) {
 		String readd = befehl.replace("READD ", ""); // Entsorgt den substring READD, sodass bei korrekter Eingabe des
 														// Befehls nur noch zahlen übrig bleiben.
-		Integer[] readdZahlen = benutzereingabe.erfrageLottoZahlen(new StringReader(readd));
+		Tuple rueckgabe = Benutzereingabe.erfrageLottoZahlen(new StringReader(readd));
+		Integer[] readdZahlen = rueckgabe.getIntegerArr();
 		// Die Zahlen werden als StringReader an die Methode erfrageLottozahlen
 		// übergeben, da diese Methode bereits alles nötige hat um einen Zahlen String
 		// in ein Integer Array umzuwandeln.
 		logger.log(Level.INFO, readdZahlen + " als Zahlen welche wieder hinzugefügt werden sollen übergeben.");
-		tippgenerator.entferneUnglueckszahl(readdZahlen);
 		logger.log(Level.INFO, "Befehl 'readd' ausgeführt");
-		befehlAusfuehren("LIST"); // Gibt eine Liste mit den Entfernten Zahlen aus.
-
+		return tippgenerator.unglueckszahlWiederZulassen(readdZahlen);
 	}
 
 	/**
@@ -132,18 +133,17 @@ public class ProgramFlow {
 	 * 
 	 * @param befehl
 	 */
-	private void befehlAusfuehrenDelete(String befehl) {
+	private String befehlAusfuehrenDelete(String befehl) {
 		String delete = befehl.replace("DELETE ", ""); // Entsorgt den substring DELETE, sodass bei korrekter Eingabe
 														// des Befehls nur noch zahlen übrig bleiben.
-		Integer[] deleteZahlen = benutzereingabe.erfrageLottoZahlen(new StringReader(delete));
+		Tuple rueckgabe = Benutzereingabe.erfrageLottoZahlen(new StringReader(delete));
+		Integer[] deleteZahlen = rueckgabe.getIntegerArr();
 		// Die Zahlen werden als StringReader an die Methode erfrageLottozahlen
 		// übergeben, da diese Methode bereits alles nötige hat um einen Zahlen String
 		// in ein Integer Array umzuwandeln.
 		logger.log(Level.INFO, deleteZahlen + " als auszuschließende Zahlen übergeben.");
-		tippgenerator.entferneZahlen(deleteZahlen);
 		logger.log(Level.INFO, "Befehl 'delete' ausgeführt");
-		befehlAusfuehren("LIST"); // Gibt eine Liste mit den Entfernten Zahlen aus.
-
+		return tippgenerator.neueUnglueckszahlAusschliessen(deleteZahlen);
 	}
 
 	/**
@@ -196,15 +196,17 @@ public class ProgramFlow {
 																			// ignoriert.
 			System.out.println(StringSammlung.ignorierterBefehl(tippgen));
 		} else {
-			System.out.println(StringSammlung.ungueltigeEingabe(tippgen)); // Sollte eine ungültige Eingabe im Befehl enthalten sein,
-															// so wird
+			System.out.println(StringSammlung.ungueltigeEingabe(tippgen)); // Sollte eine ungültige Eingabe im Befehl
+																			// enthalten sein,
+			// so wird
 			// dies dem Nutzer Mitgeteilt ...
 			befehlAusfuehren(benutzereingabe.erwarteBefehl(new InputStreamReader(System.in))); // ... und erneut ein
 																								// Befehl erfragt.
 			return;
 		}
 
-		starteTippgenerierung(tippgen); // Erzeugt einen Tipp mit dem aktuellen tippgenerator-Objekt.
+		System.out.println(starteTippgenerierung(tippgen)); // Erzeugt einen Tipp mit dem aktuellen
+															// tippgenerator-Objekt.
 	}
 
 	/**
@@ -216,9 +218,9 @@ public class ProgramFlow {
 	 * 
 	 * @param tippgen
 	 */
-	public void starteTippgenerierung(ArrayList<String> tippgen) {
+	public String starteTippgenerierung(ArrayList<String> tippgen) {
 		if (tippgen.isEmpty()) {
-			tippgenerator.generiereTipp();
+			return tippgenerator.generiereTipps(1);
 		} else {
 			for (String string : tippgen) { // Sollte der String Tippgen nicht leer sein, so wird geprüft ob darunter
 											// auch eine Zahl ist. Diese wird anschließend für die Anzahl an Tipps zur
@@ -227,7 +229,7 @@ public class ProgramFlow {
 											// eingegebenen Zahl ausgeführt oder generiereTipp.
 					try {
 						int quicktipp = Integer.parseInt(string);
-						tippgenerator.generiereTipps(quicktipp);
+						return tippgenerator.generiereTipps(quicktipp);
 					} catch (NumberFormatException e) {
 						logger.log(Level.WARNING,
 								"Übergebene Zahl für die Anzahl an Tipps welche generiert werden sollen, ist scheinbar keine Zahl. Es wird ein einziger Tipp generiert. Übergeben wurde: "
@@ -235,8 +237,8 @@ public class ProgramFlow {
 								e);
 					}
 				}
-				tippgenerator.generiereTipp();
 			}
+			return tippgenerator.generiereTipps(1);
 		}
 	}
 
@@ -255,14 +257,5 @@ public class ProgramFlow {
 				return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Führt alle nötigen Schritte zum beenden vom Logging und des BufferedReader
-	 * und benutzereingabe aus.
-	 */
-	private void quit() {
-		benutzereingabe.quit();
-		Logging.quit();
 	}
 }

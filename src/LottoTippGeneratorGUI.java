@@ -1,7 +1,9 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,9 +36,6 @@ public class LottoTippGeneratorGUI {
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int anzahlTipps = 1;
 	private final TextArea textArea = new TextArea();
-	private final static String newline = "\n";
-	private JTextField textField;
-	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -64,7 +63,7 @@ public class LottoTippGeneratorGUI {
 		String stringZahlen = makeStringFromArrList(Laden.laden());
 		tippGenerator = new TippGenerator(new SechsAusNeunundvierzig());
 		initialize(stringZahlen);
-		appendToTextArea(StringSammlung.begruessungGUI());
+		textArea.append(StringSammlung.begruessungGUI());
 
 	}
 
@@ -72,13 +71,14 @@ public class LottoTippGeneratorGUI {
 		if (arrayList.isEmpty()) {
 			return "Keine Unglückszahlen festgelegt.";
 		}
+		Collections.sort(arrayList, Collections.reverseOrder().reversed());
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < arrayList.size(); i++) {
 			sb.append(arrayList.get(i));
-			sb.append(',');
+			sb.append(", ");
 		}
 		String stringZahlen = sb.toString();
-		stringZahlen = stringZahlen.substring(0, stringZahlen.length() - 1);
+		stringZahlen = stringZahlen.substring(0, stringZahlen.length() - 2);
 		logger.log(Level.INFO,
 				"Es wurde der String: " + stringZahlen + " aus dem Array der gesperrten Zahlen generiert.");
 		return stringZahlen;
@@ -89,7 +89,7 @@ public class LottoTippGeneratorGUI {
 	 */
 	private void initialize(String stringZahlen) {
 		frmLottoTippgenerator = new JFrame();
-		frmLottoTippgenerator.setSize(633, 390);
+		frmLottoTippgenerator.setSize(628, 384);
 		frmLottoTippgenerator.setTitle("Lotto Tipp-Generator");
 		frmLottoTippgenerator.getContentPane().setBackground(Color.GRAY);
 		frmLottoTippgenerator.getContentPane().setLayout(null);
@@ -118,7 +118,7 @@ public class LottoTippGeneratorGUI {
 		txtrAktuellAusgeschlosseneZahlen.setBackground(new Color(255, 255, 255));
 		txtrAktuellAusgeschlosseneZahlen.setEditable(false);
 		txtrAktuellAusgeschlosseneZahlen.setBounds(0, 0, 526, 25);
-		txtrAktuellAusgeschlosseneZahlen.setText(" Aktuell ausgeschlossene Zahlen/Ungl\u00FCckszahlen: <dynamic>");
+		txtrAktuellAusgeschlosseneZahlen.setText(" Aktuell ausgeschlossene Ungl\u00FCckszahlen: " + stringZahlen);
 		frmLottoTippgenerator.getContentPane().add(txtrAktuellAusgeschlosseneZahlen);
 
 		/**
@@ -218,9 +218,7 @@ public class LottoTippGeneratorGUI {
 		lblNewLabelUngueltig.setToolTipText("Nur Zahlen zwischen 0 und 1.000 sind erlaubt!");
 
 		/**
-		 * Panel oben Rechts. Aktuell noch ungenutzt, eventuell später für
-		 * auschließen/wieder erlauben von zahlen verwenden oder zur ausgabe von
-		 * informationen an den nutzer.
+		 * Panel oben Rechts. Für auschließen/wieder erlauben von zahlen zuständig
 		 */
 		JPanel panelObenRechts = new JPanel();
 		panelObenRechts.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
@@ -229,29 +227,54 @@ public class LottoTippGeneratorGUI {
 		frmLottoTippgenerator.getContentPane().add(panelObenRechts);
 		panelObenRechts.setLayout(null);
 
-		textField = new JTextField();
-		textField.setToolTipText(
-				"Eine oder mehrere Zahlen durch ein Leerzeichen getrennt eingeben. Ung\u00FCltige Zahlen und Zeichen werden Ignoriert. Es k\u00F6nnen Maximal 6 Zahlen von der Tippgenerierung ausgeschlossen sein.");
-		textField.setBounds(150, 15, 77, 20);
-		panelObenRechts.add(textField);
-		textField.setColumns(10);
+		JTextField unglueckszahlenAusschliessenField = new JTextField();
+		unglueckszahlenAusschliessenField.setToolTipText(
+				"Eine oder mehrere Zahlen durch ein Leerzeichen getrennt eingeben. Die eingegebenen Zahlen werden von der Tippgenerierung ausgeschlossen.\n"
+						+ " Ung\u00FCltige Zahlen und Zeichen werden Ignoriert. Es k\u00F6nnen Maximal 6 Zahlen von der Tippgenerierung ausgeschlossen sein.");
+		unglueckszahlenAusschliessenField.setBounds(150, 15, 77, 20);
+		panelObenRechts.add(unglueckszahlenAusschliessenField);
 
-		textField_1 = new JTextField();
-		textField_1.setToolTipText(
-				"Eine oder mehrere Zahlen durch ein Leerzeichen getrennt eingeben. Ung\u00FCltige Zahlen und Zeichen werden Ignoriert. Es k\u00F6nnen nur Zahlen verwendet werden, welche aktuell unter den ausgeschlossenen Zahlen sind.");
-		textField_1.setBounds(150, 45, 77, 20);
-		panelObenRechts.add(textField_1);
-		textField_1.setColumns(10);
+		JTextField unglueckszahlenZulassenField = new JTextField();
+		unglueckszahlenZulassenField.setToolTipText(
+				"Eine oder mehrere Zahlen durch ein Leerzeichen getrennt eingeben. Die eingegebenen Zahlen werden zur Tippgenerierung wieder zugelassen.\n"
+						+ " Ung\u00FCltige Zahlen und Zeichen werden Ignoriert. Es k\u00F6nnen nur Zahlen verwendet werden, welche aktuell unter den ausgeschlossenen"
+						+ " Zahlen sind.");
+		unglueckszahlenZulassenField.setBounds(150, 45, 77, 20);
+		panelObenRechts.add(unglueckszahlenZulassenField);
+		unglueckszahlenZulassenField.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Ungl\u00FCckszahl(en) festlegen");
+		JLabel lblNewLabel = new JLabel("Zahl(en) festlegen");
 		lblNewLabel.setBounds(10, 20, 136, 15);
 		panelObenRechts.add(lblNewLabel);
 
-		JLabel lblNewLabel_1 = new JLabel("Ungl\u00FCckszahl(en) l\u00F6schen");
+		JLabel lblNewLabel_1 = new JLabel("Zahl(en) l\u00F6schen");
 		lblNewLabel_1.setBounds(10, 50, 136, 15);
 		panelObenRechts.add(lblNewLabel_1);
 
 		JButton btnNewButton = new JButton("Best\u00E4tigen");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				StringReader unglueckszahlenAusschliessen = new StringReader(
+						unglueckszahlenAusschliessenField.getText().toString());
+				StringReader unglueckszahlenZulassen = new StringReader(
+						unglueckszahlenZulassenField.getText().toString());
+
+				Tuple rueckgabeAusschliessen = Benutzereingabe.erfrageLottoZahlen(unglueckszahlenAusschliessen);
+				Tuple rueckgabeZulassen = Benutzereingabe.erfrageLottoZahlen(unglueckszahlenZulassen);
+
+				textArea.append(rueckgabeAusschliessen.getString()); // Ungültig eingegebene Zeichen
+				textArea.append(tippGenerator.neueUnglueckszahlAusschliessen(rueckgabeAusschliessen.getIntegerArr()));
+
+				textArea.append(rueckgabeZulassen.getString()); // Ungültig eingegebene Zeichen
+				textArea.append(tippGenerator.unglueckszahlWiederZulassen(rueckgabeZulassen.getIntegerArr()));
+
+				String stringZahlen = makeStringFromArrList(Laden.laden());
+				txtrAktuellAusgeschlosseneZahlen.setText("Aktuell ausgeschlossene Unglückszahlen: " + stringZahlen);
+
+				unglueckszahlenAusschliessenField.setText("");
+				unglueckszahlenZulassenField.setText("");
+			}
+		});
 		btnNewButton.setToolTipText(
 				"Zun\u00E4cht werden die Zahlen, wenn vorhanden, aus dem \"festlegen\" Feld behandelt. Danach werden die Zahlen, wenn vorhanden, aus dem \"l\u00F6schen\" Feld behandelt.");
 		btnNewButton.setBounds(292, 44, 89, 23);
@@ -307,7 +330,7 @@ public class LottoTippGeneratorGUI {
 					t.setRepeats(false);
 					t.start();
 				} else {
-					appendToTextArea(tippGenerator.generiereTippsTest(anzahlTipps));
+					textArea.append(tippGenerator.generiereTipps(anzahlTipps));
 				}
 			}
 		});
@@ -325,14 +348,5 @@ public class LottoTippGeneratorGUI {
 			}
 		});
 
-	}
-
-	/**
-	 * Methode um Text der TextArea hinzuzufügen.
-	 * 
-	 * @param text
-	 */
-	private void appendToTextArea(String text) {
-		textArea.append(text + newline);
 	}
 }

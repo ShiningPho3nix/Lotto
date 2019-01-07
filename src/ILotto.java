@@ -14,21 +14,15 @@ public interface ILotto {
 
 	void speichern();
 
-	void generiereTipp();
+	String generiereTipp();
 
-	String generiereTippTest();
-
-	void generiereTipps(int quicktipp);
-
-	String generiereTippsTest(int anzahlTipps);
+	String generiereTipps(int quicktipp);
 
 	void erstelleCollection();
 
-	void entferneZahlen(Integer[] deleteZahlen);
+	String neueUnglueckszahlAusschliessen(Integer[] deleteZahlen);
 
-	void entferneAusTippzahlen(ArrayList<Integer> unglueckszahlenArray);
-
-	void entferneUnglueckszahl(Integer[] addZahlen);
+	String unglueckszahlWiederZulassen(Integer[] addZahlen);
 
 	String modus();
 

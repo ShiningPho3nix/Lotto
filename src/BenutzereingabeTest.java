@@ -47,7 +47,8 @@ public class BenutzereingabeTest {
 															// erzeugt.
 		Integer[] ergebnis = new Integer[] { 2, 3, 4, 5 }; // Aufgrund des oben erzeugten Strings wird ein Integer Array
 															// ohne die ungültigen Daten erzeugt.
-		Integer[] test = benutzereingabe.erfrageLottoZahlen(reader);
+		Tuple rueckgabe = Benutzereingabe.erfrageLottoZahlen(reader);
+		Integer[] test = rueckgabe.getIntegerArr();
 		assertArrayEquals(ergebnis, test);
 	}
 

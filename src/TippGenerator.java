@@ -38,9 +38,11 @@ public class TippGenerator {
 	/**
 	 * Führt die jeweilige Implementation von entferneZahlen() aus. Abhängig davon
 	 * welche Instanz gerade im Feld lottoart zugewiesen ist.
+	 * 
+	 * @return
 	 */
-	public void entferneZahlen(Integer[] deleteZahlen) {
-		lottoart.entferneZahlen(deleteZahlen);
+	public String neueUnglueckszahlAusschliessen(Integer[] deleteZahlen) {
+		return lottoart.neueUnglueckszahlAusschliessen(deleteZahlen);
 	}
 
 	/**
@@ -48,18 +50,10 @@ public class TippGenerator {
 	 * davon welche Instanz gerade im Feld lottoart zugewiesen ist.
 	 * 
 	 * @param addZahlen
+	 * @return
 	 */
-	public void entferneUnglueckszahl(Integer[] addZahlen) {
-		lottoart.entferneUnglueckszahl(addZahlen);
-	}
-
-	/**
-	 * Führt die jeweilige Implementation von generiereTipp() aus. Abhängig davon
-	 * welche Instanz gerade im Feld lottoart zugewiesen ist.
-	 */
-	public void generiereTipp() {
-		lottoart.generiereTipp();
-		logger.log(Level.INFO, lottoModus() + " Tipp wurde erstellt.");
+	public String unglueckszahlWiederZulassen(Integer[] addZahlen) {
+		return lottoart.unglueckszahlWiederZulassen(addZahlen);
 	}
 
 	/**
@@ -68,12 +62,8 @@ public class TippGenerator {
 	 * 
 	 * @param addZahlen
 	 */
-	public void generiereTipps(int quicktipp) {
-		lottoart.generiereTipps(quicktipp);
-	}
-
-	public String generiereTippsTest(int anzahlTipps) {
-		return lottoart.generiereTippsTest(anzahlTipps);
+	public String generiereTipps(int quicktipp) {
+		return lottoart.generiereTipps(quicktipp);
 	}
 
 	/**

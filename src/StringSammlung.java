@@ -26,7 +26,7 @@ public class StringSammlung {
 	 */
 	public static String begruessungConsole() {
 		logger.log(Level.INFO, "Dem Nutzer wird die Begrüßungsnachricht über die Konsole ausgegeben.");
-		return " ************************************** \n *Willkommen beim Lotto Tipp Generator* \n **************************************";
+		return " ************************************** \n *Willkommen beim Lotto Tipp Generator* \n **************************************\n";
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class StringSammlung {
 	 */
 	public static String hilfeBefehl() {
 		logger.log(Level.INFO, "Dem Nutzer wurde die Information wie die Hilfe aufgerufen wird ausgegeben.");
-		return "'h' eingeben um eine Liste mit Befehlen ausgegeben zu bekommen.";
+		return "'h' eingeben um eine Liste mit Befehlen ausgegeben zu bekommen.\n";
 
 	}
 
@@ -103,13 +103,13 @@ public class StringSammlung {
 		if (zahl > 50 || zahl < 1) { // Für den Fall das die Zahl außerhalb des gültigen Bereichs liegt.
 			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
 			return ("Löschen von " + zahl + " nicht möglich!\n "
-					+ "Die zu löschende Zahl muss im Bereich [1,50] liegen.");
+					+ "Die zu löschende Zahl muss im Bereich [1,50] liegen.\n");
 
 		} else { // Für alle anderen Fälle
 			logger.log(Level.INFO,
 					"Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl + " nicht möglich ist.");
 			return ("Löschen von " + zahl + " nicht möglich!\n"
-					+ "Entweder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt");
+					+ "Entweder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt.\n");
 		}
 	}
 
@@ -157,7 +157,7 @@ public class StringSammlung {
 	 */
 	public static String erfolgreichEntfernt(int zahl) {
 		logger.log(Level.INFO, "Über erfolgreiches entfernen der Zahl: " + zahl + " benachrichtigt.");
-		return (zahl + " erfolgreich entfernt");
+		return (zahl + " erfolgreich entfernt.\n");
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class StringSammlung {
 	 */
 	public static String erfolgreichWiederHinzugefuegt(int zahl) {
 		logger.log(Level.INFO, "Über erfolgreiches wieder hinzufügen der Zahl: " + zahl + " benachrichtigt.");
-		return (zahl + " erfolgreich wieder hinzugefügt");
+		return (zahl + " erfolgreich wieder hinzugefügt.\n");
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class StringSammlung {
 	 */
 	public static String dateiErstellt() {
 		logger.log(Level.INFO, "Über erfolgreiches erstellen einer neuen Datei benachrichtigt.");
-		return "Es existierte noch keine Datei zum abspeichern der entfernten Zahlen. Diese Datei wurde mit dem Namen 'TippGenerator.txt' erstellt";
+		return "Es existierte noch keine Datei zum abspeichern der entfernten Zahlen. Diese Datei wurde mit dem Namen 'TippGenerator.txt' erstellt.\n";
 
 	}
 
@@ -189,7 +189,7 @@ public class StringSammlung {
 	 */
 	public static String istKeineZahl(String input) {
 		logger.log(Level.INFO, "Nachricht ausgegeben, dass " + input + " keine Zahl ist.");
-		return (input + " ist keine Zahl und wird daher ignoriert.");
+		return (input + " ist keine Zahl und wird daher ignoriert.\n");
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class StringSammlung {
 	 */
 	public static String list() {
 		logger.log(Level.INFO, "list() ausgeführt.");
-		return "Die derzeitig ausgeschlossenen Zahlen sind:";
+		return "Die derzeitig ausgeschlossenen Zahlen sind:\n";
 	}
 
 	/**
@@ -270,7 +270,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String keineZahlenAusgeschlossen() {
-		return "Derzeit sind keine Zahlen von der Tippgenerierung ausgeschlossen.";
+		return "Derzeit sind keine Zahlen von der Tippgenerierung ausgeschlossen.\n";
 	}
 
 	/**
