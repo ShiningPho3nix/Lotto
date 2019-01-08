@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  * @author Steffen Dworsky
  *
  */
-public class SFileOperationTest {
+public class FileOperationTest {
 
 	private ArrayList<Integer> testArray;
 	private ArrayList<Integer> ergebnisArray;
@@ -40,7 +40,7 @@ public class SFileOperationTest {
 	void testCheckArray() {
 		Integer[] ergebnis = new Integer[] { 6, 5, 3, 50, 1, 2 }; // Das zu erwartene Ergebniss, als Array um es im
 		ergebnisArray.addAll(Arrays.asList(ergebnis)); // nächsten Schritt zur Liste hinzuzufügen.
-		ArrayList<Integer> localTestArray = SFileOperation.checkArray(testArray);
+		ArrayList<Integer> localTestArray = FileOperation.checkArray(testArray);
 		assertTrue(localTestArray.size() == 6);
 		assertEquals(localTestArray, ergebnisArray);
 	}
@@ -53,7 +53,7 @@ public class SFileOperationTest {
 	void testDoppelteZahlen() {
 		Integer[] ergebnis = new Integer[] { 6, 70, 0, 5, 3, 50, 100, 51, 1, 2, 4 }; // Das zu erwartene Ergebniss
 		ergebnisArray.addAll(Arrays.asList(ergebnis));
-		ArrayList<Integer> localTestArray = SFileOperation.doppelteZahlen(testArray);
+		ArrayList<Integer> localTestArray = FileOperation.doppelteZahlen(testArray);
 		assertEquals(ergebnisArray, localTestArray);
 	}
 
@@ -65,7 +65,7 @@ public class SFileOperationTest {
 	void testUngueltigeWerte() {
 		Integer[] ergebnis = new Integer[] { 6, 6, 5, 3, 50, 1, 2, 3, 4, 5, 6 }; // Das zu erwartene Ergebniss
 		ergebnisArray.addAll(Arrays.asList(ergebnis));
-		ArrayList<Integer> localTestArray = SFileOperation.ungueltigeWerte(testArray);
+		ArrayList<Integer> localTestArray = FileOperation.ungueltigeWerte(testArray);
 		assertEquals(ergebnisArray, localTestArray);
 	}
 
@@ -76,7 +76,7 @@ public class SFileOperationTest {
 	void testMehrAlsSechsWerte() {
 		Integer[] ergebnis = new Integer[] { 6, 6, 70, 0, 5, 3 }; // Das zu erwartene Ergebniss
 		ergebnisArray.addAll(Arrays.asList(ergebnis));
-		ArrayList<Integer> localTestArray = SFileOperation.mehrAlsSechsWerte(testArray);
+		ArrayList<Integer> localTestArray = FileOperation.mehrAlsSechsWerte(testArray);
 		assertAll("sizes", () -> assertTrue(ergebnisArray.size() == 6), () -> assertTrue(localTestArray.size() == 6));
 		assertEquals(ergebnisArray, localTestArray);
 	}

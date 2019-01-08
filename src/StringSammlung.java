@@ -9,9 +9,6 @@ import java.util.logging.Logger;
  * @author Steffen Dworsky
  *
  */
-
-// TODO Alles umbauen sodass Strings zurückgegeben werden., damit die Vorgefertigten ausgaben
-// sowohl von der Konsolen version, als auch der GUI verwendet werden können
 public class StringSammlung {
 
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -289,7 +286,7 @@ public class StringSammlung {
 	 * @param tipp
 	 */
 	public static String sechsAusNeunundvierzigTipp(ArrayList<Integer> tipp) {
-		return ("6aus49:\n" + tipp + "\n");
+		return ("6aus49: " + tipp + System.lineSeparator());
 	}
 
 	/**
@@ -299,6 +296,11 @@ public class StringSammlung {
 	 * @param zweiAusZehnTipp
 	 */
 	public static String eurojackpotTipp(ArrayList<Integer> tipp, ArrayList<Integer> zweiAusZehnTipp) {
-		return ("5aus50:\n" + tipp + "\n 2aus10:\n" + zweiAusZehnTipp + "\n");
+		return ("5aus50: " + tipp + System.lineSeparator() + "2aus10: " + zweiAusZehnTipp + System.lineSeparator());
+	}
+
+	public static String nichtKorrektBeendet() {
+		return ("Das Programm wurde beim letzten mal nicht korrekt beendet! \n"
+				+ " Sollte das Programm nicht korrekt starten, so müssen 'LottoTippGeneratorLog.lck' Datei(en) manuell gelöscht werden.");
 	}
 }

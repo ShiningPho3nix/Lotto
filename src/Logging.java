@@ -21,8 +21,8 @@ public class Logging {
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static FileHandler fileHandler;
 	private SimpleFormatter formatter;
-	private String pattern = "\\LottoTippGeneratorLog%g.log"; // Ein Name Pattern, um mehrere Log Dateien zu
-																// ermöglichen.
+	private String path = Paths.get("").toAbsolutePath().toString().concat("\\LottoTippGenFiles\\logs");
+	private String fileName = "\\LottoTippGeneratorLog%g.log";
 
 	/**
 	 * Im Konstruktor wird zunächst deleteLocks ausgeführt, danach wir versucht die
@@ -30,11 +30,13 @@ public class Logging {
 	 * den Filehandler gesetzt.
 	 */
 	public Logging() {
-		deleteLocks(); // Sollte das Programm nicht richtig beendet worden sein, so werden zunächst
-						// alles lock dateien gelöscht.
 		try {
-			fileHandler = new FileHandler(Paths.get("").toAbsolutePath().toString().concat(pattern), 100000, 10, true);
+			File file = new File(path.concat(fileName));
+			file.getParentFile().mkdirs();
+			fileHandler = new FileHandler(path.concat(fileName), 100000, 10, true);
 			// erlaubt 100000 byte pro datei, 10 Dateien und concat ist aktiviert.
+			deleteLocks(); // Sollte das Programm nicht richtig beendet worden sein, so werden alle lock
+							// Dateien gelöscht.
 		} catch (SecurityException | IOException e) {
 			logger.log(Level.WARNING, "Auf log Datei konnte nich zugegriffen werden.", e);
 			e.printStackTrace();
@@ -53,15 +55,17 @@ public class Logging {
 	 * zu löschen.
 	 */
 	private void deleteLocks() {
-		File dir = new File(Paths.get("").toAbsolutePath().toString());
-		File[] allFiles = dir.listFiles(); // Sucht alle Dateien im aktuellen verzeichniss raus
+		File file = new File(path);
+		File[] allFiles = file.listFiles(); // Sucht alle Dateien im aktuellen verzeichniss raus
+		if (allFiles.length == 0) {
+			return;
+		}
 
-		for (File file : allFiles) {
-			String lockFile = file.getName();
+		for (File files : allFiles) {
+			String lockFile = files.getName();
 			if (lockFile.contains(".lck")) { // Enthält eine Datei die endung .lck so wird die datei gelöscht.
-				file.delete();
-				System.out.println("Das Programm wurde beim letzten mal nicht korrekt beendet! \n"
-						+ " Sollte das Programm nicht korrekt starten, so müssen 'LottoTippGeneratorLog.lck' Datei(en) manuell gelöscht werden.");
+				files.delete();
+				System.out.println(StringSammlung.nichtKorrektBeendet());
 			}
 		}
 	}

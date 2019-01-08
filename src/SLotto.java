@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,24 +130,16 @@ public class SLotto {
 	}
 
 	/**
-	 * Funktion verwendet die liste tippzahlenArray, shuffelt dieses und nimmt dann
-	 * die ersten 6 Zahlen. Die Zahlen werden aufsteigend sortiert und als Tipp auf
-	 * der Konsole ausgegeben. generiere Tipp verwendet nur das TippzahlenArray
+	 * Diese Methode wird in den jeweiligen Klassen Eurojackpot und 6aus49
+	 * Überschrieben und dort ausgeführt. Führt dem entsprechend natürlich auch die
+	 * korrekte version basierend auf dem jeweiligem Objekt (euro oder 6aus49) aus.
 	 * 
-	 * @return Ein formatierter String, welcher den generierten Tipp enthält.
+	 * @return
 	 */
 	public String generiereTipp() {
-		Collections.shuffle(tippzahlenArray); // Mischt das sortierte ZahlenArray durch, ...
-		ArrayList<Integer> tipp = new ArrayList<Integer>();
-		for (int i = 0; i < 6; i++) { // ... nimmt dann die ersten 6 Werte und ...
-			tipp.add(tippzahlenArray.get(i)); // ... fügt diese dem tipp hinzu.
-			logger.log(Level.INFO,
-					tippzahlenArray.get(i).toString() + " wurde als Tippzahl ausgewählt und dem dem Tipp hinzugefügt.");
-		}
-		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert die Tipp Liste in aufsteigender
-																		// Reihenfolge.
-		logger.log(Level.INFO, "Tipp wurde dem Nutzer auf der Konsole ausgegeben.");
-		return (StringSammlung.sechsAusNeunundvierzigTipp(tipp)); // Gibt den Tipp auf der Konsole aus.
+		// generiereTipp wird in den jeweiligen Klassen Eurojackpot und 6aus49
+		// ausgeführt.
+		return null;
 	}
 
 	/**
@@ -162,10 +153,10 @@ public class SLotto {
 			quicktipp = 1;
 		}
 		for (int i = 1; i <= quicktipp; i++) {
-			sb.append("Tipp#" + i + " \n"); // Für die Übergeben Anzahl an mal wird Tipp mit fortlaufender Zahl
+			sb.append("Tipp#" + i + System.lineSeparator()); // Für die Übergeben Anzahl an mal wird Tipp mit
+																// fortlaufender Zahl
 			// ausgegeben...
-			sb.append(generiereTipp() + "\n"); // ...und anschließend ein Tipp generiert.
-			sb.append("");
+			sb.append(generiereTipp() + System.lineSeparator()); // ...und anschließend ein Tipp generiert.
 		}
 		return sb.toString();
 	}
@@ -175,8 +166,8 @@ public class SLotto {
 	 * generierten Tipps vorkommen sollen.
 	 */
 	public void laden() {
-		unglueckszahlenArray = Laden.laden(); // Fügt die laden Funktion der Klasse LAden aus und speichert das
-												// zurückgegebene Array ind ungklückszahlenArray ab.
+		unglueckszahlenArray = FileOperation.laden(); // Fügt die laden Funktion der Klasse LAden aus und speichert das
+		// zurückgegebene Array ind ungklückszahlenArray ab.
 		logger.log(Level.INFO, "Array mit ausgeschlossenen Zahlen wurde erfolgreich übergeben.");
 	}
 
@@ -185,7 +176,8 @@ public class SLotto {
 	 * speichern() der Klasse Seichern auf.
 	 */
 	public void speichern() {
-		Speichern.speichern(unglueckszahlenArray); // speichert das aktuelle unglückszahlenArray ab.
+		FileOperation.speichern(unglueckszahlenArray, "Unglueckszahlen.txt"); // speichert das aktuelle
+																				// unglückszahlenArray ab.
 		logger.log(Level.INFO, "Gespeichert, SLotto speichern durchgelaufen.");
 	}
 

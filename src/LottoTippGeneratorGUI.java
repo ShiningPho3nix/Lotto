@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.JFormattedTextField;
 import java.awt.TextArea;
 
+// TODO Logging!
 public class LottoTippGeneratorGUI {
 
 	private JFrame frmLottoTippgenerator;
@@ -60,7 +61,7 @@ public class LottoTippGeneratorGUI {
 	 * wird mit SechsAusNeunundvierzig inizialisiert und initialize wird ausgeführt.
 	 */
 	public LottoTippGeneratorGUI() {
-		String stringZahlen = makeStringFromArrList(Laden.laden());
+		String stringZahlen = makeStringFromArrList(FileOperation.laden());
 		tippGenerator = new TippGenerator(new SechsAusNeunundvierzig());
 		initialize(stringZahlen);
 		textArea.append(StringSammlung.begruessungGUI());
@@ -134,12 +135,13 @@ public class LottoTippGeneratorGUI {
 
 				if (n == JOptionPane.YES_OPTION) {
 					tippGenerator.reset();
-					String stringZahlen = makeStringFromArrList(Laden.laden());
+					String stringZahlen = makeStringFromArrList(FileOperation.laden());
+					textArea.append("Unglückszahlen wurden zurückgesetzt!");
 					txtrAktuellAusgeschlosseneZahlen.setText("Aktuell ausgeschlossene Zahlen: " + stringZahlen);
 				} else if (n == JOptionPane.NO_OPTION) {
-					System.out.println("No");
+					textArea.append("Zurücksetzen der Unglückszahlen abgebrochen!");
 				} else if (n == JOptionPane.CLOSED_OPTION) {
-					System.out.println("Closed by hitting the cross");
+
 				}
 			}
 		});
@@ -268,7 +270,7 @@ public class LottoTippGeneratorGUI {
 				textArea.append(rueckgabeZulassen.getString()); // Ungültig eingegebene Zeichen
 				textArea.append(tippGenerator.unglueckszahlWiederZulassen(rueckgabeZulassen.getIntegerArr()));
 
-				String stringZahlen = makeStringFromArrList(Laden.laden());
+				String stringZahlen = makeStringFromArrList(FileOperation.laden());
 				txtrAktuellAusgeschlosseneZahlen.setText("Aktuell ausgeschlossene Unglückszahlen: " + stringZahlen);
 
 				unglueckszahlenAusschliessenField.setText("");
@@ -304,16 +306,12 @@ public class LottoTippGeneratorGUI {
 		/**
 		 * Generieren Button
 		 */
-
-		// TODO unterscheidung einführen. Bei <10 tipps diese im textfeld ausgeben. Bei
-		// mehr die Tipps in eine Datei speichern und die Info dazu über das textfeld
-		// ausgeben.
 		JButton btnGenerierenButton = new JButton("Generieren");
 		btnGenerierenButton.setBounds(520, 190, 85, 25);
 		panelTextFieldUnten.add(btnGenerierenButton);
 		btnGenerierenButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (formattedTextField.getValue() == null) {
+				if (formattedTextField.getValue() == null || formattedTextField.getValue().equals("")) {
 					anzahlTipps = 1;
 				} else {
 					anzahlTipps = (int) formattedTextField.getValue();
@@ -329,6 +327,14 @@ public class LottoTippGeneratorGUI {
 					});
 					t.setRepeats(false);
 					t.start();
+				} else if (anzahlTipps > 10) {
+					FileOperation.speichern(tippGenerator.generiereTipps(anzahlTipps),
+							"\\GenerierteTipps" + tippGenerator.lottoModus() + ".txt");
+					textArea.append(
+							"Bei der Generierung von mehr als 10 Tipps werden diese in einer Datei gespeichert:\n");
+					textArea.append(FileOperation.currentDirectory()
+							.concat("\\LottoTippGenFiles\\GenerierteTipps" + tippGenerator.lottoModus() + ".txt")
+							+ System.lineSeparator());
 				} else {
 					textArea.append(tippGenerator.generiereTipps(anzahlTipps));
 				}

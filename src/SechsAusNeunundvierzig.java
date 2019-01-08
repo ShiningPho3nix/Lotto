@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 
 /**
@@ -20,6 +22,26 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 	public SechsAusNeunundvierzig() {
 		super("6aus49");
 		logger.log(Level.INFO, "SechsAusNeunundvierzig Konstruktor durchgelaufen.");
+	}
+
+	/**
+	 * Funktion verwendet die liste tippzahlenArray, shuffelt dieses und nimmt dann
+	 * die ersten 6 Zahlen. Die Zahlen werden aufsteigend sortiert und als Tipp auf
+	 * der Konsole ausgegeben. generiere Tipp verwendet nur das TippzahlenArray
+	 * 
+	 * @return Ein formatierter String, welcher den generierten Tipp enthält.
+	 */
+	@Override
+	public String generiereTipp() {
+		Collections.shuffle(tippzahlenArray); // Mischt das sortierte ZahlenArray durch, ...
+		ArrayList<Integer> tipp = new ArrayList<Integer>();
+		for (int i = 0; i < 6; i++) { // ... nimmt dann die ersten 6 Werte und ...
+			tipp.add(tippzahlenArray.get(i)); // ... fügt diese dem tipp hinzu.
+		}
+		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert die Tipp Liste in aufsteigender
+																		// Reihenfolge.
+		logger.log(Level.INFO, tipp + " wurde generiert.");
+		return (StringSammlung.sechsAusNeunundvierzigTipp(tipp)); // Gibt den Tipp auf der Konsole aus.
 	}
 
 	/**
