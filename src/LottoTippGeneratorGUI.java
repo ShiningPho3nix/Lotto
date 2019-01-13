@@ -1,6 +1,8 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,13 +13,13 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 
 import javax.swing.text.NumberFormatter;
 import javax.swing.JRadioButton;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import javax.swing.JMenu;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -29,7 +31,6 @@ import javax.swing.UIManager;
 import javax.swing.JFormattedTextField;
 import java.awt.TextArea;
 
-// TODO Logging!
 public class LottoTippGeneratorGUI {
 
 	private JFrame frmLottoTippgenerator;
@@ -37,13 +38,14 @@ public class LottoTippGeneratorGUI {
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int anzahlTipps = 1;
 	private final TextArea textArea = new TextArea();
+	Action generierenAction;
+	Action unglueckszahlenAction;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		// new Logging();
-		logger.setUseParentHandlers(false); // kann ersetzt werden sobald Logging läuft.
+		new Logging();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -65,11 +67,13 @@ public class LottoTippGeneratorGUI {
 		tippGenerator = new TippGenerator(new SechsAusNeunundvierzig());
 		initialize(stringZahlen);
 		textArea.append(StringSammlung.begruessungGUI());
+		logger.log(Level.INFO, "Konstruktor durchgelaufen, GUI gestartet.");
 
 	}
 
 	private String makeStringFromArrList(ArrayList<Integer> arrayList) {
 		if (arrayList.isEmpty()) {
+			logger.log(Level.INFO, "Keine Unglückszahlen in der ArrayList.");
 			return "Keine Unglückszahlen festgelegt.";
 		}
 		Collections.sort(arrayList, Collections.reverseOrder().reversed());
@@ -90,23 +94,20 @@ public class LottoTippGeneratorGUI {
 	 */
 	private void initialize(String stringZahlen) {
 		frmLottoTippgenerator = new JFrame();
-		frmLottoTippgenerator.setSize(628, 384);
+		frmLottoTippgenerator.setSize(800, 400);
 		frmLottoTippgenerator.setTitle("Lotto Tipp-Generator");
 		frmLottoTippgenerator.getContentPane().setBackground(Color.GRAY);
 		frmLottoTippgenerator.getContentPane().setLayout(null);
+		frmLottoTippgenerator.setResizable(false);
+		frmLottoTippgenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLottoTippgenerator.addComponentListener(new ComponentAdapter() {
+			@Override // Component Listener um das Logging beenden zu können.
+			public void componentHidden(ComponentEvent e) {
+				Logging.quit();
+				((JFrame) (e.getComponent())).dispose();
+			}
+		});
 		ButtonGroup spielmodusRadio = new ButtonGroup();
-
-		/**
-		 * Menü Leiste
-		 */
-		JMenuBar menuBar = new JMenuBar();
-		frmLottoTippgenerator.setJMenuBar(menuBar);
-
-		/**
-		 * Menü Punkt Datei
-		 */
-		JMenu mnDatei = new JMenu("Datei");
-		menuBar.add(mnDatei);
 
 		/**
 		 * Oberes Textfeld in welchem die Ausgeschlossenen Zahlen dem Nutzer gezeigt
@@ -118,9 +119,10 @@ public class LottoTippGeneratorGUI {
 		txtrAktuellAusgeschlosseneZahlen.setForeground(new Color(204, 0, 0));
 		txtrAktuellAusgeschlosseneZahlen.setBackground(new Color(255, 255, 255));
 		txtrAktuellAusgeschlosseneZahlen.setEditable(false);
-		txtrAktuellAusgeschlosseneZahlen.setBounds(0, 0, 526, 25);
+		txtrAktuellAusgeschlosseneZahlen.setBounds(0, 0, 695, 25);
 		txtrAktuellAusgeschlosseneZahlen.setText(" Aktuell ausgeschlossene Ungl\u00FCckszahlen: " + stringZahlen);
 		frmLottoTippgenerator.getContentPane().add(txtrAktuellAusgeschlosseneZahlen);
+		logger.log(Level.INFO, "TextArea mit Unglückszahlen durchgelaufen Unglückszahlen: " + stringZahlen);
 
 		/**
 		 * Reset Button + Option Pane zur Bestätigung
@@ -128,6 +130,7 @@ public class LottoTippGeneratorGUI {
 		JButton btnResetButton = new JButton("Reset");
 		btnResetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				logger.log(Level.INFO, "Reset Button gedrückt.");
 				int n = JOptionPane.showOptionDialog(new JFrame(),
 						"Durch einen Reset werden die aktuell gesperrten Zahlen wieder erlaubt! Bitte bestätigen.",
 						"Reset bitte bestätigen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
@@ -138,15 +141,18 @@ public class LottoTippGeneratorGUI {
 					String stringZahlen = makeStringFromArrList(FileOperation.laden());
 					textArea.append("Unglückszahlen wurden zurückgesetzt!");
 					txtrAktuellAusgeschlosseneZahlen.setText("Aktuell ausgeschlossene Zahlen: " + stringZahlen);
+					logger.log(Level.INFO, "Reset Option YES gewählt, Unglückszahlen wurden resettet");
 				} else if (n == JOptionPane.NO_OPTION) {
 					textArea.append("Zurücksetzen der Unglückszahlen abgebrochen!");
+					logger.log(Level.INFO, "Reset Option NO gewählt, Unglückszahlen wurden nicht resettet");
 				} else if (n == JOptionPane.CLOSED_OPTION) {
-
+					logger.log(Level.INFO, "Reset OptionPane geschlossen, Unglückszahlen wurden nicht resettet");
 				}
 			}
 		});
-		btnResetButton.setBounds(525, 0, 92, 25);
+		btnResetButton.setBounds(695, 0, 100, 25);
 		frmLottoTippgenerator.getContentPane().add(btnResetButton);
+		logger.log(Level.INFO, "Reset Button durchgelaufen.");
 
 		/**
 		 * Panel in welchem die Optionen für den Generator zu finden sind (Modus,
@@ -155,9 +161,10 @@ public class LottoTippGeneratorGUI {
 		JPanel panelGeneratorOprionen = new JPanel();
 		panelGeneratorOprionen.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
 				"Generator Optionen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelGeneratorOprionen.setBounds(0, 25, 225, 80);
+		panelGeneratorOprionen.setBounds(0, 25, 270, 80);
 		frmLottoTippgenerator.getContentPane().add(panelGeneratorOprionen);
 		panelGeneratorOprionen.setLayout(null);
+		logger.log(Level.INFO, "Generator Optionen Panel durchgelaufen.");
 
 		/**
 		 * Einer der beiden Radio Buttons zur Modus Auswahl 6aus49
@@ -168,11 +175,13 @@ public class LottoTippGeneratorGUI {
 		rdbtnaus.setToolTipText("Setzt den gewählten Spielmodus auf 6aus49");
 		rdbtnaus.setSelected(true);
 		spielmodusRadio.add(rdbtnaus);
+		logger.log(Level.INFO, "6aus49 Radio Button durchgelaufen.");
 		rdbtnaus.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tippGenerator = new TippGenerator(new SechsAusNeunundvierzig());
+				logger.log(Level.INFO, "Radio Button auf 6aus49 gesetzt.");
 			}
 		});
 
@@ -184,11 +193,13 @@ public class LottoTippGeneratorGUI {
 		panelGeneratorOprionen.add(rdbtnEurojackpot);
 		rdbtnEurojackpot.setToolTipText("Setzt den gewählten Spielmodus auf Eurojackpot");
 		spielmodusRadio.add(rdbtnEurojackpot);
+		logger.log(Level.INFO, "Eurojackpot Radio Button durchgelaufen.");
 		rdbtnEurojackpot.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tippGenerator = new TippGenerator(new Eurojackpot());
+				logger.log(Level.INFO, "Radio Button auf Eurojackpot gesetzt.");
 			}
 		});
 
@@ -204,20 +215,24 @@ public class LottoTippGeneratorGUI {
 		formatter.setAllowsInvalid(false);
 		// If you want the value to be committed on each keystroke instead of focus lost
 		formatter.setCommitsOnValidEdit(true);
-		JFormattedTextField formattedTextField = new JFormattedTextField(formatter);
-		formattedTextField.setBounds(121, 35, 45, 20);
-		panelGeneratorOprionen.add(formattedTextField);
+		JFormattedTextField formattedTextFieldAnzahlTipps = new JFormattedTextField(formatter);
+		formattedTextFieldAnzahlTipps.setBounds(121, 35, 60, 20);
+		formattedTextFieldAnzahlTipps.addActionListener(generierenAction); // TODO Funktioniert noch nicht wie gewollt,
+																			// nichts passiert.
+		panelGeneratorOprionen.add(formattedTextFieldAnzahlTipps);
+		logger.log(Level.INFO, "FormattetTextField um die Anzahl an zu generierenden Tipps einzugeben durchgelaufen.");
 
 		/**
 		 * Label welches unter dem Textfeld zur Tippanzahl-Eingabe erscheint, wenn eine
 		 * ungültige eingabe getätigt wurde (>1.000).
 		 */
 		JLabel lblNewLabelUngueltig = new JLabel("Ungültige Eingabe.");
-		lblNewLabelUngueltig.setBounds(121, 55, 100, 20);
+		lblNewLabelUngueltig.setBounds(121, 55, 139, 20);
 		panelGeneratorOprionen.add(lblNewLabelUngueltig);
 		lblNewLabelUngueltig.setVisible(false);
 		lblNewLabelUngueltig.setForeground(Color.RED);
 		lblNewLabelUngueltig.setToolTipText("Nur Zahlen zwischen 0 und 1.000 sind erlaubt!");
+		logger.log(Level.INFO, "Label für ungültige Eingabe durchgelaufen.");
 
 		/**
 		 * Panel oben Rechts. Für auschließen/wieder erlauben von zahlen zuständig
@@ -225,37 +240,66 @@ public class LottoTippGeneratorGUI {
 		JPanel panelObenRechts = new JPanel();
 		panelObenRechts.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
 				"Unglückszahlen bearbeiten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelObenRechts.setBounds(225, 25, 391, 80);
+		panelObenRechts.setBounds(270, 25, 524, 80);
 		frmLottoTippgenerator.getContentPane().add(panelObenRechts);
 		panelObenRechts.setLayout(null);
+		logger.log(Level.INFO, "Unglückszahlen bearbeiten Panel durchgelaufen.");
 
+		/**
+		 * Die Text Felder zum Eingeben der Unglückszahlen
+		 */
 		JTextField unglueckszahlenAusschliessenField = new JTextField();
 		unglueckszahlenAusschliessenField.setToolTipText(
 				"Eine oder mehrere Zahlen durch ein Leerzeichen getrennt eingeben. Die eingegebenen Zahlen werden von der Tippgenerierung ausgeschlossen.\n"
 						+ " Ung\u00FCltige Zahlen und Zeichen werden Ignoriert. Es k\u00F6nnen Maximal 6 Zahlen von der Tippgenerierung ausgeschlossen sein.");
-		unglueckszahlenAusschliessenField.setBounds(150, 15, 77, 20);
+		unglueckszahlenAusschliessenField.setBounds(200, 20, 75, 20);
+		unglueckszahlenAusschliessenField.addActionListener(unglueckszahlenAction);
 		panelObenRechts.add(unglueckszahlenAusschliessenField);
+		logger.log(Level.INFO, "Unglückszahlen ausschließen Textfield durchgelaufen.");
 
 		JTextField unglueckszahlenZulassenField = new JTextField();
 		unglueckszahlenZulassenField.setToolTipText(
 				"Eine oder mehrere Zahlen durch ein Leerzeichen getrennt eingeben. Die eingegebenen Zahlen werden zur Tippgenerierung wieder zugelassen.\n"
 						+ " Ung\u00FCltige Zahlen und Zeichen werden Ignoriert. Es k\u00F6nnen nur Zahlen verwendet werden, welche aktuell unter den ausgeschlossenen"
 						+ " Zahlen sind.");
-		unglueckszahlenZulassenField.setBounds(150, 45, 77, 20);
+		unglueckszahlenZulassenField.setBounds(200, 50, 75, 20);
+		unglueckszahlenZulassenField.addActionListener(unglueckszahlenAction);
 		panelObenRechts.add(unglueckszahlenZulassenField);
 		unglueckszahlenZulassenField.setColumns(10);
+		logger.log(Level.INFO, "Unglückszahlen zulassen Textfield durchgelaufen.");
 
-		JLabel lblNewLabel = new JLabel("Zahl(en) festlegen");
-		lblNewLabel.setBounds(10, 20, 136, 15);
-		panelObenRechts.add(lblNewLabel);
+		/**
+		 * Die Labels für die Unglückszahlen Felder.
+		 */
+		JLabel lblZahlenFestlegenLabel = new JLabel("Zahl(en) festlegen");
+		lblZahlenFestlegenLabel.setBounds(10, 20, 180, 15);
+		panelObenRechts.add(lblZahlenFestlegenLabel);
+		logger.log(Level.INFO, "Unglückszahlen festlegen Label durchgelaufen.");
 
-		JLabel lblNewLabel_1 = new JLabel("Zahl(en) l\u00F6schen");
-		lblNewLabel_1.setBounds(10, 50, 136, 15);
-		panelObenRechts.add(lblNewLabel_1);
+		JLabel lblZahlenLoeschenLabel = new JLabel("Zahl(en) l\u00F6schen");
+		lblZahlenLoeschenLabel.setBounds(10, 50, 180, 15);
+		panelObenRechts.add(lblZahlenLoeschenLabel);
+		logger.log(Level.INFO, "Unglückszahlen löschen Label durchgelaufen.");
 
-		JButton btnNewButton = new JButton("Best\u00E4tigen");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		/**
+		 * Der Bestätigen Button für die Unglückszahlen
+		 */
+		JButton btnBestaetigenButton = new JButton("Best\u00E4tigen");
+		btnBestaetigenButton.setToolTipText(
+				"Zun\u00E4cht werden die Zahlen, wenn vorhanden, aus dem \"festlegen\" Feld behandelt. Danach werden die Zahlen, wenn vorhanden, aus dem \"l\u00F6schen\" Feld behandelt.");
+		btnBestaetigenButton.setBounds(415, 45, 100, 25);
+		panelObenRechts.add(btnBestaetigenButton);
+		logger.log(Level.INFO, "Bestätigen Button durchgelaufen.");
+
+		/**
+		 * Die Action für das Bestätigen der Unglückszahlen.
+		 */
+		unglueckszahlenAction = new AbstractAction() {
+
+			private static final long serialVersionUID = 7649126247316473524L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				StringReader unglueckszahlenAusschliessen = new StringReader(
 						unglueckszahlenAusschliessenField.getText().toString());
 				StringReader unglueckszahlenZulassen = new StringReader(
@@ -275,12 +319,10 @@ public class LottoTippGeneratorGUI {
 
 				unglueckszahlenAusschliessenField.setText("");
 				unglueckszahlenZulassenField.setText("");
-			}
-		});
-		btnNewButton.setToolTipText(
-				"Zun\u00E4cht werden die Zahlen, wenn vorhanden, aus dem \"festlegen\" Feld behandelt. Danach werden die Zahlen, wenn vorhanden, aus dem \"l\u00F6schen\" Feld behandelt.");
-		btnNewButton.setBounds(292, 44, 89, 23);
-		panelObenRechts.add(btnNewButton);
+				logger.log(Level.INFO, "Bestätigen Button gedrückt.");
+			};
+		};
+		btnBestaetigenButton.addActionListener(unglueckszahlenAction);
 
 		/**
 		 * Panel für die Ausgabe von Informationen an den Nutzer. Enthält ein TextField
@@ -289,9 +331,10 @@ public class LottoTippGeneratorGUI {
 		JPanel panelTextFieldUnten = new JPanel();
 		panelTextFieldUnten.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
 				"Informationen & Ausgabe", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelTextFieldUnten.setBounds(0, 104, 616, 224);
+		panelTextFieldUnten.setBounds(0, 104, 794, 267);
 		frmLottoTippgenerator.getContentPane().add(panelTextFieldUnten);
 		panelTextFieldUnten.setLayout(null);
+		logger.log(Level.INFO, "Information und Ausgabe Panel durchgelaufen.");
 
 		/**
 		 * TextField zur Ausgabe von Informationen an den Nutzer
@@ -300,21 +343,36 @@ public class LottoTippGeneratorGUI {
 		textArea.setBackground(Color.WHITE);
 		textArea.setEditable(false);
 
-		textArea.setBounds(10, 20, 420, 195);
+		textArea.setBounds(10, 20, 775, 205);
 		panelTextFieldUnten.add(textArea);
+		logger.log(Level.INFO, "Ausgabe TextArea durchgelaufen");
 
 		/**
 		 * Generieren Button
 		 */
 		JButton btnGenerierenButton = new JButton("Generieren");
-		btnGenerierenButton.setBounds(520, 190, 85, 25);
+		btnGenerierenButton.setBounds(10, 230, 100, 25);
 		panelTextFieldUnten.add(btnGenerierenButton);
-		btnGenerierenButton.addActionListener(new ActionListener() {
+		logger.log(Level.INFO, "Generieren Button durchgelaufen.");
+
+		/**
+		 * Die Action zum Generieren von Tipps
+		 */
+		generierenAction = new AbstractAction() {
+
+			private static final long serialVersionUID = 2324741792897120552L;
+
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (formattedTextField.getValue() == null || formattedTextField.getValue().equals("")) {
+				if (formattedTextFieldAnzahlTipps.getValue() == null
+						|| formattedTextFieldAnzahlTipps.getValue().equals("")) {
 					anzahlTipps = 1;
+					logger.log(Level.INFO,
+							"Generieren Button gedrückt. Keine Anzahl, wie viele Tipps generiert werden sollen, wurde übergeben. Anzahl wurde auf 1 gesetzt.");
 				} else {
-					anzahlTipps = (int) formattedTextField.getValue();
+					anzahlTipps = (int) formattedTextFieldAnzahlTipps.getValue();
+					logger.log(Level.INFO, "Generieren Button gedrückt. " + anzahlTipps
+							+ " wurde als Anzahl, wie viele Tipps generiert werden sollen, übergeben");
 				}
 				if (anzahlTipps > 1000) {
 					lblNewLabelUngueltig.setVisible(true);
@@ -323,6 +381,8 @@ public class LottoTippGeneratorGUI {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							lblNewLabelUngueltig.setVisible(false);
+							logger.log(Level.INFO,
+									"Ungültige Eingabe wurde getätigt (über 1000 Tipps sollten generiert werden). Ungültige Eingabe Label wird für 5 Sekunden gezeigt.");
 						}
 					});
 					t.setRepeats(false);
@@ -335,21 +395,28 @@ public class LottoTippGeneratorGUI {
 					textArea.append(FileOperation.currentDirectory()
 							.concat("\\LottoTippGenFiles\\GenerierteTipps" + tippGenerator.lottoModus() + ".txt")
 							+ System.lineSeparator());
+					logger.log(Level.INFO,
+							"Mehr als 10 Tipps sollten generiert werden, daher werden die Tipps in einer Datei gespeichert. Die Information hierzu wurde auf der TextArea dem Nutzer ausgegeben.");
 				} else {
 					textArea.append(tippGenerator.generiereTipps(anzahlTipps));
+					logger.log(Level.INFO, "Die Generierten Tipps wurden dem Nutzer auf der TextArea ausgegeben.");
 				}
 			}
-		});
+		};
+		btnGenerierenButton.addActionListener(generierenAction);
 
 		/**
 		 * Beenden Button
 		 */
 		JButton btnBeendenButton = new JButton("Beenden");
-		btnBeendenButton.setBounds(435, 190, 75, 25);
+		btnBeendenButton.setBounds(685, 230, 100, 25);
 		panelTextFieldUnten.add(btnBeendenButton);
+		logger.log(Level.INFO, "Beenden Button durchgelaufen.");
 		btnBeendenButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
-				// Logging.quit();
+				logger.log(Level.INFO, "Beenden Button gedrückt, das Logging und das Programm werden nun Beendet.");
+				Logging.quit();
 				System.exit(0);
 			}
 		});
