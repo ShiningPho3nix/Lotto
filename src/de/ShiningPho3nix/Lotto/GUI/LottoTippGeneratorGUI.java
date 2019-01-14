@@ -1,3 +1,5 @@
+package de.ShiningPho3nix.Lotto.GUI;
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +20,16 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 
 import javax.swing.text.NumberFormatter;
+
+import de.ShiningPho3nix.Lotto.Benutzereingabe;
+import de.ShiningPho3nix.Lotto.Eurojackpot;
+import de.ShiningPho3nix.Lotto.FileOperation;
+import de.ShiningPho3nix.Lotto.Logging;
+import de.ShiningPho3nix.Lotto.SechsAusNeunundvierzig;
+import de.ShiningPho3nix.Lotto.StringSammlung;
+import de.ShiningPho3nix.Lotto.TippGenerator;
+import de.ShiningPho3nix.Lotto.Tuple;
+
 import javax.swing.JRadioButton;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;

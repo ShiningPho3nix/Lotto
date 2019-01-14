@@ -1,3 +1,4 @@
+package de.ShiningPho3nix.Lotto;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;

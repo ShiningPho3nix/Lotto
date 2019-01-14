@@ -1,3 +1,4 @@
+package de.ShiningPho3nix.Lotto;
 /**
  * Kleine Simple Tuple Klasse um die Rückgabe von erfrage Lottozahlen
  * zurückgeben zu können. ERmöglicht es einen String und ein INteger[]

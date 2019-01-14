@@ -1,3 +1,4 @@
+package de.ShiningPho3nix.Lotto;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -1,3 +1,4 @@
+package de.ShiningPho3nix.Lotto.Tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -8,6 +9,9 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+
+import de.ShiningPho3nix.Lotto.Eurojackpot;
+import de.ShiningPho3nix.Lotto.SechsAusNeunundvierzig;
 
 /**
  * Enthält diverse Tests zu Prüfen der Methoden der SLotto Klasse.

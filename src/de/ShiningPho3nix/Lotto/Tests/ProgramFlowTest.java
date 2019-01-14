@@ -1,7 +1,10 @@
+package de.ShiningPho3nix.Lotto.Tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import de.ShiningPho3nix.Lotto.ProgramFlow;
 
 /**
  * Klasse zum testen der Methoden der ProgrammFlow Klasse

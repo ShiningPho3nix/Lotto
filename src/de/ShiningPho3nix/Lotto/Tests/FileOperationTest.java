@@ -1,3 +1,4 @@
+package de.ShiningPho3nix.Lotto.Tests;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,6 +9,9 @@ import java.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import de.ShiningPho3nix.Lotto.FileOperation;
+import de.ShiningPho3nix.Lotto.Logging;
 
 /**
  * Klasse zum Testen diverser Methoden der FileOpperation Klasse.
