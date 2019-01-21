@@ -1,9 +1,10 @@
 package de.ShiningPho3nix.Lotto;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SLotto {
+public abstract class SLotto {
 
 	public ArrayList<Integer> tippzahlenArray;
 	public ArrayList<Integer> zweiAusZehnTippzahlenArray;
@@ -133,7 +134,8 @@ public class SLotto {
 	/**
 	 * Diese Methode wird in den jeweiligen Klassen Eurojackpot und 6aus49
 	 * Überschrieben und dort ausgeführt. Führt dem entsprechend natürlich auch die
-	 * korrekte version basierend auf dem jeweiligem Objekt (euro oder 6aus49) aus.
+	 * korrekte version basierend auf dem jeweiligem Objekt in TippGenerator (euro
+	 * oder 6aus49) aus.
 	 * 
 	 * @return
 	 */

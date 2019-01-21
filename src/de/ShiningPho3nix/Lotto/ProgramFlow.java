@@ -1,4 +1,5 @@
 package de.ShiningPho3nix.Lotto;
+
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ProgramFlow {
 
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Benutzereingabe benutzereingabe;
-	public TippGenerator tippgenerator = null;
+	private TippGenerator tippgenerator = null;
 
 	/**
 	 * Konstruktor erzeugt eine neue Benutzereingabe um Eingaben vom Nutzer über die
@@ -51,7 +52,7 @@ public class ProgramFlow {
 	 * 
 	 * @param befehl
 	 */
-	public void befehlAusfuehren(String befehl) {
+	private void befehlAusfuehren(String befehl) {
 		if (befehl.contains("TIPPGEN")) { // Nimmt eine erste Aufteilung des eingegebenen Befehls vor und führt geg.
 											// eine entsprechende Methode aus.
 			befehlAusfuehrenTippgen(befehl);
@@ -219,7 +220,7 @@ public class ProgramFlow {
 	 * 
 	 * @param tippgen
 	 */
-	public String starteTippgenerierung(ArrayList<String> tippgen) {
+	private String starteTippgenerierung(ArrayList<String> tippgen) {
 		if (tippgen.isEmpty()) {
 			return tippgenerator.generiereTipps(1);
 		} else {

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class TippGenerator {
 
-	ILotto lottoart = null;
+	private ILotto lottoart = null;
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**

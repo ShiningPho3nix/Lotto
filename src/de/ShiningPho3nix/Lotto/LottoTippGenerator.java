@@ -1,4 +1,5 @@
 package de.ShiningPho3nix.Lotto;
+
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,9 +14,7 @@ import java.util.stream.Collectors;
 public class LottoTippGenerator {
 
 	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	public static StringSammlung ausgabe;
-	public static ProgramFlow programFlow;
-	public static Benutzereingabe benutzereingabe;
+	private static ProgramFlow programFlow;
 
 	/**
 	 * Main Methode bereitet das Loggen vor, erzeugt ein Objekt Ausgabe und
@@ -37,8 +36,6 @@ public class LottoTippGenerator {
 		}, "Shutdown-thread"));
 		new Logging(); // Startet das Logging
 		logger.log(Level.INFO, "Programm gestartet.");
-
-		ausgabe = new StringSammlung();
 		programFlow = new ProgramFlow();
 
 		String befehl = "";

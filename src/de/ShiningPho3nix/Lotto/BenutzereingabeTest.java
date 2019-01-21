@@ -16,7 +16,7 @@ import org.junit.Test;
  */
 public class BenutzereingabeTest {
 
-	Benutzereingabe benutzereingabe;
+	private Benutzereingabe benutzereingabe;
 
 	/**
 	 * Der Konstruktor erzeugt das für die Tests nötige Benutzereingabe Objekt.

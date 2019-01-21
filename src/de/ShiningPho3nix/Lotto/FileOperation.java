@@ -162,7 +162,7 @@ public class FileOperation {
 	 * 
 	 * @throws IOException
 	 */
-	public static void createFile(String name) throws IOException {
+	private static void createFile(String name) throws IOException {
 		File f = new File(name);
 		f.createNewFile();
 	}
