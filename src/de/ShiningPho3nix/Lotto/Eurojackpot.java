@@ -76,7 +76,6 @@ public class Eurojackpot extends SLotto implements ILotto {
 		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert den tipp in aufsteigender Reihenfolge
 		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed()); // Die 2aus10 tipp ArrayList wird
 																					// ebenfalls aufsteigend sortiert.
-		logger.info(tipp + " | " + zweiAusZehnTipp + "wurde als Tipp generiert");
 		return (StringSammlung.eurojackpotTipp(tipp, zweiAusZehnTipp));
 	}
 

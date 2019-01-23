@@ -23,7 +23,7 @@ public class Tuple {
 	public Tuple(Integer[] arr, String str) {
 		this.integerArr = arr;
 		this.string = str;
-		logger.info("Neuer Tupel wurde erzeugt mit Array: " + arr.toString() + " und String: " + str);
+		logger.info("Neuer Tupel wurde erzeugt.");
 
 	}
 

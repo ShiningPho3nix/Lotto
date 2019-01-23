@@ -46,7 +46,6 @@ public class SechsAusNeunundvierzig extends SLotto implements ILotto {
 		}
 		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert die Tipp Liste in aufsteigender
 																		// Reihenfolge.
-		logger.info(tipp + " wurde generiert.");
 		return (StringSammlung.sechsAusNeunundvierzigTipp(tipp)); // Gibt den Tipp auf der Konsole aus.
 	}
 
