@@ -1,17 +1,20 @@
 package de.ShiningPho3nix.Lotto;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
- */
-
-/**
+ * 
  * @author Steffen Dworsky
  *
  */
 public class Eurojackpot extends SLotto implements ILotto {
+
+	private final static Logger logger = LogManager.getLogger(Eurojackpot.class);
 
 	/**
 	 * Der Konstruktor führt den super() Konstruktor aus, inizialisiert das extra
@@ -20,7 +23,31 @@ public class Eurojackpot extends SLotto implements ILotto {
 	 * 
 	 */
 	public Eurojackpot() {
-		super("Eurojackpot");
+		super();
+		erstelleZweiAusZehnCollection();
+		logger.info("Eurojackpot Konstruktor durchgelaufen.");
+	}
+
+	/**
+	 * Funktion zur Erstellung einer Liste mit zulässigen Zahlen für die Tipp
+	 * Generierung. Die ausgeschlossenen Zahlen werden hierbei nicht mit
+	 * aufgenommen. Die Zulässigen Zahlen werden dem tippzahlenArray hinzugefügt.
+	 */
+	@Override
+	public void erstelleCollection() {
+		for (int i = 1; i < 51; i++) { // Für die Zahlen 1-50
+			if (unglueckszahlenArray.contains((Integer) i)) {
+				logger.info(Integer.toString(i)
+						+ " als Zahl aus der Menge an möglichen Zahlen zur Tippgenerierung ausgeschlossen.");
+				continue; // Wenn die aktuelle Zahl unter den ausgeschlossenen Zahlen ist, wird mit der
+							// nächsten Zahl weiter gemacht.
+			} else {
+				tippzahlenArray.add(i); // Ist die Zahl nicht im unglücksArray so wird die Zahl dem TIppArray
+										// hinzugefügt.
+			}
+		}
+		logger.info("tippzahlenArray gefüllt.");
+		logger.info("erstelleCollection durchgelaufen.");
 	}
 
 	/**
@@ -49,7 +76,15 @@ public class Eurojackpot extends SLotto implements ILotto {
 		Collections.sort(tipp, Collections.reverseOrder().reversed()); // Sortiert den tipp in aufsteigender Reihenfolge
 		Collections.sort(zweiAusZehnTipp, Collections.reverseOrder().reversed()); // Die 2aus10 tipp ArrayList wird
 																					// ebenfalls aufsteigend sortiert.
-		logger.log(Level.INFO, tipp + " " + zweiAusZehnTipp + "wurde als Tipp generiert");
+		logger.info(tipp + " | " + zweiAusZehnTipp + "wurde als Tipp generiert");
 		return (StringSammlung.eurojackpotTipp(tipp, zweiAusZehnTipp));
+	}
+
+	/**
+	 * Gibt den Aktuellen Spielmodus als String zurück.
+	 */
+	@Override
+	public String getModus() {
+		return "Euro";
 	}
 }

@@ -1,5 +1,8 @@
 package de.ShiningPho3nix.Lotto;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Kleine Simple Tuple Klasse um die Rückgabe von erfrage Lottozahlen
  * zurückgeben zu können. ERmöglicht es einen String und ein INteger[]
@@ -10,6 +13,7 @@ package de.ShiningPho3nix.Lotto;
  */
 public class Tuple {
 
+	private final static Logger logger = LogManager.getLogger(Tuple.class);
 	private Integer[] integerArr;
 	private String string;
 
@@ -19,6 +23,8 @@ public class Tuple {
 	public Tuple(Integer[] arr, String str) {
 		this.integerArr = arr;
 		this.string = str;
+		logger.info("Neuer Tupel wurde erzeugt mit Array: " + arr.toString() + " und String: " + str);
+
 	}
 
 	/**
@@ -27,6 +33,7 @@ public class Tuple {
 	 * @return Das im Tuple enthaltene Integer[]
 	 */
 	public Integer[] getIntegerArr() {
+		logger.info("Array von Tuple: " + System.identityHashCode(this) + " zurückgegeben. Array: " + integerArr);
 		return integerArr;
 	}
 
@@ -36,6 +43,7 @@ public class Tuple {
 	 * @return Den im Tupel enthaltenen String
 	 */
 	public String getString() {
+		logger.info("String von Tuple: " + System.identityHashCode(this) + " zurückgegeben. String: " + string);
 		return string;
 	}
 
@@ -46,6 +54,7 @@ public class Tuple {
 	 * @param newIntegerArr
 	 */
 	public void SetIntegerArr(Integer[] newIntegerArr) {
+		logger.info("Neues Array festgelegt für Tuple: " + System.identityHashCode(this) + ". Array: " + newIntegerArr);
 		this.integerArr = newIntegerArr;
 	}
 
@@ -55,6 +64,7 @@ public class Tuple {
 	 * @param newString
 	 */
 	public void setString(String newString) {
+		logger.info("Neuer String festgelegt für Tuple: " + System.identityHashCode(this) + ". AString: " + newString);
 		this.string = newString;
 	}
 

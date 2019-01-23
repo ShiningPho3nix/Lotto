@@ -1,31 +1,32 @@
 package de.ShiningPho3nix.Lotto;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import de.ShiningPho3nix.Lotto.GUI.LottoTippGeneratorGUI;
 
 public abstract class SLotto {
 
 	public ArrayList<Integer> tippzahlenArray;
 	public ArrayList<Integer> zweiAusZehnTippzahlenArray;
 	public ArrayList<Integer> unglueckszahlenArray;
-	protected static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private String currentmode;
+	private final static Logger logger = LogManager.getLogger(LottoTippGeneratorGUI.class);
 
 	/**
 	 * Der Konstruktor inizialisiert die beiden Arrays für die Menge an Zahlen zur
 	 * Tippgenerierung, sowie für die entfernten Zahlen. Anschließend wird die
 	 * Funktion laden() ausgeführt.
 	 */
-	public SLotto(String mode) {
-		this.currentmode = mode;
+	public SLotto() {
 		tippzahlenArray = new ArrayList<Integer>();
 		zweiAusZehnTippzahlenArray = new ArrayList<Integer>();
 		unglueckszahlenArray = new ArrayList<Integer>();
-		logger.log(Level.INFO, "tippzahlenArray & unglueckszahlenArray wurden inizialisiert");
+		logger.info("tippzahlenArrays & unglueckszahlenArray wurden inizialisiert");
 		laden();
 		erstelleCollection();
-		logger.log(Level.INFO, "Super Konstruktor für " + currentmode + " durchgelaufen.");
+		logger.info("Konstruktor durchgelaufen.");
 	}
 
 	/**
@@ -46,11 +47,10 @@ public abstract class SLotto {
 				if (zweiAusZehnTippzahlenArray.contains(zahl)) {
 					zweiAusZehnTippzahlenArray.remove((Integer) zahl); // entfernt die Aktuelle Zahl aus der 2aus10
 					// ArrayList.
-					logger.log(Level.INFO, zahl + " wurde auch aus dem zweiAusZehnTippzahlenArray entfernt.");
+					logger.info(zahl + " wurde auch aus dem zweiAusZehnTippzahlenArray entfernt.");
 				}
-				logger.log(Level.INFO,
-						zahl + " wurde aus der Menge an möglichen Zahlen für die " + " Tippgenerierung entfernt.");
-				logger.log(Level.INFO, "unglückszahlenArray gespeichert.");
+				logger.info(zahl + " wurde aus der Menge an möglichen Zahlen für die " + " Tippgenerierung entfernt.");
+				logger.info("unglückszahlenArray gespeichert.");
 				sb.append(StringSammlung.erfolgreichEntfernt(zahl) + "\n");
 				speichern();
 			} else {
@@ -59,11 +59,11 @@ public abstract class SLotto {
 				// auf der
 				// Konsole ausgegeben das diese Zahl nicht gelöscht werden kann. Es wird
 				// mit der nächsten Zahl weiter gemacht.
-				logger.log(Level.INFO, zahl + " wurde nicht aus der Menge an möglichen Zahlen für die "
+				logger.info(zahl + " wurde nicht aus der Menge an möglichen Zahlen für die "
 						+ " Tippgenerierung entfernt.");
 			}
 		}
-		logger.log(Level.INFO, "entferneZahlen() durchgelaufen");
+		logger.info("entferneZahlen() durchgelaufen");
 		return sb.toString();
 	}
 
@@ -83,13 +83,12 @@ public abstract class SLotto {
 				if (zahl <= 10) {
 					zweiAusZehnTippzahlenArray.add(zahl);
 				}
-				logger.log(Level.INFO,
-						zahl + " wurde der Menge an möglichen Zahlen zur Tippgenerierung wieder hinzugefügt.");
+				logger.info(zahl + " wurde der Menge an möglichen Zahlen zur Tippgenerierung wieder hinzugefügt.");
 				speichern(); // das aktualisierte Array der unglückszahlen wird abgespeichert.
-				logger.log(Level.INFO, "entferneUnglueckszahl() erfolgreich durchgelaufen");
+				logger.info("entferneUnglueckszahl() erfolgreich durchgelaufen");
 				sb.append(StringSammlung.erfolgreichWiederHinzugefuegt(zahl) + "\n");
 			} else { // Ist die aktuelle Zahl nicht unter den entfernen, so wird diese ignoriert.
-				logger.log(Level.INFO,
+				logger.info(
 						zahl + " wurde nicht der Menge an möglichen Zahlen zur Tippgenerierung wieder hinzugefügt.");
 				sb.append(StringSammlung.hinzufuegenNichtMoeglich(zahl) + "\n");
 			}
@@ -101,24 +100,15 @@ public abstract class SLotto {
 	 * Funktion zur Erstellung einer Liste mit zulässigen Zahlen für die Tipp
 	 * Generierung. Die ausgeschlossenen Zahlen werden hierbei nicht mit
 	 * aufgenommen. Die Zulässigen Zahlen werden dem tippzahlenArray hinzugefügt.
-	 * Zusätzlich wird auch immer das zweiAusZehnTippzahlenArray befüllt.
 	 */
 	public void erstelleCollection() {
-		for (int i = 1; i < 51; i++) { // Für die Zahlen 1-50
-			if (unglueckszahlenArray.contains((Integer) i)) {
-				logger.log(Level.INFO, Integer.toString(i)
-						+ " als Zahl aus der Menge an möglichen Zahlen zur Tippgenerierung ausgeschlossen.");
-				continue; // Wenn die aktuelle Zahl unter den ausgeschlossenen Zahlen ist, wird mit der
-							// nächsten Zahl weiter gemacht.
-			} else {
-				tippzahlenArray.add(i); // Ist die Zahl nicht im unglücksArray so wird die Zahl dem TIppArray
-										// hinzugefügt.
-			}
-		}
-		logger.log(Level.INFO, "tippzahlenArray gefüllt.");
+		logger.error("Überladen der Methode erstelleCollection hat nicht korrekt funktioniert.");
+	}
+
+	public void erstelleZweiAusZehnCollection() {
 		for (int i = 1; i < 11; i++) { // Für die Zahlen 1-10
 			if (unglueckszahlenArray.contains((Integer) i)) {
-				logger.log(Level.INFO, Integer.toString(i)
+				logger.info(Integer.toString(i)
 						+ " als Zahl aus der Menge an möglichen Zahlen zur Tippgenerierung ausgeschlossen.");
 				continue; // Wenn die aktuelle Zahl unter den ausgeschlossenen Zahlen ist, wird mit der
 							// nächsten Zahl weiter gemacht.
@@ -127,8 +117,7 @@ public abstract class SLotto {
 													// zweiAusZehntippzahlenArray hinzugefügt.
 			}
 		}
-		logger.log(Level.INFO, "zweiAusZehntippzahlenArray gefüllt.");
-		logger.log(Level.INFO, "erstelleCollection durchgelaufen.");
+		logger.info("zweiAusZehntippzahlenArray gefüllt.");
 	}
 
 	/**
@@ -140,6 +129,7 @@ public abstract class SLotto {
 	 * @return
 	 */
 	public String generiereTipp() {
+		logger.error("Überladen der Methode generiereTipp() hat nicht korrekt funktioniert.");
 		// generiereTipp wird in den jeweiligen Klassen Eurojackpot und 6aus49
 		// ausgeführt.
 		return null;
@@ -161,6 +151,7 @@ public abstract class SLotto {
 			// ausgegeben...
 			sb.append(generiereTipp() + System.lineSeparator()); // ...und anschließend ein Tipp generiert.
 		}
+		logger.info("Es wurden " + quicktipp + " Tipps generiert.");
 		return sb.toString();
 	}
 
@@ -171,7 +162,7 @@ public abstract class SLotto {
 	public void laden() {
 		unglueckszahlenArray = FileOperation.laden(); // Fügt die laden Funktion der Klasse LAden aus und speichert das
 		// zurückgegebene Array ind ungklückszahlenArray ab.
-		logger.log(Level.INFO, "Array mit ausgeschlossenen Zahlen wurde erfolgreich übergeben.");
+		logger.info("Array mit ausgeschlossenen Zahlen wurde erfolgreich übergeben.");
 	}
 
 	/**
@@ -181,7 +172,7 @@ public abstract class SLotto {
 	public void speichern() {
 		FileOperation.speichern(unglueckszahlenArray, "Unglueckszahlen.txt"); // speichert das aktuelle
 																				// unglückszahlenArray ab.
-		logger.log(Level.INFO, "Gespeichert, SLotto speichern durchgelaufen.");
+		logger.info("Gespeichert, SLotto speichern durchgelaufen.");
 	}
 
 	/**
@@ -190,6 +181,7 @@ public abstract class SLotto {
 	 * @return
 	 */
 	public ArrayList<Integer> liste() {
+		logger.info("unglückszahlenArray über Methode liste zurückgegeben");
 		return unglueckszahlenArray;
 	}
 
@@ -207,7 +199,8 @@ public abstract class SLotto {
 	/**
 	 * Gibt den Aktuellen Spielmodus als String zurück.
 	 */
-	public String modus() {
-		return currentmode;
+	public String getModus() {
+		logger.error("Überladen der Methode getModus() hat nicht funktioniert.");
+		return null;
 	}
 }

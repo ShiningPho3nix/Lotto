@@ -1,4 +1,5 @@
 package de.ShiningPho3nix.Lotto.Tests;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,12 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.ShiningPho3nix.Lotto.FileOperation;
-import de.ShiningPho3nix.Lotto.Logging;
 
 /**
  * Klasse zum Testen diverser Methoden der FileOpperation Klasse.
@@ -83,13 +82,5 @@ public class FileOperationTest {
 		ArrayList<Integer> localTestArray = FileOperation.mehrAlsSechsWerte(testArray);
 		assertAll("sizes", () -> assertTrue(ergebnisArray.size() == 6), () -> assertTrue(localTestArray.size() == 6));
 		assertEquals(ergebnisArray, localTestArray);
-	}
-
-	/**
-	 * Beendet das logging für diese Testklasse.
-	 */
-	@AfterAll
-	public void quit() {
-		Logging.quit();
 	}
 }

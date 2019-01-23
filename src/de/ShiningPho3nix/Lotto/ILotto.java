@@ -75,7 +75,7 @@ public interface ILotto {
 	 * 
 	 * @return 'Euro' für Eurojackpot oder '6aus49' für SechsAusNeunundvierzig.
 	 */
-	String modus();
+	String getModus();
 
 	/**
 	 * Löscht alle Unglückszahlen und erzeugt die Tippzahlen ArrayLists neu.

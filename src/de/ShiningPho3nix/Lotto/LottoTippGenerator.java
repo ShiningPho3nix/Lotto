@@ -1,9 +1,10 @@
 package de.ShiningPho3nix.Lotto;
 
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Main Klasse zum Starten des Programms
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public class LottoTippGenerator {
 
-	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger logger = LogManager.getLogger(LottoTippGenerator.class);
 	private static ProgramFlow programFlow;
 
 	/**
@@ -24,18 +25,7 @@ public class LottoTippGenerator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-			// Um das Logging immer korrekt beenden zu können.
-			// TODO läuft noch nicht ganz wie es soll. Funktioniert wenn das Programm normal
-			// ausläuft oder durch quit beendet wird. Aber nicht wenn terminiert wird
-			public void run() {
-				logger.log(Level.INFO, "Shutdown-Hook wird ausgeführt.");
-				Logging.quit();
-				System.out.println("Logging Beendet.");
-			}
-		}, "Shutdown-thread"));
-		new Logging(); // Startet das Logging
-		logger.log(Level.INFO, "Programm gestartet.");
+		logger.info("Programm gestartet.");
 		programFlow = new ProgramFlow();
 
 		String befehl = "";

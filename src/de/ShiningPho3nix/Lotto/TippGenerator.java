@@ -1,8 +1,9 @@
 package de.ShiningPho3nix.Lotto;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Um Interface Polymorphie anzuwenden, verwendet diese Klasse ein Lotto-Objekt
@@ -13,8 +14,8 @@ import java.util.logging.Logger;
  */
 public class TippGenerator {
 
-	private ILotto lottoart = null;
-	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private ILotto lottoart;
+	private final static Logger logger = LogManager.getLogger(LottoTippGenerator.class);
 
 	/**
 	 * Beim erzeugen eines neuen Tippgenerator Objektes wird eine Instanz von einer
@@ -24,7 +25,7 @@ public class TippGenerator {
 	 */
 	public TippGenerator(ILotto lotto) {
 		this.lottoart = lotto;
-		logger.log(Level.INFO, "TippGenerator Konstruktor durchgelaufen, mit Lottoart: " + lottoModus());
+		logger.info("TippGenerator Konstruktor durchgelaufen, mit Lottoart: " + lottoModus());
 	}
 
 	/**
@@ -33,7 +34,7 @@ public class TippGenerator {
 	 */
 	public void erstelleCollection() {
 		lottoart.erstelleCollection();
-		logger.log(Level.INFO, "Collection für " + lottoModus() + " wurde erstellt");
+		logger.info("Collection für " + lottoModus() + " wurde erstellt");
 	}
 
 	/**
@@ -79,7 +80,7 @@ public class TippGenerator {
 	 * Instanz gerade im Feld lottoart zugewiesen ist.
 	 */
 	public String lottoModus() {
-		return lottoart.modus();
+		return lottoart.getModus();
 	}
 
 	/**

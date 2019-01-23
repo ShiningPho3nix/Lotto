@@ -1,7 +1,9 @@
 package de.ShiningPho3nix.Lotto;
+
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Klasse enthält Methoden um verschiedenes auf der Konsole auszugeben. Somit
@@ -12,18 +14,13 @@ import java.util.logging.Logger;
  */
 public class StringSammlung {
 
-	private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-	public StringSammlung() {
-		logger.setUseParentHandlers(false);
-		logger.log(Level.INFO, "Ausgabe Konstruktor durchgelaufen.");
-	}
+	private final static Logger logger = LogManager.getLogger(StringSammlung.class);
 
 	/**
 	 * Eine kurze Willkommens Botschaft für den Nutzer.
 	 */
 	public static String begruessungConsole() {
-		logger.log(Level.INFO, "Dem Nutzer wird die Begrüßungsnachricht über die Konsole ausgegeben.");
+		logger.info("Dem Nutzer wird die Begrüßungsnachricht über die Konsole ausgegeben.");
 		return " ************************************** \n *Willkommen beim Lotto Tipp Generator* \n **************************************\n";
 	}
 
@@ -35,7 +32,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String begruessungGUI() {
-		logger.log(Level.INFO, "Dem Nutzer wird die Begrüßungsnachricht über die GUI ausgegeben.");
+		logger.info("Dem Nutzer wird die Begrüßungsnachricht über die GUI ausgegeben.");
 		return " ********************************************* \n *Willkommen beim Lotto Tipp Generator* \n ********************************************* \n";
 	}
 
@@ -47,7 +44,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String modusGewaehlt(String modus) {
-		logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt, dass " + modus + " als Modus ausgewählt wurde.");
+		logger.info("Der Nutzer wurde benachrichtigt, dass " + modus + " als Modus ausgewählt wurde.");
 		return (modus + " wurde als Lottoart gewählt. \n ");
 
 	}
@@ -59,7 +56,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String hilfeBefehl() {
-		logger.log(Level.INFO, "Dem Nutzer wurde die Information wie die Hilfe aufgerufen wird ausgegeben.");
+		logger.info("Dem Nutzer wurde die Information wie die Hilfe aufgerufen wird ausgegeben.");
 		return "'h' eingeben um eine Liste mit Befehlen ausgegeben zu bekommen.\n";
 
 	}
@@ -71,7 +68,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String waehleSpiel() {
-		logger.log(Level.INFO, "Dem Nutzer wurden die Informationen zur Modusauswahl ausgegeben.");
+		logger.info("Dem Nutzer wurden die Informationen zur Modusauswahl ausgegeben.");
 		return "Bitte wählen Sie das gewünschte Lottospiel: \n 6aus49 \n Euro \n";
 	}
 
@@ -82,7 +79,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String ungueltigeEingabe(String eingabe) {
-		logger.log(Level.INFO,
+		logger.info(
 				"Der Nutzer wurde darauf hingewiesen, dass eine ungültige Eingabe getätigt wurde. Dem Nutzer wurde ein Hinweiß auf den Hilfebefehl gegeben.");
 		return ("Ungültige Eingabe getätigt: " + eingabe + "\n" + hilfeAusgeben() + "\n");
 
@@ -99,13 +96,12 @@ public class StringSammlung {
 	 */
 	public static String nichtLoeschbar(int zahl) {
 		if (zahl > 50 || zahl < 1) { // Für den Fall das die Zahl außerhalb des gültigen Bereichs liegt.
-			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
+			logger.info("Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
 			return ("Löschen von " + zahl + " nicht möglich!\n "
 					+ "Die zu löschende Zahl muss im Bereich [1,50] liegen.\n");
 
 		} else { // Für alle anderen Fälle
-			logger.log(Level.INFO,
-					"Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl + " nicht möglich ist.");
+			logger.info("Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl + " nicht möglich ist.");
 			return ("Löschen von " + zahl + " nicht möglich!\n"
 					+ "Entweder wurden bereits die Maximal 6 zulässigen Zahlen entfernt oder die gewünschte Zahl ist bereits entfernt.\n");
 		}
@@ -116,7 +112,7 @@ public class StringSammlung {
 	 * enthält. Führt in der nächstfolgenden Zeile hilfeBefehl() aus.
 	 */
 	public static String erwarteBefehl() {
-		logger.log(Level.INFO, "Der Nutzer wurde zur Eingabe eines Befehls aufgefordert.");
+		logger.info("Der Nutzer wurde zur Eingabe eines Befehls aufgefordert.");
 		return ("Bitte einen Befehl eingeben:\n" + hilfeBefehl());
 	}
 
@@ -131,7 +127,7 @@ public class StringSammlung {
 	 * Gibt einen fertigen String mit allen Konsolen-Befehlen zurück.
 	 */
 	public static String hilfeAusgeben() {
-		logger.log(Level.INFO, "List mit Befehlen ausgegeben..");
+		logger.info("List mit Befehlen ausgegeben..");
 		return ("Die möglichen Befehle sind:\n"
 				+ " 'tippgen <6aus49/euro> <Tippanzahl>': Erzeugt einen Tipp im angegebenen Modus, die angegebene Anzahl an Mal.\n"
 				+ " Die Eingaben werden durch ein leerzeichen getrennt.\n"
@@ -154,7 +150,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String erfolgreichEntfernt(int zahl) {
-		logger.log(Level.INFO, "Über erfolgreiches entfernen der Zahl: " + zahl + " benachrichtigt.");
+		logger.info("Über erfolgreiches entfernen der Zahl: " + zahl + " benachrichtigt.");
 		return (zahl + " erfolgreich entfernt.\n");
 	}
 
@@ -165,7 +161,7 @@ public class StringSammlung {
 	 * @param zahl
 	 */
 	public static String erfolgreichWiederHinzugefuegt(int zahl) {
-		logger.log(Level.INFO, "Über erfolgreiches wieder hinzufügen der Zahl: " + zahl + " benachrichtigt.");
+		logger.info("Über erfolgreiches wieder hinzufügen der Zahl: " + zahl + " benachrichtigt.");
 		return (zahl + " erfolgreich wieder hinzugefügt.\n");
 	}
 
@@ -174,7 +170,7 @@ public class StringSammlung {
 	 * entfernten Zahlen erzeugt wurde.
 	 */
 	public static String dateiErstellt() {
-		logger.log(Level.INFO, "Über erfolgreiches erstellen einer neuen Datei benachrichtigt.");
+		logger.info("Über erfolgreiches erstellen einer neuen Datei benachrichtigt.");
 		return "Es existierte noch keine Datei zum abspeichern der entfernten Zahlen. Diese Datei wurde mit dem Namen 'TippGenerator.txt' erstellt.\n";
 
 	}
@@ -186,7 +182,7 @@ public class StringSammlung {
 	 * @param input
 	 */
 	public static String istKeineZahl(String input) {
-		logger.log(Level.INFO, "Nachricht ausgegeben, dass " + input + " keine Zahl ist.");
+		logger.info("Nachricht ausgegeben, dass " + input + " keine Zahl ist.");
 		return (input + " ist keine Zahl und wird daher ignoriert.\n");
 	}
 
@@ -198,12 +194,12 @@ public class StringSammlung {
 	 */
 	public static String hinzufuegenNichtMoeglich(int zahl) {
 		if (zahl > 50 || zahl < 1) {
-			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
+			logger.info("Der Nutzer wurde benachrichtigt das " + zahl + " nicht im gültigem Bereich liegt.");
 			return (zahl + " konnte nicht wieder hinzugefügt werden.\n"
 					+ "Die eingegebene Zahl muss im Bereich [1,50] liegen.\n");
 		} else {
-			logger.log(Level.INFO, "Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl
-					+ " nicht möglich ist. Da " + zahl + " keine der aktuell ausgeschlossenen Zahlen ist.");
+			logger.info("Der Nutzer wurde benachrichtigt, dass das Löschen von " + zahl + " nicht möglich ist. Da "
+					+ zahl + " keine der aktuell ausgeschlossenen Zahlen ist.");
 			return (zahl + " konnte nicht wieder hinzugefügt werden.\n"
 					+ " Die Zahl ist aktuell nicht unter den ausgeschlossenen Zahlen.\n");
 		}
@@ -216,7 +212,7 @@ public class StringSammlung {
 	 * @return
 	 */
 	public static String list() {
-		logger.log(Level.INFO, "list() ausgeführt.");
+		logger.info("list() ausgeführt.");
 		return "Die derzeitig ausgeschlossenen Zahlen sind:\n";
 	}
 
@@ -241,7 +237,7 @@ public class StringSammlung {
 			}
 			sb.append(hilfeAusgeben());
 		}
-		logger.log(Level.INFO, "Der Nutzer wurde darauf hingewiesen, dass eine ungültige Eingabe getätigt wurde."
+		logger.info("Der Nutzer wurde darauf hingewiesen, dass eine ungültige Eingabe getätigt wurde."
 				+ " Dem Nutzer wurde ein Hinweiß auf den Hilfebefehl gegeben.");
 		return sb.toString();
 	}

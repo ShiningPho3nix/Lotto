@@ -3,5 +3,17 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="E:/apache-log4j-2.11.1-bin/log4j-1.2-api-2.11.1.jar"/>
+	<classpathentry kind="lib" path="E:/apache-log4j-2.11.1-bin/log4j-api-2.11.1.jar"/>
+	<classpathentry kind="lib" path="E:/apache-log4j-2.11.1-bin/log4j-core-2.11.1.jar"/>
+	<classpathentry kind="lib" path="E:/commons-logging-1.2/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-aop-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-aspects-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-beans-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-context-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-context-indexer-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-context-support-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-core-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/spring-framework-5.1.4.RELEASE/libs/spring-expression-5.1.4.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
