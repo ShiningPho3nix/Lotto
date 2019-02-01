@@ -33,7 +33,7 @@ public class Tuple {
 	 * @return Das im Tuple enthaltene Integer[]
 	 */
 	public Integer[] getIntegerArr() {
-		logger.info("Array von Tuple: " + System.identityHashCode(this) + " zurückgegeben. Array: " + integerArr);
+		logger.info("Array von Tuple: " + System.identityHashCode(this) + " zurückgegeben.");
 		return integerArr;
 	}
 
@@ -43,7 +43,7 @@ public class Tuple {
 	 * @return Den im Tupel enthaltenen String
 	 */
 	public String getString() {
-		logger.info("String von Tuple: " + System.identityHashCode(this) + " zurückgegeben. String: " + string);
+		logger.info("String von Tuple: " + System.identityHashCode(this) + " zurückgegeben.");
 		return string;
 	}
 
@@ -54,7 +54,7 @@ public class Tuple {
 	 * @param newIntegerArr
 	 */
 	public void SetIntegerArr(Integer[] newIntegerArr) {
-		logger.info("Neues Array festgelegt für Tuple: " + System.identityHashCode(this) + ". Array: " + newIntegerArr);
+		logger.info("Neues Array festgelegt für Tuple: " + System.identityHashCode(this));
 		this.integerArr = newIntegerArr;
 	}
 
@@ -64,7 +64,7 @@ public class Tuple {
 	 * @param newString
 	 */
 	public void setString(String newString) {
-		logger.info("Neuer String festgelegt für Tuple: " + System.identityHashCode(this) + ". AString: " + newString);
+		logger.info("Neuer String festgelegt für Tuple: " + System.identityHashCode(this));
 		this.string = newString;
 	}
 
