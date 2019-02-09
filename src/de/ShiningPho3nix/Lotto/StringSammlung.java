@@ -16,6 +16,11 @@ public class StringSammlung {
 
 	private final static Logger logger = LogManager.getLogger(StringSammlung.class);
 
+	// Suppress Default Constructor for noninstantiability
+	private StringSammlung() {
+		throw new AssertionError();
+	}
+
 	/**
 	 * Eine kurze Willkommens Botschaft für den Nutzer.
 	 */
